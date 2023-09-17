@@ -2,9 +2,10 @@ package entity
 
 import (
 	"fmt"
-	c "glowstone/bp/entity/component"
 	"reflect"
 	"strings"
+
+	c "github.com/respectZ/glowstone/bp/entity/component"
 )
 
 func convertMapToStruct(m map[string]interface{}, s interface{}) error {

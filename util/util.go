@@ -3,7 +3,6 @@ package glowstone
 import (
 	"bufio"
 	"encoding/json"
-	"glowstone/util/jsonc"
 	"image"
 	"image/color"
 	"image/png"
@@ -11,6 +10,8 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+
+	"github.com/respectZ/glowstone/util/jsonc"
 )
 
 func Makedir(path string) error {

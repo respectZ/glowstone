@@ -1,8 +1,9 @@
 package glowstone
 
 import (
-	entity "glowstone/entity"
 	"log"
+
+	entity "github.com/respectZ/glowstone/entity"
 )
 
 type glowstone struct {

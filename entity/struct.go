@@ -1,9 +1,10 @@
 package entity
 
 import (
-	bp "glowstone/bp/entity"
-	rp "glowstone/rp/entity"
 	"strings"
+
+	bp "github.com/respectZ/glowstone/bp/entity"
+	rp "github.com/respectZ/glowstone/rp/entity"
 )
 
 type Entity struct {

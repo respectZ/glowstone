@@ -1,4 +1,4 @@
-module glowstone
+module github.com/respectZ/glowstone
 
 go 1.19
 

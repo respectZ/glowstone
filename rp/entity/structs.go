@@ -1,7 +1,7 @@
 package entity
 
 import (
-	glowstone "glowstone/util"
+	glowstone "github.com/respectZ/glowstone/util"
 )
 
 type Entity_struct struct {

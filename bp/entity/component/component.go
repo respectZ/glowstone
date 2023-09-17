@@ -1,7 +1,7 @@
 package component
 
 import (
-	f "glowstone/bp/types"
+	f "github.com/respectZ/glowstone/bp/types"
 )
 
 // Enables the mob to admire items that have been configured as admirable. Must be used in combination with the admire_item component

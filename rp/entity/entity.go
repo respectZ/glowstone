@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"path"
 
-	g_util "glowstone/util"
+	g_util "github.com/respectZ/glowstone/util"
 )
 
 var FORMAT_VERSION = "1.12.0"

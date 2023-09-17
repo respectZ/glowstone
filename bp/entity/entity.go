@@ -2,8 +2,9 @@ package entity
 
 import (
 	"fmt"
-	glowstone "glowstone/util"
 	"strings"
+
+	glowstone "github.com/respectZ/glowstone/util"
 )
 
 func (e *entity) Encode() ([]byte, error) {

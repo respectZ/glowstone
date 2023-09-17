@@ -2,11 +2,12 @@ package glowstone
 
 import (
 	"fmt"
-	"glowstone/entity"
-	g_util "glowstone/util"
 	"log"
 	"os"
 	"path"
+
+	"github.com/respectZ/glowstone/entity"
+	g_util "github.com/respectZ/glowstone/util"
 )
 
 var MIN_ENGINE_VERSION = [3]int{1, 20, 0}

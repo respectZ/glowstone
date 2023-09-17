@@ -2,8 +2,9 @@ package entity
 
 import (
 	"fmt"
-	f "glowstone/bp/types"
-	glowstone "glowstone/util"
+
+	f "github.com/respectZ/glowstone/bp/types"
+	glowstone "github.com/respectZ/glowstone/util"
 )
 
 var FORMAT_VERSION = "1.20.0"
