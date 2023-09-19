@@ -138,6 +138,15 @@ type Entity interface {
 	// Empty the render controllers.
 	ResetRenderControllers()
 
+	// Set spawn egg color automatically based on the texture.
+	//
+	// Parameters:
+	//  - rpPath: The path to the RP folder.
+	//
+	// Example:
+	//  e.SetSpawnEggColorAuto("./packs/RP/")
+	SetSpawnEggColorAuto(string) error
+
 	// Automatically generate a render controller and apply it to the entity.
 	// This is useful for entities that have multiple geometry and textures.
 	// The indexer is the name of the variable / query that will be used to index the geometry and or texture.

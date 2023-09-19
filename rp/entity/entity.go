@@ -2,6 +2,7 @@ package entity
 
 import (
 	"fmt"
+	"os"
 	"path"
 
 	g_util "github.com/respectZ/glowstone/util"
@@ -9,6 +10,17 @@ import (
 
 var FORMAT_VERSION = "1.12.0"
 
+// New creates a new entity
+//
+//   - namespace: The namespace of the entity
+//   - identifier: The identifier of the entity
+//   - subdir: The subdirectory of the entity
+//
+// Example:
+//
+//	entity.New("minecraft", "creeper", "mobs")
+//
+// Material, Texture, and Geometry are set to default values from the identifier.
 func New(namespace string, identifier string, subdir ...string) *Entity_struct {
 	e := &Entity_struct{
 		FormatVersion: FORMAT_VERSION,
@@ -30,6 +42,7 @@ func New(namespace string, identifier string, subdir ...string) *Entity_struct {
 	e.AddMaterial("default", "entity_alphatest")
 	e.AddTexture("default", path.Join("textures", "entity", sub, identifier))
 	e.AddGeometry("default", fmt.Sprintf("geometry.%s", identifier))
+	e.AddRenderController("controller.render.default")
 	return e
 }
 
@@ -129,6 +142,33 @@ func (e *Entity_struct) SetSpawnEggTexture(texture string, textureIndex ...int) 
 	}
 }
 
+func (e *Entity_struct) SetSpawnEggColorAuto(rpPath string) error {
+	if e.Entity.Description.Textures == nil {
+		return fmt.Errorf("Textures is nil")
+	}
+	// Get the first texture
+	var texture string
+	for _, v := range e.Entity.Description.Textures {
+		texture = v
+		break
+	}
+
+	filePath := path.Join(rpPath, texture+".png")
+	// Check if file exists
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		return err
+	}
+
+	// Get the pallete
+	base, overlay, err := g_util.GetEggColor(filePath)
+	if err != nil {
+		return err
+	}
+
+	e.SetSpawnEggColor(base, overlay)
+	return nil
+}
+
 func (e *Entity_struct) AddMaterial(name string, material string) {
 	e.Entity.Description.Materials[name] = material
 }
@@ -146,6 +186,9 @@ func (e *Entity_struct) AddAnimation(name string, animation string) {
 }
 
 func (e *Entity_struct) AddRenderController(name string) {
+	if e.Entity.Description.RenderControllers == nil {
+		e.Entity.Description.RenderControllers = []interface{}{}
+	}
 	e.Entity.Description.RenderControllers = append(e.Entity.Description.RenderControllers, name)
 }
 
