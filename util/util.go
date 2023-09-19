@@ -165,7 +165,7 @@ func Walk(rootDir string) ([]string, error) {
 //
 //	// Convert image to 10 alpha
 //	ConvertImageOpacity("image.png", 10)
-func ConvertImageOpacity(filePath string, alphaValue uint8) error {
+func ConvertImageOpacity(filePath string, outPath string, alphaValue uint8) error {
 	// Open the image file
 	file, err := os.Open(filePath)
 	if err != nil {
@@ -191,7 +191,7 @@ func ConvertImageOpacity(filePath string, alphaValue uint8) error {
 			r, g, b, _ := originalColor.RGBA()
 
 			// Create a new color with the specified alpha value
-			newColor := color.RGBA{
+			newColor := color.NRGBA{
 				R: uint8(r >> 8),
 				G: uint8(g >> 8),
 				B: uint8(b >> 8),
@@ -204,8 +204,7 @@ func ConvertImageOpacity(filePath string, alphaValue uint8) error {
 	}
 
 	// Create a new output PNG image file
-	outputFilePath := filePath // Change this to the desired output file path
-	outputFile, err := os.Create(outputFilePath)
+	outputFile, err := os.Create(outPath)
 	if err != nil {
 		return err
 	}
