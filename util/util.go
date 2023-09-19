@@ -164,7 +164,7 @@ func Walk(rootDir string) ([]string, error) {
 // Example:
 //
 //	// Convert image to 10 alpha
-//	ConvertImageOpacity("image.png", 10)
+//	ConvertImageOpacity("image.png", "image_new.png" 10)
 func ConvertImageOpacity(filePath string, outPath string, alphaValue uint8) error {
 	// Open the image file
 	file, err := os.Open(filePath)
