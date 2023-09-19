@@ -3,6 +3,7 @@ package glowstone
 import (
 	"bufio"
 	"encoding/json"
+	"fmt"
 	"image"
 	"image/color"
 	"image/png"
@@ -11,6 +12,7 @@ import (
 	"sort"
 	"strings"
 
+	q "github.com/ericpauley/go-quantize/quantize"
 	"github.com/respectZ/glowstone/util/jsonc"
 )
 
@@ -216,4 +218,39 @@ func ConvertImageOpacity(filePath string, outPath string, alphaValue uint8) erro
 		return err
 	}
 	return nil
+}
+
+func getPallete(filePath string) ([]color.Color, error) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		return nil, err
+	}
+
+	img, _, err := image.Decode(file)
+	if err != nil {
+		return nil, err
+	}
+
+	q := q.MedianCutQuantizer{}
+	p := q.Quantize(make([]color.Color, 0, 256), img)
+	return p, nil
+}
+
+// GetEggColor returns the primary and secondary color for a spawn egg.
+//
+// Example:
+//
+//	// Get egg color
+//	primary, secondary, err := GetEggColor("image.png")
+func GetEggColor(filePath string) (string, string, error) {
+	p, err := getPallete(filePath)
+	if err != nil {
+		return "", "", err
+	}
+	// Convert p[0] and p1[1] to hex
+	r, g, b, _ := p[0].RGBA()
+	r1, g1, b1, _ := p[1].RGBA()
+	h1 := fmt.Sprintf("#%02x%02x%02x", r>>8, g>>8, b>>8)
+	h2 := fmt.Sprintf("#%02x%02x%02x", r1>>8, g1>>8, b1>>8)
+	return h1, h2, nil
 }
