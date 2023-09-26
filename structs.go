@@ -57,6 +57,8 @@ type Glowstone interface {
 	GetLang(string) string
 	// SetLang sets the language data
 	SetLang(map[string]string)
+	// AddLang adds the language data
+	AddLang(string, string)
 
 	// Build builds the project
 	Build() error

@@ -88,6 +88,10 @@ func (g *glowstone) SetLang(data map[string]string) {
 	g.Lang = data
 }
 
+func (g *glowstone) AddLang(key string, value string) {
+	g.Lang[key] = value
+}
+
 func (g *glowstone) Build() error {
 	g_util.Writelang(g.RPDir+"texts/en_US.lang", g.Lang)
 	return nil
@@ -126,7 +130,7 @@ func (g *glowstone) Save() {
 		g_util.Writefile(path.Join(g.RPDir, "textures", "item_texture.json"), data)
 	}
 	// Lang
-	g_util.Writelang(path.Join(g.RPDir, "texts", "en_US.lang"), g.Lang)
+	defer g_util.Writelang(path.Join(g.RPDir, "texts", "en_US.lang"), g.Lang)
 
 	// Entity
 	for _, e := range g.Entities {
