@@ -11,6 +11,7 @@ type Item struct {
 
 	// Other stuff
 	Subdir string
+	Lang   string
 }
 
 func New(namespace string, identifier string, subdir ...string) *Item {
@@ -65,4 +66,13 @@ func (e *Item) GetIdentifier() string {
 //	identifier := e.GetNamespaceIdentifier()
 func (e *Item) GetNamespaceIdentifier() string {
 	return e.BP.GetIdentifier()
+}
+
+// SetLang sets the lang of the item name.
+//
+// Example:
+//
+//	e.SetLang("Super Stick")
+func (e *Item) SetLang(lang string) {
+	e.Lang = lang
 }

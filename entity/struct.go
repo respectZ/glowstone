@@ -13,6 +13,7 @@ type Entity struct {
 
 	// Other stuff
 	Subdir string
+	Lang   string
 }
 
 func New(namespace string, identifier string, subdir ...string) *Entity {
@@ -105,4 +106,15 @@ func (e *Entity) GetIdentifier() string {
 //	identifier := e.GetNamespaceIdentifier()
 func (e *Entity) GetNamespaceIdentifier() string {
 	return e.BP.GetIdentifier()
+}
+
+// SetLang sets the lang of the item name.
+//
+// Will also apply to the spawn egg.
+//
+// Example:
+//
+//	e.SetLang("Cold TNT")
+func (e *Entity) SetLang(lang string) {
+	e.Lang = lang
 }

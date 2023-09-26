@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/respectZ/glowstone/entity"
 	item "github.com/respectZ/glowstone/item"
@@ -91,7 +92,9 @@ func (g *glowstone) Initialize() error {
 	// Read Lang
 	data, err := g_util.Loadlang(g.RPDir + "texts/en_US.lang")
 	if err != nil {
-		g.Logger.Warning.Println("Failed to read lang file")
+		g.Logger.Warning.Println("Failed to read lang file, creting new lang file.")
+		g.SetLang(make(map[string]string))
+		g_util.Writefile(g.RPDir+"texts/en_US.lang", []byte{})
 	} else {
 		g.SetLang(data)
 	}
@@ -104,7 +107,6 @@ func (g *glowstone) SetUpfront(upfront bool) {
 }
 
 func (g *glowstone) Save() {
-	// TODO
 	// Entity
 	for _, e := range g.Entities {
 		bp, rp, err := e.Encode()
@@ -114,6 +116,16 @@ func (g *glowstone) Save() {
 		}
 		g_util.Writefile(path.Join(g.BPDir, "entities", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), bp)
 		g_util.Writefile(path.Join(g.RPDir, "entity", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), rp)
+		// Lang
+		full := strings.Split(e.GetNamespaceIdentifier(), ":")
+		namespace := full[0]
+		identifier := full[1]
+
+		if e.Lang == "" {
+			lang := g_util.TitleCase(strings.ReplaceAll(identifier, "_", " "))
+			e.Lang = lang
+		}
+		g.Lang[fmt.Sprintf("item.%s:%s.name", namespace, identifier)] = e.Lang
 	}
 
 	// Item
@@ -124,6 +136,16 @@ func (g *glowstone) Save() {
 			continue
 		}
 		g_util.Writefile(path.Join(g.BPDir, "items", i.Subdir, fmt.Sprintf("%s.json", i.GetIdentifier())), bp)
+		// Lang
+		full := strings.Split(i.GetNamespaceIdentifier(), ":")
+		namespace := full[0]
+		identifier := full[1]
+
+		if i.Lang == "" {
+			lang := g_util.TitleCase(strings.ReplaceAll(identifier, "_", " "))
+			i.Lang = lang
+		}
+		g.Lang[fmt.Sprintf("item.%s:%s.name", namespace, identifier)] = i.Lang
 	}
 }
 
