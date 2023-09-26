@@ -17,13 +17,15 @@ type Entity struct {
 }
 
 func New(namespace string, identifier string, subdir ...string) *Entity {
+	s := ""
+	if len(subdir) > 0 {
+		s = subdir[0]
+	}
 	entity := &Entity{
 		BP: bp.New(namespace, identifier),
-		RP: rp.New(namespace, identifier),
+		RP: rp.New(namespace, identifier, s),
 	}
-	if len(subdir) > 0 {
-		entity.Subdir = subdir[0]
-	}
+	entity.Subdir = s
 	return entity
 }
 
