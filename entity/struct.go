@@ -15,11 +15,15 @@ type Entity struct {
 	Subdir string
 }
 
-func New(namespace string, identifier string) *Entity {
-	return &Entity{
+func New(namespace string, identifier string, subdir ...string) *Entity {
+	entity := &Entity{
 		BP: bp.New(namespace, identifier),
 		RP: rp.New(namespace, identifier),
 	}
+	if len(subdir) > 0 {
+		entity.Subdir = subdir[0]
+	}
+	return entity
 }
 
 // Load loads the BP and RP from the given paths
@@ -92,4 +96,13 @@ func (e *Entity) Encode() ([]byte, []byte, error) {
 //	identifier := e.GetIdentifier()
 func (e *Entity) GetIdentifier() string {
 	return strings.Split(e.BP.GetIdentifier(), ":")[1]
+}
+
+// GetNamespaceIdentifier returns the identifier of the entity with namespace
+//
+// Example:
+//
+//	identifier := e.GetNamespaceIdentifier()
+func (e *Entity) GetNamespaceIdentifier() string {
+	return e.BP.GetIdentifier()
 }

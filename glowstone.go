@@ -7,7 +7,12 @@ import (
 	"path"
 
 	"github.com/respectZ/glowstone/entity"
+	item "github.com/respectZ/glowstone/item"
 	g_util "github.com/respectZ/glowstone/util"
+
+	entityBP "github.com/respectZ/glowstone/bp/entity"
+	itemBP "github.com/respectZ/glowstone/bp/item"
+	entityRP "github.com/respectZ/glowstone/rp/entity"
 )
 
 var MIN_ENGINE_VERSION = [3]int{1, 20, 0}
@@ -110,6 +115,16 @@ func (g *glowstone) Save() {
 		g_util.Writefile(path.Join(g.BPDir, "entities", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), bp)
 		g_util.Writefile(path.Join(g.RPDir, "entity", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), rp)
 	}
+
+	// Item
+	for _, i := range g.Items {
+		bp, err := i.Encode()
+		if err != nil {
+			g.Logger.Error.Println(err)
+			continue
+		}
+		g_util.Writefile(path.Join(g.BPDir, "items", i.Subdir, fmt.Sprintf("%s.json", i.GetIdentifier())), bp)
+	}
 }
 
 /******************* Upfronts *******************/
@@ -156,6 +171,37 @@ func (g *glowstone) cacheEntities() {
 
 /******************* Entities *******************/
 
+func (g *glowstone) AddEntity(entities ...interface{}) {
+	for _, e := range entities {
+		switch e := e.(type) {
+		case *entity.Entity:
+			g.Entities[e.GetNamespaceIdentifier()] = e
+		case entityBP.Entity:
+			p := &entity.Entity{
+				BP: e,
+			}
+			old, ok := g.Entities[p.GetNamespaceIdentifier()]
+			if ok {
+				old.BP = p.BP
+			} else {
+				g.Entities[p.GetNamespaceIdentifier()] = p
+			}
+		case entityRP.Entity:
+			p := &entity.Entity{
+				RP: e,
+			}
+			old, ok := g.Entities[p.GetNamespaceIdentifier()]
+			if ok {
+				old.RP = p.RP
+			} else {
+				g.Entities[p.GetNamespaceIdentifier()] = p
+			}
+		default:
+			g.Logger.Error.Printf("invalid type %T", e)
+		}
+	}
+}
+
 func (g *glowstone) GetEntities() map[string]*entity.Entity {
 	return g.Entities
 }
@@ -171,4 +217,39 @@ func (g *glowstone) NewEntity(namespace string, identifier string) *entity.Entit
 	e := entity.New(namespace, identifier)
 	g.Entities[fmt.Sprintf("%s:%s", namespace, identifier)] = e
 	return e
+}
+
+/******************* Items *******************/
+
+func (g *glowstone) AddItem(items ...interface{}) {
+	for _, i := range items {
+		switch i := i.(type) {
+		case *item.Item:
+			g.Items[i.GetNamespaceIdentifier()] = i
+		case itemBP.Item:
+			p := &item.Item{
+				BP: i,
+			}
+			g.Items[p.GetNamespaceIdentifier()] = p
+		default:
+			g.Logger.Error.Printf("invalid type %T", i)
+		}
+	}
+}
+
+func (g *glowstone) GetItems() map[string]*item.Item {
+	return g.Items
+}
+
+func (g *glowstone) GetItem(identifier string) (*item.Item, error) {
+	if i, ok := g.Items[identifier]; ok {
+		return i, nil
+	}
+	return nil, fmt.Errorf("item %s not found", identifier)
+}
+
+func (g *glowstone) NewItem(namespace string, identifier string) *item.Item {
+	i := item.New(namespace, identifier)
+	g.Items[fmt.Sprintf("%s:%s", namespace, identifier)] = i
+	return i
 }

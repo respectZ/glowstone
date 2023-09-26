@@ -4,6 +4,7 @@ import (
 	"log"
 
 	entity "github.com/respectZ/glowstone/entity"
+	item "github.com/respectZ/glowstone/item"
 )
 
 type glowstone struct {
@@ -17,7 +18,7 @@ type glowstone struct {
 	// Data
 	Lang        map[string]string
 	Entities    map[string]*entity.Entity // TODO
-	Items       map[string]interface{}    // TODO
+	Items       map[string]*item.Item     // TODO
 	Attachables map[string]interface{}    // TODO
 
 	// Settings
@@ -70,6 +71,12 @@ type Glowstone interface {
 
 	// Entities
 
+	// AddEntity adds the entity to the project
+	//
+	// Example:
+	// 	glowstone.AddEntity(entity)
+	AddEntity(...interface{})
+
 	// GetEntities returns the entities
 	GetEntities() map[string]*entity.Entity
 	// GetEntity returns the entity
@@ -83,4 +90,27 @@ type Glowstone interface {
 	// Example:
 	// 	entity := glowstone.NewEntity("minecraft", "zombie")
 	NewEntity(string, string) *entity.Entity
+
+	// Items
+
+	// AddItem adds the item to the project
+	//
+	// Example:
+	// 	glowstone.AddItem(item)
+	AddItem(...interface{})
+
+	// GetItems returns the items
+	GetItems() map[string]*item.Item
+
+	// GetItem returns the item
+	//
+	// Example:
+	// 	item, err := glowstone.GetItem("minecraft:stick")
+	GetItem(string) (*item.Item, error)
+
+	// NewItem creates a new item
+	//
+	// Example:
+	// 	item := glowstone.NewItem("minecraft", "stick")
+	NewItem(string, string) *item.Item
 }

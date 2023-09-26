@@ -14,6 +14,9 @@ import (
 
 	q "github.com/ericpauley/go-quantize/quantize"
 	"github.com/respectZ/glowstone/util/jsonc"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 func Makedir(path string) error {
@@ -131,6 +134,11 @@ func LoadJSON(path string, e interface{}) error {
 	}
 	err = json.Unmarshal(jsonc.ToJSON(data), e)
 	return err
+}
+
+func TitleCase(input string) string {
+	caser := cases.Title(language.English)
+	return caser.String(input)
 }
 
 // Walk walks the file tree rooted at rootDir, calling walkFn for each file or directory in the tree, including rootDir.

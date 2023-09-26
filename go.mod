@@ -5,4 +5,5 @@ go 1.19
 require (
 	github.com/ericpauley/go-quantize v0.0.0-20200331213906-ae555eb2afa4 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect
+	golang.org/x/text v0.13.0 // indirect
 )
