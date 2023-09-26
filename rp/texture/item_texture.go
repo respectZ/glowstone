@@ -6,7 +6,7 @@ import (
 
 type ItemTexture struct {
 	ResourcePackName string                         `json:"resource_pack_name,omitempty"`
-	TextureData      map[string]ItemTexture_Texture `json:"texture_data,omitempty"`
+	TextureData      map[string]ItemTexture_Texture `json:"texture_data"`
 }
 
 type ItemTexture_Texture struct {
@@ -41,6 +41,9 @@ func (i *ItemTexture) Encode() ([]byte, error) {
 //
 //	item_texture.AddTexture("stick", "textures/items/stick")
 func (i *ItemTexture) AddTexture(name string, texture interface{}) {
+	if i.TextureData == nil {
+		i.TextureData = make(map[string]ItemTexture_Texture)
+	}
 	i.TextureData[name] = ItemTexture_Texture{
 		Textures: texture,
 	}
