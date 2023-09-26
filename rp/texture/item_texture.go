@@ -5,8 +5,8 @@ import (
 )
 
 type ItemTexture struct {
-	ResourcePackName string `json:"resource_pack_name,omitempty"`
-	TextureData      map[string]ItemTexture_Texture
+	ResourcePackName string                         `json:"resource_pack_name,omitempty"`
+	TextureData      map[string]ItemTexture_Texture `json:"texture_data,omitempty"`
 }
 
 type ItemTexture_Texture struct {
