@@ -5,6 +5,7 @@ import (
 
 	entity "github.com/respectZ/glowstone/entity"
 	item "github.com/respectZ/glowstone/item"
+	texture "github.com/respectZ/glowstone/rp/texture"
 )
 
 type glowstone struct {
@@ -20,6 +21,7 @@ type glowstone struct {
 	Entities    map[string]*entity.Entity // TODO
 	Items       map[string]*item.Item     // TODO
 	Attachables map[string]interface{}    // TODO
+	ItemTexture *texture.ItemTexture
 
 	// Settings
 	IsUpfront bool
@@ -69,7 +71,7 @@ type Glowstone interface {
 	// Save the project data to the disk.
 	Save()
 
-	// Entities
+	/******************* Entities *******************/
 
 	// AddEntity adds the entity to the project
 	//
@@ -91,7 +93,7 @@ type Glowstone interface {
 	// 	entity := glowstone.NewEntity("minecraft", "zombie")
 	NewEntity(string, string) *entity.Entity
 
-	// Items
+	/******************* Items *******************/
 
 	// AddItem adds the item to the project
 	//
@@ -113,4 +115,9 @@ type Glowstone interface {
 	// Example:
 	// 	item := glowstone.NewItem("minecraft", "stick")
 	NewItem(string, string) *item.Item
+
+	/******************* Item Texture *******************/
+
+	// GetItemTexture returns the item_texture.json
+	GetItemTexture() *texture.ItemTexture
 }

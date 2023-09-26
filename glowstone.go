@@ -14,6 +14,7 @@ import (
 	entityBP "github.com/respectZ/glowstone/bp/entity"
 	itemBP "github.com/respectZ/glowstone/bp/item"
 	entityRP "github.com/respectZ/glowstone/rp/entity"
+	texture "github.com/respectZ/glowstone/rp/texture"
 )
 
 var MIN_ENGINE_VERSION = [3]int{1, 20, 0}
@@ -98,6 +99,12 @@ func (g *glowstone) Initialize() error {
 	} else {
 		g.SetLang(data)
 	}
+	// Read ItemTexture
+	g.ItemTexture, err = texture.Load(g.RPDir + "textures/item_texture.json")
+	if err != nil {
+		g.Logger.Warning.Println("Failed to read item_texture.json file, creting new item_texture.json file.")
+		g.ItemTexture = texture.New()
+	}
 	// TODO: Upfront here.
 	return nil
 }
@@ -107,6 +114,16 @@ func (g *glowstone) SetUpfront(upfront bool) {
 }
 
 func (g *glowstone) Save() {
+	// ItemTexture
+	data, err := g.ItemTexture.Encode()
+	if err != nil {
+		g.Logger.Error.Println(err)
+	} else {
+		g_util.Writefile(path.Join(g.RPDir, "textures", "item_texture.json"), data)
+	}
+	// Lang
+	g_util.Writelang(path.Join(g.RPDir, "texts", "en_US.lang"), g.Lang)
+
 	// Entity
 	for _, e := range g.Entities {
 		bp, rp, err := e.Encode()
@@ -274,4 +291,10 @@ func (g *glowstone) NewItem(namespace string, identifier string) *item.Item {
 	i := item.New(namespace, identifier)
 	g.Items[fmt.Sprintf("%s:%s", namespace, identifier)] = i
 	return i
+}
+
+/******************* ItemTexture *******************/
+
+func (g *glowstone) GetItemTexture() *texture.ItemTexture {
+	return g.ItemTexture
 }
