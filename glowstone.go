@@ -7,6 +7,7 @@ import (
 	"path"
 	"strings"
 
+	animation "github.com/respectZ/glowstone/animation"
 	"github.com/respectZ/glowstone/entity"
 	item "github.com/respectZ/glowstone/item"
 	g_util "github.com/respectZ/glowstone/util"
@@ -33,8 +34,9 @@ func NewProject(ProjectName string, Namespace string) Glowstone {
 		},
 		Lang: make(map[string]string),
 
-		Entities: make(map[string]*entity.Entity),
-		Items:    make(map[string]*item.Item),
+		Entities:    make(map[string]*entity.Entity),
+		Items:       make(map[string]*item.Item),
+		BPAnimation: make(map[string]*animation.BPAnimation),
 
 		IsUpfront: false,
 	}
@@ -171,6 +173,16 @@ func (g *glowstone) Save() {
 			i.Lang = lang
 		}
 		g.Lang[fmt.Sprintf("item.%s:%s.name", namespace, identifier)] = i.Lang
+	}
+
+	// BPAnimation
+	for _, a := range g.BPAnimation {
+		data, err := a.Encode()
+		if err != nil {
+			g.Logger.Error.Println(err)
+			continue
+		}
+		g_util.Writefile(path.Join(g.BPDir, "animation", a.Dest), data)
 	}
 }
 

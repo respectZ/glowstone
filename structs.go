@@ -3,6 +3,7 @@ package glowstone
 import (
 	"log"
 
+	animation "github.com/respectZ/glowstone/animation"
 	entity "github.com/respectZ/glowstone/entity"
 	item "github.com/respectZ/glowstone/item"
 	texture "github.com/respectZ/glowstone/rp/texture"
@@ -22,6 +23,9 @@ type glowstone struct {
 	Items       map[string]*item.Item     // TODO
 	Attachables map[string]interface{}    // TODO
 	ItemTexture *texture.ItemTexture
+
+	// BP Specific
+	BPAnimation map[string]*animation.BPAnimation
 
 	// Settings
 	IsUpfront bool
