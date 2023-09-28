@@ -128,6 +128,12 @@ type Glowstone interface {
 	// 	item := glowstone.NewItem("minecraft", "stick")
 	NewItem(string, string) *item.Item
 
+	// PreloadItems Preloads the items, so you can use GetItem() by identifier.
+	//
+	// Example:
+	// 	glowstone.PreloadItems()
+	PreloadItems()
+
 	/******************* Item Texture *******************/
 
 	// GetItemTexture returns the item_texture.json

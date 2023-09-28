@@ -84,7 +84,10 @@ func (g *glowstone) SetMinEngineVersion(version [3]int) {
 }
 
 func (g *glowstone) GetLang(key string) string {
-	return g.Lang[key]
+	if v, ok := g.Lang[key]; ok {
+		return v
+	}
+	return ""
 }
 
 func (g *glowstone) SetLang(data map[string]string) {
@@ -244,6 +247,44 @@ func (g *glowstone) PreloadEntities() {
 			g.Entities[e.GetIdentifier()].Subdir = subdir
 		}
 		g.Entities[e.GetIdentifier()].RP = e
+	}
+}
+
+func (g *glowstone) PreloadItems() {
+	if g.Items == nil {
+		g.Items = make(map[string]*item.Item)
+	}
+
+	files, err := g_util.Walk(path.Join(g.BPDir, "items"))
+	if err != nil {
+		g.Logger.Error.Println(err)
+		return
+	}
+	for _, file := range files {
+		i, err := item.LoadBP(file)
+		if err != nil {
+			g.Logger.Error.Println(err)
+			continue
+		}
+		if g.Items[i.GetIdentifier()] == nil {
+			it := &item.Item{}
+			g.Items[i.GetIdentifier()] = it
+
+			// Get basepath
+			basepath := filepath.Dir(file)
+			subdir := strings.ReplaceAll(basepath, filepath.Join(g.BPDir, "items"), "")
+			it.Subdir = subdir
+
+			// Get lang
+			full := strings.Split(i.GetIdentifier(), ":")
+			namespace := full[0]
+			identifier := full[1]
+
+			lang := g.GetLang(fmt.Sprintf("item.%s:%s.name", namespace, identifier))
+			it.SetLang(lang)
+
+		}
+		g.Items[i.GetIdentifier()].BP = i
 	}
 }
 

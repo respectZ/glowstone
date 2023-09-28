@@ -7,7 +7,7 @@ type Item interface {
 	//
 	// Example:
 	//
-	//     id := item.GetIdentifier() // returns "stick"
+	//     id := item.GetIdentifier() // returns "minecraft:stick"
 	GetIdentifier() string
 
 	// GetCategory returns the category of the item
