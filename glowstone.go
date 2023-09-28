@@ -29,8 +29,8 @@ func NewProject(ProjectName string, Namespace string) Glowstone {
 		MinEngineVersion: MIN_ENGINE_VERSION,
 
 		Logger: &logger{
-			Warning: log.New(os.Stdout, "\033[33m[WARNING]\033[0m ", log.Ldate|log.Ltime),
-			Error:   log.New(os.Stderr, "\033[31m[ERROR]\033[0m ", log.Ldate|log.Ltime),
+			Warning: log.New(os.Stdout, "\033[33m[WARNING]\033[0m ", log.Ltime),
+			Error:   log.New(os.Stderr, "\033[31m[ERROR]\033[0m ", log.Ltime),
 		},
 		Lang: make(map[string]string),
 
