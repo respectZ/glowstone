@@ -4,9 +4,12 @@ type Animation interface {
 	// Encode
 	Encode() ([]byte, error)
 	// Create a new animation
-	NewAnimation(string) *animationData
+	//
+	// Example:
+	// 	animation := glowstone.NewAnimation("animation.player.hold")
+	New(string) *animationData
 	// Get the animation data
-	GetAnimation(string) *animationData
+	Get(string) *animationData
 	// Remove animation data
-	RemoveAnimation(string)
+	Remove(string)
 }

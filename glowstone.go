@@ -182,7 +182,7 @@ func (g *glowstone) Save() {
 			g.Logger.Error.Println(err)
 			continue
 		}
-		g_util.Writefile(path.Join(g.BPDir, "animation", a.Dest), data)
+		g_util.Writefile(path.Join(g.BPDir, "animations", a.Dest), data)
 	}
 }
 
@@ -317,4 +317,25 @@ func (g *glowstone) NewItem(namespace string, identifier string) *item.Item {
 
 func (g *glowstone) GetItemTexture() *texture.ItemTexture {
 	return g.ItemTexture
+}
+
+/******************* BPAnimation *******************/
+
+func (g *glowstone) AddBPAnimation(bpAnimations ...interface{}) {
+	for _, a := range bpAnimations {
+		switch a := a.(type) {
+		case *animation.BPAnimation:
+			g.BPAnimation[a.Dest] = a
+		case animation.BPAnimation:
+			g.BPAnimation[a.Dest] = &a
+		default:
+			g.Logger.Error.Printf("invalid type %T", a)
+		}
+	}
+}
+
+func (g *glowstone) NewBPAnimation(dest string) *animation.BPAnimation {
+	a := animation.NewBP(dest)
+	g.BPAnimation[dest] = a
+	return a
 }

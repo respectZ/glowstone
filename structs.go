@@ -126,4 +126,18 @@ type Glowstone interface {
 
 	// GetItemTexture returns the item_texture.json
 	GetItemTexture() *texture.ItemTexture
+
+	/******************* BPAnimation *******************/
+
+	// AddBPAnimation adds the BPAnimation to the project
+	//
+	// Example:
+	// 	glowstone.AddBPAnimation(bpAnimation)
+	AddBPAnimation(...interface{})
+
+	// NewBPAnimation creates a new BPAnimation
+	//
+	// Example:
+	// 	bpAnimation := glowstone.NewBPAnimation("player.animation.json")
+	NewBPAnimation(string) *animation.BPAnimation
 }

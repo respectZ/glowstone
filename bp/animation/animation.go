@@ -12,7 +12,7 @@ func (a *animation) Encode() ([]byte, error) {
 	return bp, nil
 }
 
-func (a *animation) NewAnimation(name string) *animationData {
+func (a *animation) New(name string) *animationData {
 	a.Animations[name] = &animationData{
 		AnimationLength: 0.0,
 		Loop:            false,
@@ -21,10 +21,10 @@ func (a *animation) NewAnimation(name string) *animationData {
 	return a.Animations[name]
 }
 
-func (a *animation) GetAnimation(name string) *animationData {
+func (a *animation) Get(name string) *animationData {
 	return a.Animations[name]
 }
 
-func (a *animation) RemoveAnimation(name string) {
+func (a *animation) Remove(name string) {
 	delete(a.Animations, name)
 }
