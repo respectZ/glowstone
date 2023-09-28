@@ -23,20 +23,20 @@ type ClientEntity struct {
 }
 
 type ClientEntityDescription struct {
-	Identifier              string                         `json:"identifier"`
-	Materials               map[string]string              `json:"materials"`
-	Textures                map[string]string              `json:"textures"`
-	Geometry                map[string]string              `json:"geometry"`
-	Animations              map[string]string              `json:"animations,omitempty"`
-	Scripts                 ClientEntityDescriptionScripts `json:"scripts,omitempty"`
-	SpawnEgg                ClientEntitySpawnEgg           `json:"spawn_egg,omitempty"`
-	RenderControllers       []interface{}                  `json:"render_controllers,omitempty"`
-	EnableAttachables       bool                           `json:"enable_attachables,omitempty"`
-	HeldItemIgnoresLighting bool                           `json:"held_item_ignores_lighting,omitempty"`
-	HideArmor               bool                           `json:"hide_armor,omitempty"`
-	ParticleEffects         map[string]string              `json:"particle_effects,omitempty"`
-	SoundEffects            map[string]string              `json:"sound_effects,omitempty"`
-	ParticleEmitters        map[string]string              `json:"particle_emitters,omitempty"`
+	Identifier              string                          `json:"identifier"`
+	Materials               map[string]string               `json:"materials"`
+	Textures                map[string]string               `json:"textures"`
+	Geometry                map[string]string               `json:"geometry"`
+	Animations              map[string]string               `json:"animations,omitempty"`
+	Scripts                 *ClientEntityDescriptionScripts `json:"scripts,omitempty"`
+	SpawnEgg                *ClientEntitySpawnEgg           `json:"spawn_egg,omitempty"`
+	RenderControllers       []interface{}                   `json:"render_controllers,omitempty"`
+	EnableAttachables       bool                            `json:"enable_attachables,omitempty"`
+	HeldItemIgnoresLighting bool                            `json:"held_item_ignores_lighting,omitempty"`
+	HideArmor               bool                            `json:"hide_armor,omitempty"`
+	ParticleEffects         map[string]string               `json:"particle_effects,omitempty"`
+	SoundEffects            map[string]string               `json:"sound_effects,omitempty"`
+	ParticleEmitters        map[string]string               `json:"particle_emitters,omitempty"`
 }
 
 type ClientEntityDescriptionScripts struct {
@@ -68,8 +68,8 @@ type Entity interface {
 	GetTextures() map[string]string
 	GetGeometry() map[string]string
 	GetAnimations() map[string]string
-	GetScripts() ClientEntityDescriptionScripts
-	GetSpawnEgg() ClientEntitySpawnEgg
+	GetScripts() *ClientEntityDescriptionScripts
+	GetSpawnEgg() *ClientEntitySpawnEgg
 	GetRenderControllers() []interface{}
 	GetEnableAttachables() bool
 	GetHeldItemIgnoresLighting() bool

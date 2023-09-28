@@ -78,11 +78,11 @@ func (e *Entity_struct) GetAnimations() map[string]string {
 	return e.Entity.Description.Animations
 }
 
-func (e *Entity_struct) GetScripts() ClientEntityDescriptionScripts {
+func (e *Entity_struct) GetScripts() *ClientEntityDescriptionScripts {
 	return e.Entity.Description.Scripts
 }
 
-func (e *Entity_struct) GetSpawnEgg() ClientEntitySpawnEgg {
+func (e *Entity_struct) GetSpawnEgg() *ClientEntitySpawnEgg {
 	return e.Entity.Description.SpawnEgg
 }
 

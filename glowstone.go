@@ -151,16 +151,6 @@ func (g *glowstone) Save() {
 		if rp != nil {
 			g_util.Writefile(path.Join(g.RPDir, "entity", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), rp)
 		}
-		// Lang
-		full := strings.Split(e.GetNamespaceIdentifier(), ":")
-		namespace := full[0]
-		identifier := full[1]
-
-		if e.Lang == "" {
-			lang := g_util.TitleCase(strings.ReplaceAll(identifier, "_", " "))
-			e.Lang = lang
-		}
-		g.Lang[fmt.Sprintf("item.%s:%s.name", namespace, identifier)] = e.Lang
 	}
 
 	// Item
@@ -171,16 +161,6 @@ func (g *glowstone) Save() {
 			continue
 		}
 		g_util.Writefile(path.Join(g.BPDir, "items", i.Subdir, fmt.Sprintf("%s.json", i.GetIdentifier())), bp)
-		// Lang
-		full := strings.Split(i.GetNamespaceIdentifier(), ":")
-		namespace := full[0]
-		identifier := full[1]
-
-		if i.Lang == "" {
-			lang := g_util.TitleCase(strings.ReplaceAll(identifier, "_", " "))
-			i.Lang = lang
-		}
-		g.Lang[fmt.Sprintf("item.%s:%s.name", namespace, identifier)] = i.Lang
 	}
 
 	// BPAnimation
@@ -214,11 +194,20 @@ func (g *glowstone) PreloadEntities() {
 			continue
 		}
 		if g.Entities[e.GetIdentifier()] == nil {
-			g.Entities[e.GetIdentifier()] = &entity.Entity{}
+			en := &entity.Entity{}
+			g.Entities[e.GetIdentifier()] = en
 			// Get basepath
 			basepath := filepath.Dir(file)
 			subdir := strings.ReplaceAll(basepath, filepath.Join(g.BPDir, "entities"), "")
-			g.Entities[e.GetIdentifier()].Subdir = subdir
+			en.Subdir = subdir
+
+			// Get lang
+			full := strings.Split(e.GetIdentifier(), ":")
+			namespace := full[0]
+			identifier := full[1]
+
+			lang := g.GetLang(fmt.Sprintf("entity.%s:%s.name", namespace, identifier))
+			en.SetLang(lang)
 		}
 		g.Entities[e.GetIdentifier()].BP = e
 	}
@@ -335,6 +324,10 @@ func (g *glowstone) GetEntity(identifier string) (*entity.Entity, error) {
 func (g *glowstone) NewEntity(namespace string, identifier string) *entity.Entity {
 	e := entity.New(namespace, identifier)
 	g.Entities[fmt.Sprintf("%s:%s", namespace, identifier)] = e
+	// Set lang
+	lang := g_util.TitleCase(strings.ReplaceAll(identifier, "_", " "))
+	e.Lang = lang
+	g.AddLang(fmt.Sprintf("entity.%s:%s.name", namespace, identifier), e.Lang)
 	return e
 }
 
@@ -370,6 +363,10 @@ func (g *glowstone) GetItem(identifier string) (*item.Item, error) {
 func (g *glowstone) NewItem(namespace string, identifier string) *item.Item {
 	i := item.New(namespace, identifier)
 	g.Items[fmt.Sprintf("%s:%s", namespace, identifier)] = i
+	// Set lang
+	lang := g_util.TitleCase(strings.ReplaceAll(identifier, "_", " "))
+	i.Lang = lang
+	g.AddLang(fmt.Sprintf("entity.%s:%s.name", namespace, identifier), i.Lang)
 	return i
 }
 
