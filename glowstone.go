@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"path/filepath"
 	"strings"
 
 	animation "github.com/respectZ/glowstone/animation"
@@ -141,8 +142,12 @@ func (g *glowstone) Save() {
 			g.Logger.Error.Println(err)
 			continue
 		}
-		g_util.Writefile(path.Join(g.BPDir, "entities", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), bp)
-		g_util.Writefile(path.Join(g.RPDir, "entity", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), rp)
+		if bp != nil {
+			g_util.Writefile(path.Join(g.BPDir, "entities", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), bp)
+		}
+		if rp != nil {
+			g_util.Writefile(path.Join(g.RPDir, "entity", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), rp)
+		}
 		// Lang
 		full := strings.Split(e.GetNamespaceIdentifier(), ":")
 		namespace := full[0]
@@ -186,9 +191,9 @@ func (g *glowstone) Save() {
 	}
 }
 
-/******************* Upfronts *******************/
+/******************* Preloads *******************/
 
-func (g *glowstone) cacheEntities() {
+func (g *glowstone) PreloadEntities() {
 	if g.Entities == nil {
 		g.Entities = make(map[string]*entity.Entity)
 	}
@@ -204,6 +209,13 @@ func (g *glowstone) cacheEntities() {
 		if err != nil {
 			g.Logger.Error.Println(err)
 			continue
+		}
+		if g.Entities[e.GetIdentifier()] == nil {
+			g.Entities[e.GetIdentifier()] = &entity.Entity{}
+			// Get basepath
+			basepath := filepath.Dir(file)
+			subdir := strings.ReplaceAll(basepath, filepath.Join(g.BPDir, "entities"), "")
+			g.Entities[e.GetIdentifier()].Subdir = subdir
 		}
 		g.Entities[e.GetIdentifier()].BP = e
 	}
@@ -221,8 +233,15 @@ func (g *glowstone) cacheEntities() {
 		}
 		// Check if identifier exists
 		if _, ok := g.Entities[e.GetIdentifier()]; !ok {
-			g.Logger.Error.Printf("entity %s not found in BP", e.GetIdentifier())
+			g.Logger.Warning.Printf("entity %s not found in BP", e.GetIdentifier())
 			continue
+		}
+		if g.Entities[e.GetIdentifier()] == nil {
+			g.Entities[e.GetIdentifier()] = &entity.Entity{}
+			// Get basepath
+			basepath := filepath.Dir(file)
+			subdir := strings.ReplaceAll(basepath, filepath.Join(g.BPDir, "entities"), "")
+			g.Entities[e.GetIdentifier()].Subdir = subdir
 		}
 		g.Entities[e.GetIdentifier()].RP = e
 	}

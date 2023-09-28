@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"fmt"
 	"strings"
 
 	bp "github.com/respectZ/glowstone/bp/entity"
@@ -81,13 +82,18 @@ func LoadRP(src string) (rp.Entity, error) {
 //
 //	bp, rp, err := e.Encode()
 func (e *Entity) Encode() ([]byte, []byte, error) {
-	bp, err := e.BP.Encode()
-	if err != nil {
-		return nil, nil, err
+	var bp []byte
+	var rp []byte
+
+	if e.BP != nil {
+		bp, _ = e.BP.Encode()
 	}
-	rp, err := e.RP.Encode()
-	if err != nil {
-		return nil, nil, err
+	if e.RP != nil {
+		rp, _ = e.RP.Encode()
+	}
+
+	if bp == nil && rp == nil {
+		return nil, nil, fmt.Errorf("no bp or rp")
 	}
 	return bp, rp, nil
 }

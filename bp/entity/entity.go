@@ -2,7 +2,6 @@ package entity
 
 import (
 	"fmt"
-	"strings"
 
 	glowstone "github.com/respectZ/glowstone/util"
 )
@@ -12,7 +11,7 @@ func (e *entity) Encode() ([]byte, error) {
 }
 
 func (e *entity) GetIdentifier() string {
-	return strings.Split(e.Entity.Description.Identifier, ":")[1]
+	return e.Entity.Description.Identifier
 }
 
 func (e *entity) GetRuntimeIdentifier() (string, error) {

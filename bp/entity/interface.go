@@ -5,11 +5,11 @@ package entity
 type Entity interface {
 	Encode() ([]byte, error)
 
-	// GetIdentifier returns the identifier of the entity
+	// GetIdentifier returns the namespace:identifier of the entity
 	//
 	// Example:
 	//
-	//     id := entity.GetIdentifier() // returns "zombie_pigman"
+	//     id := entity.GetIdentifier() // returns "minecraft:zombie"
 	GetIdentifier() string
 	// GetRuntimeIdentifier returns the runtime identifier of the entity
 	GetRuntimeIdentifier() (string, error)

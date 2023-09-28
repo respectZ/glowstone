@@ -66,7 +66,7 @@ type Glowstone interface {
 
 	// Build builds the project
 	Build() error
-	// Initialize
+	// Initialize initializes the lang and item_texture.json
 	Initialize() error
 
 	// SetUpfront will cache the project data upfront.
@@ -98,6 +98,12 @@ type Glowstone interface {
 	// Example:
 	// 	entity := glowstone.NewEntity("minecraft", "zombie")
 	NewEntity(string, string) *entity.Entity
+
+	// PreloadEnitties Preloads the entities, so you can use GetEntity() by identifier.
+	//
+	// Example:
+	// 	glowstone.PreloadEntities()
+	PreloadEntities()
 
 	/******************* Items *******************/
 
