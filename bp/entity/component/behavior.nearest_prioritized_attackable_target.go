@@ -24,6 +24,8 @@ type BehaviorNearestPrioritizedAttackableTargetEntityTypes struct {
   SprintSpeedMultiplier float64 `json:"sprint_speed_multiplier,omitempty"`
   // Multiplier for the walking speed. A value of 1.0 means the speed is unchanged
   WalkSpeedMultiplier float64 `json:"walk_speed_multiplier,omitempty"`
+  // The priority of this behavior. Lower values are higher priority.
+  Priority int `json:"priority,omitempty"`
 }
 
 // Allows the mob to check for and pursue the nearest valid target.  

@@ -43,7 +43,10 @@ function toGoStruct(
   name = name.replace("minecraft:", "");
   name = snakeToPascal(name);
   // Check if component is a behavior. (Behavior_). If so, add propty to the field
-  if (name.includes("Behavior_")) {
+  if (
+    name.includes("Behavior_") ||
+    name == "BehaviorNearestPrioritizedAttackableTargetEntityTypes"
+  ) {
     const priority = <GoField>{
       name: "priority",
       type: "int",
