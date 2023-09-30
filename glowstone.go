@@ -23,10 +23,8 @@ import (
 
 var MIN_ENGINE_VERSION = [3]int{1, 20, 0}
 
-func NewProject(ProjectName string, Namespace string) Glowstone {
+func NewProject() Glowstone {
 	return &glowstone{
-		ProjectName:      ProjectName,
-		Namespace:        Namespace,
 		BPDir:            "./packs/BP/",
 		RPDir:            "./packs/RP/",
 		MinEngineVersion: MIN_ENGINE_VERSION,
@@ -44,22 +42,6 @@ func NewProject(ProjectName string, Namespace string) Glowstone {
 
 		IsUpfront: false,
 	}
-}
-
-func (g *glowstone) GetProjectName() string {
-	return g.ProjectName
-}
-
-func (g *glowstone) SetProjectName(name string) {
-	g.ProjectName = name
-}
-
-func (g *glowstone) GetNamespace() string {
-	return g.Namespace
-}
-
-func (g *glowstone) SetNamespace(namespace string) {
-	g.Namespace = namespace
 }
 
 func (g *glowstone) GetBPDir() string {

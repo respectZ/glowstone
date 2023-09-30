@@ -11,8 +11,6 @@ import (
 )
 
 type glowstone struct {
-	ProjectName      string
-	Namespace        string
 	BPDir            string
 	RPDir            string
 	MinEngineVersion [3]int
@@ -39,14 +37,6 @@ type logger struct {
 }
 
 type Glowstone interface {
-	// GetProjectName returns the name of the project
-	GetProjectName() string
-	// SetProjectName sets the name of the project
-	SetProjectName(string)
-	// GetNamespace returns the namespace of the project
-	GetNamespace() string
-	// SetNamespace sets the namespace of the project
-	SetNamespace(string)
 	// GetBPDir returns the path to the blueprint directory
 	GetBPDir() string
 	// SetBPDir sets the path to the blueprint directory
