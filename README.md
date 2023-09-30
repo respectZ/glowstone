@@ -27,7 +27,7 @@
   - [ ] Render Controller
   - [x] Item Texture
   - [ ] sounds.json
-  - [ ] sound_definitions.json
+  - [x] sound_definitions.json
   - [ ] blocks.json
   - [ ] terrain_textures.json
 

@@ -7,6 +7,7 @@ import (
 	entity "github.com/respectZ/glowstone/entity"
 	item "github.com/respectZ/glowstone/item"
 	recipe "github.com/respectZ/glowstone/recipe"
+	sound "github.com/respectZ/glowstone/rp/sound"
 	texture "github.com/respectZ/glowstone/rp/texture"
 )
 
@@ -21,11 +22,14 @@ type glowstone struct {
 	Entities    map[string]*entity.Entity // TODO
 	Items       map[string]*item.Item     // TODO
 	Attachables map[string]interface{}    // TODO
-	ItemTexture *texture.ItemTexture
 
 	// BP Specific
 	BPAnimation map[string]*animation.BPAnimation
 	Recipes     map[string]interface{}
+
+	// RP Specific
+	ItemTexture     *texture.ItemTexture
+	SoundDefinition *sound.SoundDefinition
 
 	// Settings
 	IsUpfront bool
@@ -185,6 +189,11 @@ type Glowstone interface {
 
 	// GetItemTexture returns the item_texture.json
 	GetItemTexture() *texture.ItemTexture
+
+	/******************* Sound Definition *******************/
+
+	// GetSoundDefinition returns the sound_definitions.json
+	GetSoundDefinition() *sound.SoundDefinition
 
 	/******************* BPAnimation *******************/
 

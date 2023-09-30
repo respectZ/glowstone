@@ -18,6 +18,7 @@ import (
 	itemBP "github.com/respectZ/glowstone/bp/item"
 	recipeBP "github.com/respectZ/glowstone/bp/recipe"
 	entityRP "github.com/respectZ/glowstone/rp/entity"
+	sound "github.com/respectZ/glowstone/rp/sound"
 	texture "github.com/respectZ/glowstone/rp/texture"
 )
 
@@ -92,7 +93,7 @@ func (g *glowstone) Initialize() error {
 	// Read Lang
 	data, err := g_util.Loadlang(g.RPDir + "texts/en_US.lang")
 	if err != nil {
-		g.Logger.Warning.Println("Failed to read lang file, creting new lang file.")
+		g.Logger.Warning.Println("Failed to read lang file, creating new lang file.")
 		g.SetLang(make(map[string]string))
 		g_util.Writefile(g.RPDir+"texts/en_US.lang", []byte{})
 	} else {
@@ -101,7 +102,7 @@ func (g *glowstone) Initialize() error {
 	// Read ItemTexture
 	g.ItemTexture, err = texture.Load(g.RPDir + "textures/item_texture.json")
 	if err != nil {
-		g.Logger.Warning.Println("Failed to read item_texture.json file, creting new item_texture.json file.")
+		g.Logger.Warning.Println("Failed to read item_texture.json file, creating new item_texture.json file.")
 		g.ItemTexture = texture.New()
 	}
 	// TODO: Upfront here.
@@ -119,6 +120,14 @@ func (g *glowstone) Save() {
 		g.Logger.Error.Println(err)
 	} else {
 		g_util.Writefile(path.Join(g.RPDir, "textures", "item_texture.json"), data)
+	}
+	if g.SoundDefinition != nil {
+		data, err := g.SoundDefinition.Encode()
+		if err != nil {
+			g.Logger.Error.Println(err)
+		} else {
+			g_util.Writefile(path.Join(g.RPDir, "sounds", "sound_definitions.json"), data)
+		}
 	}
 	// Lang
 	defer g_util.Writelang(path.Join(g.RPDir, "texts", "en_US.lang"), g.Lang)
@@ -444,6 +453,21 @@ func (g *glowstone) NewRecipeSmithingTransform(namespace string, identifier stri
 
 func (g *glowstone) GetItemTexture() *texture.ItemTexture {
 	return g.ItemTexture
+}
+
+/******************* Sound Definition *******************/
+
+func (g *glowstone) GetSoundDefinition() *sound.SoundDefinition {
+	if g.SoundDefinition == nil {
+		r, err := sound.Load(path.Join(g.RPDir, "sounds", "sound_definitions.json"))
+		if err != nil {
+			g.Logger.Warning.Println("Failed to read sound_definitions.json file, creating new sound_definitions.json file.")
+			g.SoundDefinition = sound.New()
+		} else {
+			g.SoundDefinition = r
+		}
+	}
+	return g.SoundDefinition
 }
 
 /******************* BPAnimation *******************/
