@@ -9,10 +9,11 @@
 - BP
   - [x] Animation
   - [ ] Animation Controller
+  - [ ] Block
   - [x] Entity
   - [x] Item
   - [ ] Loot Table
-  - [ ] Recipe
+  - [x] Recipe
   - [ ] Spawn Rule
   - [ ] Structure
 - RP
@@ -26,8 +27,10 @@
   - [ ] Render Controller
   - [x] Item Texture
   - [ ] sounds.json
-  - [ ] Sound Definition
+  - [ ] sound_definitions.json
+  - [ ] blocks.json
+  - [ ] terrain_textures.json
 
-- Misc
-  - [ ] forgot
+- Util
+  - [ ] BBModel Parser 
 - [ ] Documentation

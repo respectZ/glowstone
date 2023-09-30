@@ -6,6 +6,7 @@ import (
 	animation "github.com/respectZ/glowstone/animation"
 	entity "github.com/respectZ/glowstone/entity"
 	item "github.com/respectZ/glowstone/item"
+	recipe "github.com/respectZ/glowstone/recipe"
 	texture "github.com/respectZ/glowstone/rp/texture"
 )
 
@@ -26,6 +27,7 @@ type glowstone struct {
 
 	// BP Specific
 	BPAnimation map[string]*animation.BPAnimation
+	Recipes     map[string]interface{}
 
 	// Settings
 	IsUpfront bool
@@ -133,6 +135,61 @@ type Glowstone interface {
 	// Example:
 	// 	glowstone.PreloadItems()
 	PreloadItems()
+
+	/******************* Recipes *******************/
+
+	// AddRecipe adds the recipe to the project
+	//
+	// Example:
+	// 	glowstone.AddRecipe(recipe)
+	AddRecipe(...interface{})
+
+	// GetRecipes returns the recipes
+	GetRecipes() map[string]interface{}
+
+	// GetRecipe returns the recipe
+	//
+	// Example:
+	// 	recipe, err := glowstone.GetRecipe("minecraft:stick")
+	GetRecipe(string) (interface{}, error)
+
+	// NewRecipeBrewingContainer creates a new recipeBrewingContainer
+	//
+	// Example:
+	// 	recipe := glowstone.NewRecipeBrewingContainer("minecraft", "stick")
+	NewRecipeBrewingContainer(string, string) *recipe.RecipeBrewingContainer
+
+	// NewRecipeBrewingMix creates a new recipeBrewingMix.
+	//
+	// The recipeBrewingMix is used to mix a potion with an item.
+	//
+	// Example:
+	// 	recipe := glowstone.NewRecipeBrewingMix("minecraft", "stick")
+	NewRecipeBrewingMix(string, string) *recipe.RecipeBrewingMix
+
+	// NewRecipeFurnace creates a new recipeFurnace
+	//
+	// Example:
+	// 	recipe := glowstone.NewRecipeFurnace("minecraft", "stick")
+	NewRecipeFurnace(string, string) *recipe.RecipeFurnace
+
+	// NewRecipeShaped creates a new recipeShaped
+	//
+	// Example:
+	// 	recipe := glowstone.NewRecipeShaped("minecraft", "stick")
+	NewRecipeShaped(string, string) *recipe.RecipeShaped
+
+	// NewRecipeShapeless creates a new recipeShapeless
+	//
+	// Example:
+	// 	recipe := glowstone.NewRecipeShapeless("minecraft", "stick")
+	NewRecipeShapeless(string, string) *recipe.RecipeShapeless
+
+	// NewRecipeSmithingAddition creates a new recipeSmithingAddition
+	//
+	// Example:
+	// 	recipe := glowstone.NewRecipeSmithingAddition("minecraft", "stick")
+	NewRecipeSmithingTransform(string, string) *recipe.RecipeSmithingTransform
 
 	/******************* Item Texture *******************/
 

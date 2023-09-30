@@ -11,10 +11,12 @@ import (
 	animation "github.com/respectZ/glowstone/animation"
 	"github.com/respectZ/glowstone/entity"
 	item "github.com/respectZ/glowstone/item"
+	recipe "github.com/respectZ/glowstone/recipe"
 	g_util "github.com/respectZ/glowstone/util"
 
 	entityBP "github.com/respectZ/glowstone/bp/entity"
 	itemBP "github.com/respectZ/glowstone/bp/item"
+	recipeBP "github.com/respectZ/glowstone/bp/recipe"
 	entityRP "github.com/respectZ/glowstone/rp/entity"
 	texture "github.com/respectZ/glowstone/rp/texture"
 )
@@ -38,6 +40,7 @@ func NewProject(ProjectName string, Namespace string) Glowstone {
 		Entities:    make(map[string]*entity.Entity),
 		Items:       make(map[string]*item.Item),
 		BPAnimation: make(map[string]*animation.BPAnimation),
+		Recipes:     make(map[string]interface{}),
 
 		IsUpfront: false,
 	}
@@ -171,6 +174,29 @@ func (g *glowstone) Save() {
 			continue
 		}
 		g_util.Writefile(path.Join(g.BPDir, "animations", a.Dest), data)
+	}
+
+	// Recipes
+	for _, r := range g.Recipes {
+		switch r := r.(type) {
+		case recipe.RecipeInterface:
+			data, err := r.Encode()
+			if err != nil {
+				g.Logger.Error.Println(err)
+				continue
+			}
+			g_util.Writefile(path.Join(g.BPDir, "recipes", r.GetSubdir(), r.GetIdentifier()+".json"), data)
+		case recipeBP.RecipeInterface:
+			data, err := r.Encode()
+			if err != nil {
+				g.Logger.Error.Println(err)
+				continue
+			}
+			name := strings.ReplaceAll(r.GetIdentifier(), ":", "_")
+			g_util.Writefile(path.Join(g.BPDir, "recipes", name+".json"), data)
+		default:
+			g.Logger.Error.Printf("invalid type %T", r)
+		}
 	}
 }
 
@@ -368,6 +394,68 @@ func (g *glowstone) NewItem(namespace string, identifier string) *item.Item {
 	i.Lang = lang
 	g.AddLang(fmt.Sprintf("entity.%s:%s.name", namespace, identifier), i.Lang)
 	return i
+}
+
+/******************* Recipes *******************/
+
+func (g *glowstone) AddRecipe(recipes ...interface{}) {
+	for _, r := range recipes {
+		switch r := r.(type) {
+		case recipe.RecipeInterface:
+			g.Recipes[r.GetNamespaceIdentifier()] = r
+		case recipeBP.RecipeInterface:
+			g.Recipes[r.GetIdentifier()] = r
+		default:
+			g.Logger.Error.Printf("invalid type %T", r)
+		}
+	}
+}
+
+func (g *glowstone) GetRecipes() map[string]interface{} {
+	return g.Recipes
+}
+
+func (g *glowstone) GetRecipe(identifier string) (interface{}, error) {
+	if r, ok := g.Recipes[identifier]; ok {
+		return r, nil
+	}
+	return nil, fmt.Errorf("recipe %s not found", identifier)
+}
+
+func (g *glowstone) NewRecipeBrewingContainer(namespace string, identifier string) *recipe.RecipeBrewingContainer {
+	r := recipe.NewBrewingContainer(namespace, identifier)
+	g.Recipes[r.GetNamespaceIdentifier()] = r
+	return r
+}
+
+func (g *glowstone) NewRecipeBrewingMix(namespace string, identifier string) *recipe.RecipeBrewingMix {
+	r := recipe.NewBrewingMix(namespace, identifier)
+	g.Recipes[r.GetNamespaceIdentifier()] = r
+	return r
+}
+
+func (g *glowstone) NewRecipeFurnace(namespace string, identifier string) *recipe.RecipeFurnace {
+	r := recipe.NewFurnace(namespace, identifier)
+	g.Recipes[r.GetNamespaceIdentifier()] = r
+	return r
+}
+
+func (g *glowstone) NewRecipeShaped(namespace string, identifier string) *recipe.RecipeShaped {
+	r := recipe.NewShaped(namespace, identifier)
+	g.Recipes[r.GetNamespaceIdentifier()] = r
+	return r
+}
+
+func (g *glowstone) NewRecipeShapeless(namespace string, identifier string) *recipe.RecipeShapeless {
+	r := recipe.NewShapeless(namespace, identifier)
+	g.Recipes[r.GetNamespaceIdentifier()] = r
+	return r
+}
+
+func (g *glowstone) NewRecipeSmithingTransform(namespace string, identifier string) *recipe.RecipeSmithingTransform {
+	r := recipe.NewSmithingTransform(namespace, identifier)
+	g.Recipes[r.GetNamespaceIdentifier()] = r
+	return r
 }
 
 /******************* ItemTexture *******************/
