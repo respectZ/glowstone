@@ -13,8 +13,11 @@ type Entity struct {
 	RP rp.Entity
 
 	// Other stuff
-	Subdir string
-	Lang   string
+	Subdir          string
+	Lang            string
+	SpawnLang       string
+	RideHint        string
+	RideHintConsole string
 }
 
 func New(namespace string, identifier string, subdir ...string) *Entity {
@@ -125,4 +128,29 @@ func (e *Entity) GetNamespaceIdentifier() string {
 //	e.SetLang("Cold TNT")
 func (e *Entity) SetLang(lang string) {
 	e.Lang = lang
+}
+
+// SetSpawnLang sets the lang of the spawn egg.
+//
+// By default, it will be "Spawn <lang>"
+//
+// Example:
+//
+//	e.SetSpawnLang("Spawn Cold TNT")
+func (e *Entity) SetSpawnLang(lang string) {
+	e.SpawnLang = lang
+}
+
+// SetRideHint sets the ride hint of the entity.
+//
+// By default, it will be "Tap jump to exit the <entityName>" if there's minecart:rideable component.
+//
+// Example:
+//
+//	e.SetRideHint("Tap jump to exit the car")
+func (e *Entity) SetRideHint(hint string) {
+	e.RideHint = hint
+	if e.RideHintConsole == "" {
+		e.RideHintConsole = hint
+	}
 }

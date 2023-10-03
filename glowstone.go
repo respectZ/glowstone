@@ -20,6 +20,8 @@ import (
 	entityRP "github.com/respectZ/glowstone/rp/entity"
 	sound "github.com/respectZ/glowstone/rp/sound"
 	texture "github.com/respectZ/glowstone/rp/texture"
+
+	entityBPComponent "github.com/respectZ/glowstone/bp/entity/component"
 )
 
 var MIN_ENGINE_VERSION = [3]int{1, 20, 0}
@@ -141,6 +143,15 @@ func (g *glowstone) Save() {
 		}
 		if bp != nil {
 			g_util.Writefile(path.Join(g.BPDir, "entities", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), bp)
+			if e.RideHint == "" {
+				// Check if rideable
+				var ridebable entityBPComponent.Rideable
+				_, err := e.BP.GetComponent(&ridebable)
+				if err == nil {
+					// Add to lang
+					e.SetRideHint(fmt.Sprintf("Tap jump to exit the %s", e.Lang))
+				}
+			}
 		}
 		if rp != nil {
 			g_util.Writefile(path.Join(g.RPDir, "entity", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), rp)
@@ -225,6 +236,9 @@ func (g *glowstone) PreloadEntities() {
 
 			lang := g.GetLang(fmt.Sprintf("entity.%s:%s.name", namespace, identifier))
 			en.SetLang(lang)
+
+			spawnLang := g.GetLang(fmt.Sprintf("item.spawn_egg.entity.%s:%s.name", namespace, identifier))
+			en.SpawnLang = spawnLang
 		}
 		g.Entities[e.GetIdentifier()].BP = e
 	}
@@ -345,6 +359,7 @@ func (g *glowstone) NewEntity(namespace string, identifier string) *entity.Entit
 	lang := g_util.TitleCase(strings.ReplaceAll(identifier, "_", " "))
 	e.Lang = lang
 	g.AddLang(fmt.Sprintf("entity.%s:%s.name", namespace, identifier), e.Lang)
+	g.AddLang(fmt.Sprintf("item.spawn_egg.entity.%s:%s.name", namespace, identifier), fmt.Sprintf("Spawn %s", lang))
 	return e
 }
 
