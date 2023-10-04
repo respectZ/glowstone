@@ -398,7 +398,7 @@ func (g *glowstone) NewItem(namespace string, identifier string) *item.Item {
 	// Set lang
 	lang := g_util.TitleCase(strings.ReplaceAll(identifier, "_", " "))
 	i.Lang = lang
-	g.AddLang(fmt.Sprintf("entity.%s:%s.name", namespace, identifier), i.Lang)
+	g.AddLang(fmt.Sprintf("item.%s:%s.name", namespace, identifier), i.Lang)
 	return i
 }
 
