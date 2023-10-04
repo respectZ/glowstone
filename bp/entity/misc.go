@@ -32,6 +32,29 @@ func convertMapToStruct(m map[string]interface{}, s interface{}) error {
 					if v, ok := val.(float64); ok {
 						field.SetInt(int64(v))
 					}
+				case reflect.Slice:
+					if elements, ok := val.([]interface{}); ok {
+						sliceType := fieldType.Type.Elem()
+						slice := reflect.MakeSlice(fieldType.Type, len(elements), len(elements))
+
+						for j, elem := range elements {
+							switch elem.(type) {
+							case map[string]interface{}:
+								nestedStruct := reflect.New(sliceType).Interface()
+								err := convertMapToStruct(elem.(map[string]interface{}), nestedStruct)
+								if err != nil {
+									return err
+								}
+								slice.Index(j).Set(reflect.ValueOf(nestedStruct).Elem())
+							default:
+								slice.Index(j).Set(reflect.ValueOf(elem))
+							}
+						}
+
+						field.Set(slice)
+					} else {
+						return fmt.Errorf("map value for slice field %s is not an array", fieldName)
+					}
 				default:
 					field.Set(reflect.ValueOf(val))
 				}

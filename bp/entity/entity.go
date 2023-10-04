@@ -2,6 +2,7 @@ package entity
 
 import (
 	"fmt"
+	"reflect"
 
 	glowstone "github.com/respectZ/glowstone/util"
 )
@@ -117,8 +118,15 @@ func (e *entity) RemoveComponentGroup(name string) {
 //	}
 func (e *entity) GetComponent(name interface{}) (interface{}, error) {
 	if component, ok := e.Entity.Components[GetComponentName(name)]; ok {
+		// If the type is match, return it
+		if reflect.TypeOf(component) == reflect.TypeOf(name) {
+			return component, nil
+		}
 		// Convert map to struct
-		convertMapToStruct(component.(map[string]interface{}), name)
+		err := convertMapToStruct(component.(map[string]interface{}), name)
+		if err != nil {
+			return nil, err
+		}
 		// Assign component to the struct
 		e.Entity.Components[GetComponentName(name)] = name
 
