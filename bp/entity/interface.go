@@ -45,7 +45,7 @@ type Entity interface {
 	// GetComponent returns the component of the entity
 	GetComponent(interface{}) (interface{}, error)
 	// GetComponents returns the components of the entity
-	GetComponents() [](interface{})
+	GetComponents() map[string]interface{}
 	// AddComponent adds the component to the entity
 	AddComponent(...interface{})
 	// RemoveComponent removes the component from the entity
