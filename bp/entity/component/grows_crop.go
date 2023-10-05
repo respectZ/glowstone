@@ -7,5 +7,5 @@ type GrowsCrop struct {
   // Value between 0-1. Chance of success per tick.
   Chance float64 `json:"chance,omitempty"`
   // Number of charges
-  Charges int `json:"charges,omitempty"`
+  Charges *int `json:"charges,omitempty"`
 }

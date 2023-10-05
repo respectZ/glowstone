@@ -7,19 +7,19 @@ type Behavior_RandomLookAroundAndSit struct {
   // If the goal should continue to be used as long as the mob is leashed.
   ContinueIfLeashed bool `json:"continue_if_leashed,omitempty"`
   // The rightmost angle a mob can look at on the horizontal plane with respect to its initial facing direction.
-  MaxAngleOfViewHorizontal float64 `json:"max_angle_of_view_horizontal,omitempty"`
+  MaxAngleOfViewHorizontal *float64 `json:"max_angle_of_view_horizontal,omitempty"`
   // The max amount of unique looks a mob will have while looking around.
-  MaxLookCount int `json:"max_look_count,omitempty"`
+  MaxLookCount *int `json:"max_look_count,omitempty"`
   // The max amount of time (in ticks) a mob will stay looking at a direction while looking around.
-  MaxLookTime int `json:"max_look_time,omitempty"`
+  MaxLookTime *int `json:"max_look_time,omitempty"`
   // The leftmost angle a mob can look at on the horizontal plane with respect to its initial facing direction.
-  MinAngleOfViewHorizontal float64 `json:"min_angle_of_view_horizontal,omitempty"`
+  MinAngleOfViewHorizontal *float64 `json:"min_angle_of_view_horizontal,omitempty"`
   // The min amount of unique looks a mob will have while looking around.
-  MinLookCount int `json:"min_look_count,omitempty"`
+  MinLookCount *int `json:"min_look_count,omitempty"`
   // The min amount of time (in ticks) a mob will stay looking at a direction while looking around.
-  MinLookTime int `json:"min_look_time,omitempty"`
+  MinLookTime *int `json:"min_look_time,omitempty"`
   // The probability of randomly looking around/sitting.
-  Probability float64 `json:"probability,omitempty"`
+  Probability *float64 `json:"probability,omitempty"`
   // The cooldown in seconds before the goal can be used again.
   RandomLookAroundCooldown int `json:"random_look_around_cooldown,omitempty"`
   // The priority of this behavior. Lower values are higher priority.

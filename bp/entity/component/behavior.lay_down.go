@@ -5,9 +5,9 @@ package component
 // Allows mobs to lay down at times  
 type Behavior_LayDown struct {
   // A random value to determine at what intervals something can occur. This has a 1/interval chance to choose this goal
-  Interval int `json:"interval,omitempty"`
+  Interval *int `json:"interval,omitempty"`
   // a random value in which the goal can use to pull out of the behavior. This is a 1/interval chance to play the sound
-  RandomStopInterval int `json:"random_stop_interval,omitempty"`
+  RandomStopInterval *int `json:"random_stop_interval,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

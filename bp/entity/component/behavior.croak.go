@@ -9,11 +9,11 @@ import (
 // Allows the entity to croak at a random time interval with configurable conditions.  
 type Behavior_Croak struct {
   // Random range in seconds after which the croaking stops. Can also be a constant.
-  Duration float64 `json:"duration,omitempty"`
+  Duration *float64 `json:"duration,omitempty"`
   // Conditions for the behavior to start and keep running. The interval between runs only starts after passing the filters.
   Filters *f.Filter `json:"filters,omitempty"`
   // Random range in seconds between runs of this behavior. Can also be a constant.
-  Interval float64 `json:"interval,omitempty"`
+  Interval *float64 `json:"interval,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

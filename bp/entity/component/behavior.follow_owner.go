@@ -5,17 +5,17 @@ package component
 // Allows the mob to follow the player that owns them.  
 type Behavior_FollowOwner struct {
   // Specify if the mob can teleport to the player if it is too far away
-  CanTeleport bool `json:"can_teleport,omitempty"`
+  CanTeleport *bool `json:"can_teleport,omitempty"`
   // Specify if the mob will follow the owner if it has heard a vibration lately
-  IgnoreVibration bool `json:"ignore_vibration,omitempty"`
+  IgnoreVibration *bool `json:"ignore_vibration,omitempty"`
   // The maximum distance in blocks this mob can be from its owner to start following, only used when canTeleport is false
-  MaxDistance float64 `json:"max_distance,omitempty"`
+  MaxDistance *float64 `json:"max_distance,omitempty"`
   // Movement speed multiplier of the mob when using this AI Goal
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The distance in blocks that the owner can be away from this mob before it starts following it
-  StartDistance float64 `json:"start_distance,omitempty"`
+  StartDistance *float64 `json:"start_distance,omitempty"`
   // The distance in blocks this mob will stop from its owner while following it
-  StopDistance float64 `json:"stop_distance,omitempty"`
+  StopDistance *float64 `json:"stop_distance,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

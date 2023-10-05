@@ -5,27 +5,27 @@ package component
 // Allows this entity to damage a target by using a running attack.  
 type Behavior_RamAttack struct {
   // The modifier to knockback that babies have.
-  BabyKnockbackModifier float64 `json:"baby_knockback_modifier,omitempty"`
+  BabyKnockbackModifier *float64 `json:"baby_knockback_modifier,omitempty"`
   // Minimum and maximum cooldown time-range (positive, in seconds) between each attempted ram attack.
-  CooldownRange float64 `json:"cooldown_range,omitempty"`
+  CooldownRange *float64 `json:"cooldown_range,omitempty"`
   // The force of the knockback of the ram attack.
-  KnockbackForce float64 `json:"knockback_force,omitempty"`
+  KnockbackForce *float64 `json:"knockback_force,omitempty"`
   // The height of the knockback of the ram attack.
-  KnockbackHeight float64 `json:"knockback_height,omitempty"`
+  KnockbackHeight *float64 `json:"knockback_height,omitempty"`
   // The minimum distance at which the mob can start a ram attack.
-  MinRamDistance float64 `json:"min_ram_distance,omitempty"`
+  MinRamDistance *float64 `json:"min_ram_distance,omitempty"`
   // [Trigger] The event to trigger when attacking
   OnStart interface{} `json:"on_start,omitempty"`
   // The sound to play when an entity is about to perform a ram attack.
   PreRamSound string `json:"pre_ram_sound,omitempty"`
   // The distance at which the mob start to run with ram speed.
-  RamDistance float64 `json:"ram_distance,omitempty"`
+  RamDistance *float64 `json:"ram_distance,omitempty"`
   // The sound to play when an entity is impacting on a ram attack.
   RamImpactSound string `json:"ram_impact_sound,omitempty"`
   // Sets the entity's speed when charging toward the target.
-  RamSpeed float64 `json:"ram_speed,omitempty"`
+  RamSpeed *float64 `json:"ram_speed,omitempty"`
   // Sets the entity's speed when running toward the target.
-  RunSpeed float64 `json:"run_speed,omitempty"`
+  RunSpeed *float64 `json:"run_speed,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

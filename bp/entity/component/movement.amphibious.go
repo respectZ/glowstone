@@ -5,5 +5,5 @@ package component
 // This move control allows the mob to swim in water and walk on land.  
 type Movement_Amphibious struct {
   // The maximum number in degrees the mob can turn per tick.
-  MaxTurn float64 `json:"max_turn,omitempty"`
+  MaxTurn *float64 `json:"max_turn,omitempty"`
 }

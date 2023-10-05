@@ -5,7 +5,7 @@ package component
 // Defines what can push an entity between other entities and pistons.  
 type Pushable struct {
   // Whether the entity can be pushed by other entities.
-  IsPushable bool `json:"is_pushable,omitempty"`
+  IsPushable *bool `json:"is_pushable,omitempty"`
   // Whether the entity can be pushed by pistons safely.
-  IsPushableByPiston bool `json:"is_pushable_by_piston,omitempty"`
+  IsPushableByPiston *bool `json:"is_pushable_by_piston,omitempty"`
 }

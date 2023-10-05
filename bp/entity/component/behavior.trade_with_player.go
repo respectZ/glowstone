@@ -11,7 +11,7 @@ type Behavior_TradeWithPlayer struct {
   // Conditions that need to be met for the behavior to start.
   Filters *f.Filter `json:"filters,omitempty"`
   // The max distance that the mob can be from the player before exiting the goal.
-  MaxDistanceFromPlayer float64 `json:"max_distance_from_player,omitempty"`
+  MaxDistanceFromPlayer *float64 `json:"max_distance_from_player,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

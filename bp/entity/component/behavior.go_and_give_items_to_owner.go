@@ -7,15 +7,15 @@ type Behavior_GoAndGiveItemsToOwner struct {
   // [Trigger] Event(s) to run when this mob throws items.
   OnItemThrow interface{} `json:"on_item_throw,omitempty"`
   // Sets the desired distance to be reached before giving items to owner.
-  ReachMobDistance float64 `json:"reach_mob_distance,omitempty"`
+  ReachMobDistance *float64 `json:"reach_mob_distance,omitempty"`
   // Sets the entity's speed when running toward the owner.
-  RunSpeed float64 `json:"run_speed,omitempty"`
+  RunSpeed *float64 `json:"run_speed,omitempty"`
   // Sets the throw force.
-  ThrowForce float64 `json:"throw_force,omitempty"`
+  ThrowForce *float64 `json:"throw_force,omitempty"`
   // Sound to play when this mob throws an item.
-  ThrowSound string `json:"throw_sound,omitempty"`
+  ThrowSound *string `json:"throw_sound,omitempty"`
   // Sets the vertical throw multiplier that is applied on top of the throw force in the vertical direction.
-  VerticalThrowMul float64 `json:"vertical_throw_mul,omitempty"`
+  VerticalThrowMul *float64 `json:"vertical_throw_mul,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

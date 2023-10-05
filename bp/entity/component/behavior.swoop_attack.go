@@ -5,11 +5,11 @@ package component
 // Allows an entity to attack using swoop attack behavior; Ideal for use with flying mobs. The behavior ends if the entity has a horizontal collision or gets hit.  
 type Behavior_SwoopAttack struct {
   // Added to the base size of the entity, to determine the target's maximum allowable distance, when trying to deal attack damage.
-  DamageReach float64 `json:"damage_reach,omitempty"`
+  DamageReach *float64 `json:"damage_reach,omitempty"`
   // Minimum and maximum cooldown time-range (in seconds) between each attempted swoop attack.
-  DelayRange float64 `json:"delay_range,omitempty"`
+  DelayRange *float64 `json:"delay_range,omitempty"`
   // During swoop attack behavior, this determines the multiplier the entity's speed is modified by when moving toward the target.
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

@@ -5,15 +5,15 @@ package component
 // Allows the mob to float around like the Ghast.  
 type Behavior_FloatWander struct {
   // Range of time in seconds the mob will float around before landing and choosing to do something else
-  FloatDuration float64 `json:"float_duration,omitempty"`
+  FloatDuration *float64 `json:"float_duration,omitempty"`
   // If true, the point has to be reachable to be a valid target
   MustReach bool `json:"must_reach,omitempty"`
   // If true, the mob will randomly pick a new point while moving to the previously selected one
   RandomReselect bool `json:"random_reselect,omitempty"`
   // Distance in blocks on ground that the mob will look for a new spot to move to. Must be at least 1
-  XzDist int `json:"xz_dist,omitempty"`
+  XzDist *int `json:"xz_dist,omitempty"`
   // Distance in blocks that the mob will look up or down for a new spot to move to. Must be at least 1
-  YDist int `json:"y_dist,omitempty"`
+  YDist *int `json:"y_dist,omitempty"`
   // Height in blocks to add to the selected target position
   YOffset float64 `json:"y_offset,omitempty"`
   // The priority of this behavior. Lower values are higher priority.

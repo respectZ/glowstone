@@ -12,7 +12,6 @@ var FORMAT_VERSION = "1.20.0"
 type entity struct {
 	FormatVersion string          `json:"format_version"`
 	Entity        MinecraftEntity `json:"minecraft:entity"`
-	errors        []string
 }
 
 type MinecraftEntity struct {

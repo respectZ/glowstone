@@ -13,17 +13,17 @@ type BehaviorHurtByTargetEntityTypes struct {
   // Conditions that make this entry in the list valid
   Filters *f.Filter `json:"filters,omitempty"`
   // Maximum distance this mob can be away to be a valid choice
-  MaxDist float64 `json:"max_dist,omitempty"`
+  MaxDist *float64 `json:"max_dist,omitempty"`
   // If true, the mob has to be visible to be a valid choice
   MustSee bool `json:"must_see,omitempty"`
   // Determines the amount of time in seconds that this mob will look for a target before forgetting about it and looking for a new one when the target isn't visible any more
-  MustSeeForgetDuration float64 `json:"must_see_forget_duration,omitempty"`
+  MustSeeForgetDuration *float64 `json:"must_see_forget_duration,omitempty"`
   // If true, the mob will stop being targeted if it stops meeting any conditions.
   ReevaluateDescription bool `json:"reevaluate_description,omitempty"`
   // Multiplier for the running speed. A value of 1.0 means the speed is unchanged
-  SprintSpeedMultiplier float64 `json:"sprint_speed_multiplier,omitempty"`
+  SprintSpeedMultiplier *float64 `json:"sprint_speed_multiplier,omitempty"`
   // Multiplier for the walking speed. A value of 1.0 means the speed is unchanged
-  WalkSpeedMultiplier float64 `json:"walk_speed_multiplier,omitempty"`
+  WalkSpeedMultiplier *float64 `json:"walk_speed_multiplier,omitempty"`
 }
 
 // Allows the mob to target another mob that hurts them.  

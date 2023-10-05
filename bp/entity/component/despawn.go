@@ -9,27 +9,27 @@ import (
 // [Not a component] Specifies if the "min_distance" and "max_distance" are used in the standard despawn rules.
 type DespawnDespawnFromDistance struct {
   // maximum distance for standard despawn rules to instantly despawn the mob.
-  MaxDistance int `json:"max_distance,omitempty"`
+  MaxDistance *int `json:"max_distance,omitempty"`
   // minimum distance for standard despawn rules to try to despawn the mob.
-  MinDistance int `json:"min_distance,omitempty"`
+  MinDistance *int `json:"min_distance,omitempty"`
 }
 
 // Despawns the Actor when the despawn rules or optional filters evaluate to true.  
 type Despawn struct {
   // Determines if "min_range_random_chance" is used in the standard despawn rules
-  DespawnFromChance bool `json:"despawn_from_chance,omitempty"`
+  DespawnFromChance *bool `json:"despawn_from_chance,omitempty"`
   // Specifies if the "min_distance" and "max_distance" are used in the standard despawn rules.
   DespawnFromDistance DespawnDespawnFromDistance `json:"despawn_from_distance,omitempty"`
   // Determines if the "min_range_inactivity_timer" is used in the standard despawn rules.
-  DespawnFromInactivity bool `json:"despawn_from_inactivity,omitempty"`
+  DespawnFromInactivity *bool `json:"despawn_from_inactivity,omitempty"`
   // Determines if the mob is instantly despawned at the edge of simulation distance in the standard despawn rules.
-  DespawnFromSimulationEdge bool `json:"despawn_from_simulation_edge,omitempty"`
+  DespawnFromSimulationEdge *bool `json:"despawn_from_simulation_edge,omitempty"`
   // The list of conditions that must be satisfied before the Actor is despawned. If a filter is defined then standard despawn rules are ignored.
   Filters *f.Filter `json:"filters,omitempty"`
   // The amount of time in seconds that the mob must be inactive.
-  MinRangeInactivityTimer int `json:"min_range_inactivity_timer,omitempty"`
+  MinRangeInactivityTimer *int `json:"min_range_inactivity_timer,omitempty"`
   // A random chance between 1 and the given value.
-  MinRangeRandomChance int `json:"min_range_random_chance,omitempty"`
+  MinRangeRandomChance *int `json:"min_range_random_chance,omitempty"`
   // If true, all entities linked to this entity in a child relationship (eg. leashed) will also be despawned.
   RemoveChildEntities bool `json:"remove_child_entities,omitempty"`
 }

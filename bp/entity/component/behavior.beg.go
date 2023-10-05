@@ -7,9 +7,9 @@ type Behavior_Beg struct {
   // List of items that this mob likes
   Items []interface{} `json:"items,omitempty"`
   // Distance in blocks the mob will beg from
-  LookDistance float64 `json:"look_distance,omitempty"`
+  LookDistance *float64 `json:"look_distance,omitempty"`
   // The range of time in seconds this mob will stare at the player holding a food they like, begging for it
-  LookTime float64 `json:"look_time,omitempty"`
+  LookTime *float64 `json:"look_time,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

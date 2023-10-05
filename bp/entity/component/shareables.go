@@ -7,11 +7,11 @@ type Shareables struct {
   // A bucket for all other items in the game. Note this category is always least priority items.
   AllItems bool `json:"all_items,omitempty"`
   // Maximum number of this item the mob will hold.
-  AllItemsMaxAmount int `json:"all_items_max_amount,omitempty"`
+  AllItemsMaxAmount *int `json:"all_items_max_amount,omitempty"`
   // Number of this item considered extra that the entity wants to share.
-  AllItemsSurplusAmount int `json:"all_items_surplus_amount,omitempty"`
+  AllItemsSurplusAmount *int `json:"all_items_surplus_amount,omitempty"`
   // Number of this item this entity wants to share.
-  AllItemsWantAmount int `json:"all_items_want_amount,omitempty"`
+  AllItemsWantAmount *int `json:"all_items_want_amount,omitempty"`
   // List of items that the entity wants to share.admire#
   Items []interface{} `json:"items,omitempty"`
   // Controls if the mob is able to pick up more of the same item if it is already holding that item

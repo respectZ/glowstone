@@ -5,9 +5,9 @@ package component
 // [EXPERIMENTAL] Allows this entity to rise for a specified duration  
 type Behavior_Rising struct {
   // Goal cooldown range in seconds
-  CooldownRange float64 `json:"cooldown_range,omitempty"`
+  CooldownRange *float64 `json:"cooldown_range,omitempty"`
   // Goal duration range in seconds
-  DurationRange float64 `json:"duration_range,omitempty"`
+  DurationRange *float64 `json:"duration_range,omitempty"`
   // [Trigger] Event(s) to run when the goal end.
   OnEnd interface{} `json:"on_end,omitempty"`
   // [Trigger] Event(s) to run when the goal starts.

@@ -5,13 +5,13 @@ package component
 // Allows the pet mob to move onto a bed with its owner while sleeping.  
 type Behavior_PetSleepWithOwner struct {
   // Distance in blocks within the mob considers it has reached the goal. This is the "wiggle room" to stop the AI from bouncing back and forth trying to reach a specific spot
-  GoalRadius float64 `json:"goal_radius,omitempty"`
+  GoalRadius *float64 `json:"goal_radius,omitempty"`
   // Height in blocks from the owner the pet can be to sleep with owner.
-  SearchHeight int `json:"search_height,omitempty"`
+  SearchHeight *int `json:"search_height,omitempty"`
   // The distance in blocks from the owner the pet can be to sleep with owner.
   SearchRange int `json:"search_range,omitempty"`
   // Movement speed multiplier of the mob when using this AI Goal
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

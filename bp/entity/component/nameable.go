@@ -13,7 +13,7 @@ type NameableNameActions struct {
 // Allows this entity to be named (e.g. using a name tag).  
 type Nameable struct {
   // If true, this entity can be renamed with name tags
-  AllowNameTagRenaming bool `json:"allow_name_tag_renaming,omitempty"`
+  AllowNameTagRenaming *bool `json:"allow_name_tag_renaming,omitempty"`
   // If true, the name will always be shown
   AlwaysShow bool `json:"always_show,omitempty"`
   // Trigger to run when the entity gets named

@@ -9,19 +9,19 @@ import (
 // Allows this entity to pretend to be dead to avoid being targeted by attackers.  
 type Behavior_PlayDead struct {
   // Whether the mob will receive the regeneration effect while playing dead.
-  ApplyRegeneration bool `json:"apply_regeneration,omitempty"`
+  ApplyRegeneration *bool `json:"apply_regeneration,omitempty"`
   // The list of Entity Damage Sources that will cause this mob to play dead.
-  DamageSources []interface{} `json:"damage_sources,omitempty"`
+  DamageSources *[]interface{} `json:"damage_sources,omitempty"`
   // The amount of time the mob will remain playing dead (in seconds).
-  Duration float64 `json:"duration,omitempty"`
+  Duration *float64 `json:"duration,omitempty"`
   // The list of other triggers that are required for the mob to activate play dead
   Filters *f.Filter `json:"filters,omitempty"`
   // The amount of health at which damage will cause the mob to play dead.
   ForceBelowHealth int `json:"force_below_health,omitempty"`
   // The range of damage that may cause the goal to start depending on randomness. Damage taken below the min will never cause the goal to start. Damage taken above the max will always cause the goal to start.
-  RandomDamageRange float64 `json:"random_damage_range,omitempty"`
+  RandomDamageRange *float64 `json:"random_damage_range,omitempty"`
   // The likelihood of this goal starting upon taking damage.
-  RandomStartChance float64 `json:"random_start_chance,omitempty"`
+  RandomStartChance *float64 `json:"random_start_chance,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

@@ -5,5 +5,5 @@ package component
 // Sets the entity's base volume for sound effects.  
 type SoundVolume struct {
   // The value of the volume the entity uses for sound effects.
-  Value float64 `json:"value,omitempty"`
+  Value *float64 `json:"value,omitempty"`
 }

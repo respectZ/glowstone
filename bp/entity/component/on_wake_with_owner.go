@@ -13,5 +13,5 @@ type OnWakeWithOwner struct {
   // The list of conditions for this trigger to execute.
   Filters *f.Filter `json:"filters,omitempty"`
   // The target of the event.
-  Target string `json:"target,omitempty"`
+  Target *string `json:"target,omitempty"`
 }

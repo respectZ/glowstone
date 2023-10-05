@@ -7,11 +7,11 @@ type Behavior_MoveToVillage struct {
   // Time in seconds the mob has to wait before using the goal again
   CooldownTime float64 `json:"cooldown_time,omitempty"`
   // Distance in blocks within the mob considers it has reached the goal. This is the "wiggle room" to stop the AI from bouncing back and forth trying to reach a specific spot
-  GoalRadius float64 `json:"goal_radius,omitempty"`
+  GoalRadius *float64 `json:"goal_radius,omitempty"`
   // The distance in blocks to search for villages. If <= 0, find the closest village regardless of distance.
   SearchRange int `json:"search_range,omitempty"`
   // Movement speed multiplier of the mob when using this AI Goal
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

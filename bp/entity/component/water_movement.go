@@ -5,5 +5,5 @@ package component
 //  
 type WaterMovement struct {
   // Drag factor to determine movement speed when in water.
-  DragFactor float64 `json:"drag_factor,omitempty"`
+  DragFactor *float64 `json:"drag_factor,omitempty"`
 }

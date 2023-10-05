@@ -19,7 +19,7 @@ type TamemountFeedItems struct {
 // Allows the Entity to be tamed by mounting it.  
 type Tamemount struct {
   // The amount the entity's temper will increase when mounted.
-  AttemptTemperMod int `json:"attempt_temper_mod,omitempty"`
+  AttemptTemperMod *int `json:"attempt_temper_mod,omitempty"`
   // The list of items that, if carried while interacting with the entity, will anger it.
   AutoRejectItems TamemountAutoRejectItems `json:"autoRejectItems,omitempty"`
   // The list of items that can be used to increase the entity's temper and speed up the taming process.
@@ -27,7 +27,7 @@ type Tamemount struct {
   // The text that shows in the feeding interact button.
   FeedText string `json:"feed_text,omitempty"`
   // The maximum value for the entity's random starting temper.
-  MaxTemper int `json:"max_temper,omitempty"`
+  MaxTemper *int `json:"max_temper,omitempty"`
   // The minimum value for the entity's random starting temper.
   MinTemper int `json:"min_temper,omitempty"`
   // The text that shows in the riding interact button.

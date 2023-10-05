@@ -5,19 +5,19 @@ package component
 // Defines an entity's teleporting behavior.  
 type Teleport struct {
   // Modifies the chance that the entity will teleport if the entity is in darkness
-  DarkTeleportChance float64 `json:"dark_teleport_chance,omitempty"`
+  DarkTeleportChance *float64 `json:"dark_teleport_chance,omitempty"`
   // Modifies the chance that the entity will teleport if the entity is in daylight
-  LightTeleportChance float64 `json:"light_teleport_chance,omitempty"`
+  LightTeleportChance *float64 `json:"light_teleport_chance,omitempty"`
   // Maximum amount of time in seconds between random teleports
-  MaxRandomTeleportTime float64 `json:"max_random_teleport_time,omitempty"`
+  MaxRandomTeleportTime *float64 `json:"max_random_teleport_time,omitempty"`
   // Minimum amount of time in seconds between random teleports
   MinRandomTeleportTime float64 `json:"min_random_teleport_time,omitempty"`
   // [Vector3 [a,b,c]] Entity will teleport to a random position within the area defined by this cube
-  RandomTeleportCube []float64 `json:"random_teleport_cube,omitempty"`
+  RandomTeleportCube *[]float64 `json:"random_teleport_cube,omitempty"`
   // If true, the entity will teleport randomly
-  RandomTeleports bool `json:"random_teleports,omitempty"`
+  RandomTeleports *bool `json:"random_teleports,omitempty"`
   // Maximum distance the entity will teleport when chasing a target
-  TargetDistance float64 `json:"target_distance,omitempty"`
+  TargetDistance *float64 `json:"target_distance,omitempty"`
   // The chance that the entity will teleport between 0.0 and 1.0. 1.0 means 100%
-  TargetTeleportChance float64 `json:"target_teleport_chance,omitempty"`
+  TargetTeleportChance *float64 `json:"target_teleport_chance,omitempty"`
 }

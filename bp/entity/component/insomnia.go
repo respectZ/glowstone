@@ -5,5 +5,5 @@ package component
 // Adds a timer since last rested to see if phantoms should spawn.  
 type Insomnia struct {
   // Number of days the mob has to stay up until the insomnia effect begins.
-  DaysUntilInsomnia float64 `json:"days_until_insomnia,omitempty"`
+  DaysUntilInsomnia *float64 `json:"days_until_insomnia,omitempty"`
 }

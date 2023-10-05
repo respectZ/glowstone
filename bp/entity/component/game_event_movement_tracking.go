@@ -7,7 +7,7 @@ type GameEventMovementTracking struct {
   // If true, the `flap` game event will be emitted when the entity moves through air.
   EmitFlap bool `json:"emit_flap,omitempty"`
   // If true, the `entityMove` game event will be emitted when the entity moves on ground or through a solid.
-  EmitMove bool `json:"emit_move,omitempty"`
+  EmitMove *bool `json:"emit_move,omitempty"`
   // If true, the `swim` game event will be emitted when the entity moves through a liquid.
-  EmitSwim bool `json:"emit_swim,omitempty"`
+  EmitSwim *bool `json:"emit_swim,omitempty"`
 }

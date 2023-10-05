@@ -41,9 +41,9 @@ type Breedable struct {
   // If true, entities can breed while sitting
   AllowSitting bool `json:"allow_sitting,omitempty"`
   // If true, the entities will blend their attributes in the offspring after they breed.
-  BlendAttributes bool `json:"blend_attributes,omitempty"`
+  BlendAttributes *bool `json:"blend_attributes,omitempty"`
   // Time in seconds before the Entity can breed again.
-  BreedCooldown float64 `json:"breed_cooldown,omitempty"`
+  BreedCooldown *float64 `json:"breed_cooldown,omitempty"`
   // The list of items that can be used to get the entity into the 'love' state
   BreedItems []interface{} `json:"breed_items,omitempty"`
   // The list of entity definitions that this entity can breed with.
@@ -57,13 +57,13 @@ type Breedable struct {
   // Chance that up to 16 babies will spawn between 0.0 and 1.0, where 1.0 is 100%.
   ExtraBabyChance float64 `json:"extra_baby_chance,omitempty"`
   // If true, the babies will be automatically tamed if its parents are
-  InheritTamed bool `json:"inherit_tamed,omitempty"`
+  InheritTamed *bool `json:"inherit_tamed,omitempty"`
   // The filters to run when attempting to fall in love.
   LoveFilters *f.Filter `json:"love_filters,omitempty"`
   // Determines how likely the babies are to NOT inherit one of their parent's variances. Values are between 0.0 and 1.0, with a higher number meaning more likely to mutate.
   MutationFactor BreedableMutationFactor `json:"mutation_factor,omitempty"`
   // Strategy used for mutating variants and extra variants for offspring. Current valid alternatives are 'random' and 'none'.
-  MutationStrategy string `json:"mutation_strategy,omitempty"`
+  MutationStrategy *string `json:"mutation_strategy,omitempty"`
   //  [EXPERIMENTAL] List of attributes that should benefit from parent centric attribute blending. For example, horses blend their health, movement, and jump_strength in their offspring.
   ParentCentricAttributeBlending []interface{} `json:"parent_centric_attribute_blending,omitempty"`
   // Range used to determine random extra variant.
@@ -73,7 +73,7 @@ type Breedable struct {
   // If true, the entity needs to be at full health before it can breed.
   RequireFullHealth bool `json:"require_full_health,omitempty"`
   // If true, the entities need to be tamed first before they can breed.
-  RequireTame bool `json:"require_tame,omitempty"`
+  RequireTame *bool `json:"require_tame,omitempty"`
   // The breed item used will transform to this item upon successful interaction. Format: itemName:auxValue
   TransformToItem string `json:"transform_to_item,omitempty"`
 }

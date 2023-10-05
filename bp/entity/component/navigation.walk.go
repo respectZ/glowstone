@@ -19,13 +19,13 @@ type Navigation_Walk struct {
   // Tells the pathfinder that it can path through a closed door and break it
   CanBreakDoors bool `json:"can_break_doors,omitempty"`
   // Tells the pathfinder whether or not it can jump up blocks
-  CanJump bool `json:"can_jump,omitempty"`
+  CanJump *bool `json:"can_jump,omitempty"`
   // Tells the pathfinder that it can path through a closed door assuming the AI will open the door
   CanOpenDoors bool `json:"can_open_doors,omitempty"`
   // Tells the pathfinder that it can path through a closed iron door assuming the AI will open the door
   CanOpenIronDoors bool `json:"can_open_iron_doors,omitempty"`
   // Whether a path can be created through a door
-  CanPassDoors bool `json:"can_pass_doors,omitempty"`
+  CanPassDoors *bool `json:"can_pass_doors,omitempty"`
   // Tells the pathfinder that it can start pathing when in the air
   CanPathFromAir bool `json:"can_path_from_air,omitempty"`
   // Tells the pathfinder whether or not it can travel on the surface of the lava
@@ -33,11 +33,11 @@ type Navigation_Walk struct {
   // Tells the pathfinder whether or not it can travel on the surface of the water
   CanPathOverWater bool `json:"can_path_over_water,omitempty"`
   // Tells the pathfinder whether or not it will be pulled down by gravity while in water
-  CanSink bool `json:"can_sink,omitempty"`
+  CanSink *bool `json:"can_sink,omitempty"`
   // Tells the pathfinder whether or not it can path anywhere through water and plays swimming animation along that path
   CanSwim bool `json:"can_swim,omitempty"`
   // Tells the pathfinder whether or not it can walk on the ground outside water
-  CanWalk bool `json:"can_walk,omitempty"`
+  CanWalk *bool `json:"can_walk,omitempty"`
   // Tells the pathfinder whether or not it can travel in lava like walking on ground
   CanWalkInLava bool `json:"can_walk_in_lava,omitempty"`
   // Tells the pathfinder whether or not it can walk on the ground underwater

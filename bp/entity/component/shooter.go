@@ -9,13 +9,13 @@ import (
 // Defines the entity's ranged attack behavior. The "minecraft:behavior.ranged_attack" goal uses this component to determine which projectiles to shoot.  
 type Shooter struct {
   // ID of the Potion effect for the default projectile to be applied on hit.
-  AuxVal int `json:"aux_val,omitempty"`
+  AuxVal *int `json:"aux_val,omitempty"`
   // Actor definition to use as the default projectile for the ranged attack. The actor definition must have the projectile component to be able to be shot as a projectile.
   Def string `json:"def,omitempty"`
   // Sets whether the projectiles being used are flagged as magic. If set, the ranged attack goal will not be used at the same time as other magic goals, such as minecraft:behavior.drink_potion
   Magic bool `json:"magic,omitempty"`
   // Velocity in which the projectiles will be shot at. A power of 0 will be overwritten by the default projectile throw power.
-  Power float64 `json:"power,omitempty"`
+  Power *float64 `json:"power,omitempty"`
   // List of projectiles that can be used by the shooter. Projectiles are evaluated in the order of the list; After a projectile is chosen, the rest of the list is ignored.
   Projectiles []interface{} `json:"projectiles,omitempty"`
   // Sound that is played when the shooter shoots a projectile.

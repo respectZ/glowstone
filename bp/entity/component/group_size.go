@@ -11,5 +11,5 @@ type GroupSize struct {
   // The list of conditions that must be satisfied for other entities to be counted towards group size.
   Filters *f.Filter `json:"filters,omitempty"`
   // Radius from center of entity.
-  Radius float64 `json:"radius,omitempty"`
+  Radius *float64 `json:"radius,omitempty"`
 }

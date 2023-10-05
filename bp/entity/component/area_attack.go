@@ -13,11 +13,11 @@ type AreaAttack struct {
   // Attack cooldown (in seconds) for how often this entity can attack a target.
   DamageCooldown float64 `json:"damage_cooldown,omitempty"`
   // How much damage per tick is applied to entities that enter the damage range.
-  DamagePerTick int `json:"damage_per_tick,omitempty"`
+  DamagePerTick *int `json:"damage_per_tick,omitempty"`
   // How close a hostile entity must be to have the damage applied.
-  DamageRange float64 `json:"damage_range,omitempty"`
+  DamageRange *float64 `json:"damage_range,omitempty"`
   // The set of entities that are valid to apply the damage to when within range.
   EntityFilter *f.Filter `json:"entity_filter,omitempty"`
   // If the entity should play their attack sound when attacking a target.
-  PlayAttackSound bool `json:"play_attack_sound,omitempty"`
+  PlayAttackSound *bool `json:"play_attack_sound,omitempty"`
 }

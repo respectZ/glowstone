@@ -5,13 +5,13 @@ package component
 // Allows a mob to randomly stroll around.  
 type Behavior_RandomStroll struct {
   // A random value to determine when to randomly move somewhere. This has a 1/interval chance to choose this goal
-  Interval int `json:"interval,omitempty"`
+  Interval *int `json:"interval,omitempty"`
   // Movement speed multiplier of the mob when using this AI Goal
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // Distance in blocks on ground that the mob will look for a new spot to move to. Must be at least 1
-  XzDist int `json:"xz_dist,omitempty"`
+  XzDist *int `json:"xz_dist,omitempty"`
   // Distance in blocks that the mob will look up or down for a new spot to move to. Must be at least 1
-  YDist int `json:"y_dist,omitempty"`
+  YDist *int `json:"y_dist,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

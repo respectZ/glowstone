@@ -5,7 +5,7 @@ package component
 // [Not a component] List of items that can be used to boost while riding this entity. Each item has the following properties:
 type BoostableBoostItems struct {
   // This is the damage that the item will take each time it is used.
-  Damage int `json:"damage,omitempty"`
+  Damage *int `json:"damage,omitempty"`
   // Name of the item that can be used to boost.
   Item string `json:"item,omitempty"`
   // The item used to boost will become this item once it is used up.
@@ -17,7 +17,7 @@ type Boostable struct {
   // List of items that can be used to boost while riding this entity. Each item has the following properties:
   BoostItems []BoostableBoostItems `json:"boost_items,omitempty"`
   // Time in seconds for the boost.
-  Duration float64 `json:"duration,omitempty"`
+  Duration *float64 `json:"duration,omitempty"`
   // Factor by which the entity's normal speed increases. E.g. 2.0 means go twice as fast. Requires "format_version" of 1.20 or more, otherwise the value 1.35 will be used.
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
 }

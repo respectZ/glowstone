@@ -5,9 +5,9 @@ package component
 // Allows this entity to move towards a "suspicious" position based on data gathered in minecraft:suspect_tracking  
 type Behavior_InvestigateSuspiciousLocation struct {
   // Distance in blocks within the entity considers it has reached it's target position.
-  GoalRadius float64 `json:"goal_radius,omitempty"`
+  GoalRadius *float64 `json:"goal_radius,omitempty"`
   // Movement speed multiplier
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

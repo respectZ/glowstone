@@ -7,5 +7,5 @@ type AttackCooldown struct {
   // [Trigger] Event to be runned when the cooldown is complete.
   AttackCooldownCompleteEvent interface{} `json:"attack_cooldown_complete_event,omitempty"`
   // Amount of time in seconds for the cooldown. Can be specified as a number or a pair of numbers (min and max).
-  AttackCooldownTime float64 `json:"attack_cooldown_time,omitempty"`
+  AttackCooldownTime *float64 `json:"attack_cooldown_time,omitempty"`
 }

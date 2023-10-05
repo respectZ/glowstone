@@ -9,7 +9,7 @@ import (
 // [Not a component] The array of items that can be used to heal this entity.
 type HealableItems struct {
   // The amount of health this entity gains when fed this item.
-  HealAmount int `json:"heal_amount,omitempty"`
+  HealAmount *int `json:"heal_amount,omitempty"`
   // Item identifier that can be used to heal this entity.
   Item string `json:"item,omitempty"`
 }

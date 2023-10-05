@@ -13,17 +13,17 @@ type Behavior_AvoidBlock struct {
   // Maximum distance to look for a block in xz.
   SearchRange int `json:"search_range,omitempty"`
   // The range of time in seconds to randomly wait before playing the sound again.
-  SoundInterval float64 `json:"sound_interval,omitempty"`
+  SoundInterval *float64 `json:"sound_interval,omitempty"`
   // Modifier for sprint speed. 1.0 means keep the regular speed, while higher numbers make the sprint speed faster.
-  SprintSpeedModifier float64 `json:"sprint_speed_modifier,omitempty"`
+  SprintSpeedModifier *float64 `json:"sprint_speed_modifier,omitempty"`
   // List of block types this mob avoids.
   TargetBlocks []interface{} `json:"target_blocks,omitempty"`
   // Block search method.
-  TargetSelectionMethod string `json:"target_selection_method,omitempty"`
+  TargetSelectionMethod *string `json:"target_selection_method,omitempty"`
   // Should start tick interval.
-  TickInterval int `json:"tick_interval,omitempty"`
+  TickInterval *int `json:"tick_interval,omitempty"`
   // Modifier for walking speed. 1.0 means keep the regular speed, while higher numbers make the walking speed faster.
-  WalkSpeedModifier float64 `json:"walk_speed_modifier,omitempty"`
+  WalkSpeedModifier *float64 `json:"walk_speed_modifier,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

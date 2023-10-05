@@ -5,9 +5,9 @@ package component
 // Allows this entity to move indoors.  
 type Behavior_MoveIndoors struct {
   // The movement speed modifier to apply to the entity while it is moving indoors.
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The cooldown time in seconds before the goal can be reused after pathfinding fails
-  TimeoutCooldown float64 `json:"timeout_cooldown,omitempty"`
+  TimeoutCooldown *float64 `json:"timeout_cooldown,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

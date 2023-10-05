@@ -15,9 +15,9 @@ type BehaviorSendEventSequence struct {
 // Allows the mob to send an event to another mob.  
 type Behavior_SendEvent struct {
   // Time in seconds for the entire event sending process
-  CastDuration float64 `json:"cast_duration,omitempty"`
+  CastDuration *float64 `json:"cast_duration,omitempty"`
   // If true, the mob will face the entity it sends an event to
-  LookAtTarget bool `json:"look_at_target,omitempty"`
+  LookAtTarget *bool `json:"look_at_target,omitempty"`
   // List of events to send
   Sequence []BehaviorSendEventSequence `json:"sequence,omitempty"`
   // The priority of this behavior. Lower values are higher priority.

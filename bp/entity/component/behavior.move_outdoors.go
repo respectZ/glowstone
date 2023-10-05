@@ -5,17 +5,17 @@ package component
 // Allows this entity to move outdoors.  
 type Behavior_MoveOutdoors struct {
   // The radius away from the target block to count as reaching the goal.
-  GoalRadius float64 `json:"goal_radius,omitempty"`
+  GoalRadius *float64 `json:"goal_radius,omitempty"`
   // The amount of times to try finding a random outdoors position before failing.
-  SearchCount int `json:"search_count,omitempty"`
+  SearchCount *int `json:"search_count,omitempty"`
   // The y range to search for an outdoors position for.
-  SearchHeight int `json:"search_height,omitempty"`
+  SearchHeight *int `json:"search_height,omitempty"`
   // The x and z range to search for an outdoors position for.
-  SearchRange int `json:"search_range,omitempty"`
+  SearchRange *int `json:"search_range,omitempty"`
   // The movement speed modifier to apply to the entity while it is moving outdoors.
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The cooldown time in seconds before the goal can be reused after pathfinding fails
-  TimeoutCooldown float64 `json:"timeout_cooldown,omitempty"`
+  TimeoutCooldown *float64 `json:"timeout_cooldown,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

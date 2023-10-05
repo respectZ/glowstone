@@ -5,7 +5,7 @@ package component
 // The current state of the boss for updating the boss HUD.  
 type Boss struct {
   // The max distance from the boss at which the boss's health bar is present on the players screen.
-  HudRange int `json:"hud_range,omitempty"`
+  HudRange *int `json:"hud_range,omitempty"`
   // The name that will be displayed above the boss's health bar.
   Name string `json:"name,omitempty"`
   // Whether the sky should darken in the presence of the boss.

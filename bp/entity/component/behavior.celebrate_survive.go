@@ -5,9 +5,9 @@ package component
 // Allows this entity to celebrate surviving a raid by shooting fireworks.  
 type Behavior_CelebrateSurvive struct {
   // The duration in seconds that the celebration lasts for.
-  Duration float64 `json:"duration,omitempty"`
+  Duration *float64 `json:"duration,omitempty"`
   // Minimum and maximum time between firework (positive, in seconds).
-  FireworksInterval float64 `json:"fireworks_interval,omitempty"`
+  FireworksInterval *float64 `json:"fireworks_interval,omitempty"`
   // [Trigger] The event to trigger when the goal's duration expires.
   OnCelebrationEndEvent interface{} `json:"on_celebration_end_event,omitempty"`
   // The priority of this behavior. Lower values are higher priority.

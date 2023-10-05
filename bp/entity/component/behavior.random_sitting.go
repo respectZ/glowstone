@@ -7,11 +7,11 @@ type Behavior_RandomSitting struct {
   // Time in seconds the mob has to wait before using the goal again
   CooldownTime float64 `json:"cooldown_time,omitempty"`
   // The minimum amount of time in seconds before the mob can stand back up
-  MinSitTime float64 `json:"min_sit_time,omitempty"`
+  MinSitTime *float64 `json:"min_sit_time,omitempty"`
   // This is the chance that the mob will start this goal, from 0 to 1
-  StartChance float64 `json:"start_chance,omitempty"`
+  StartChance *float64 `json:"start_chance,omitempty"`
   // This is the chance that the mob will stop this goal, from 0 to 1
-  StopChance float64 `json:"stop_chance,omitempty"`
+  StopChance *float64 `json:"stop_chance,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

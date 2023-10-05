@@ -17,9 +17,9 @@ type Behavior_Work struct {
   // The min interval in which a sound will play.
   SoundDelayMin int `json:"sound_delay_min,omitempty"`
   // Movement speed multiplier of the mob when using this AI Goal
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // If "can_work_in_rain" is false, this is the maximum number of ticks left in the goal where rain will not interrupt the goal
-  WorkInRainTolerance int `json:"work_in_rain_tolerance,omitempty"`
+  WorkInRainTolerance *int `json:"work_in_rain_tolerance,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

@@ -15,13 +15,13 @@ type GeneticsGeneticVariants struct {
   // Event to run when this mob is created and matches the allele conditions.
   BirthEvent string `json:"birth_event,omitempty"`
   // If this value is non-negative, compare both the mob's main and hidden alleles with this value for a match with both. Can also be a range of integers.
-  BothAllele int `json:"both_allele,omitempty"`
+  BothAllele *int `json:"both_allele,omitempty"`
   // If this value is non-negative, compare both the mob's main and hidden alleles with this value for a match with either. Can also be a range of integers.
-  EitherAllele int `json:"either_allele,omitempty"`
+  EitherAllele *int `json:"either_allele,omitempty"`
   // If this value is non-negative, compare the mob's hidden allele with this value for a match. Can also be a range of integers.
-  HiddenAllele int `json:"hidden_allele,omitempty"`
+  HiddenAllele *int `json:"hidden_allele,omitempty"`
   // If this value is non-negative, compare the mob's main allele with this value for a match. Can also be a range of integers.
-  MainAllele int `json:"main_allele,omitempty"`
+  MainAllele *int `json:"main_allele,omitempty"`
 }
 
 // [Not a component] The list of genes that this entity has and will cross with a partner during breeding.
@@ -31,7 +31,7 @@ type GeneticsGenes struct {
   // The list of genetic variants for this gene. These check for particular allele combinations and fire events when all of them are satisfied.
   GeneticVariants []GeneticsGeneticVariants `json:"genetic_variants,omitempty"`
   // If this value is non-negative, overrides the chance for this gene that an allele will be replaced with a random one instead of the parent's allele during birth. Non-negative values greater than `1` will be the same as the value `1`.
-  MutationRate float64 `json:"mutation_rate,omitempty"`
+  MutationRate *float64 `json:"mutation_rate,omitempty"`
   // The name of the gene.
   Name string `json:"name,omitempty"`
 }
@@ -41,5 +41,5 @@ type Genetics struct {
   // The list of genes that this entity has and will cross with a partner during breeding.
   Genes []GeneticsGenes `json:"genes,omitempty"`
   // Chance that an allele will be replaced with a random one instead of the parent's allele during birth.
-  MutationRate float64 `json:"mutation_rate,omitempty"`
+  MutationRate *float64 `json:"mutation_rate,omitempty"`
 }

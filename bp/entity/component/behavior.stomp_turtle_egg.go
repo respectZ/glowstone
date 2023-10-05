@@ -5,15 +5,15 @@ package component
 // Allows this mob to stomp turtle eggs  
 type Behavior_StompTurtleEgg struct {
   // Distance in blocks within the mob considers it has reached the goal. This is the "wiggle room" to stop the AI from bouncing back and forth trying to reach a specific spot
-  GoalRadius float64 `json:"goal_radius,omitempty"`
+  GoalRadius *float64 `json:"goal_radius,omitempty"`
   // A random value to determine when to randomly move somewhere. This has a 1/interval chance to choose this goal
-  Interval int `json:"interval,omitempty"`
+  Interval *int `json:"interval,omitempty"`
   // Height in blocks the mob will look for turtle eggs to move towards
-  SearchHeight int `json:"search_height,omitempty"`
+  SearchHeight *int `json:"search_height,omitempty"`
   // The distance in blocks it will look for turtle eggs to move towards
   SearchRange int `json:"search_range,omitempty"`
   // Movement speed multiplier of the mob when using this AI Goal
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

@@ -5,7 +5,7 @@ package component
 // Defines the entity's range within which it can see or sense other entities to target them.  
 type TargetNearbySensor struct {
   // Maximum distance in blocks that another entity will be considered in the 'inside' range
-  InsideRange float64 `json:"inside_range,omitempty"`
+  InsideRange *float64 `json:"inside_range,omitempty"`
   // Whether the other entity needs to be visible to trigger 'inside' events
   MustSee bool `json:"must_see,omitempty"`
   // Event to call when an entity gets in the inside range. Can specify 'event' for the name of the event and 'target' for the target of the event
@@ -15,5 +15,5 @@ type TargetNearbySensor struct {
   // Event to call when an entity exits visual range. Can specify 'event' for the name of the event and 'target' for the target of the event
   OnVisionLostInsideRange string `json:"on_vision_lost_inside_range,omitempty"`
   // Maximum distance in blocks that another entity will be considered in the 'outside' range
-  OutsideRange float64 `json:"outside_range,omitempty"`
+  OutsideRange *float64 `json:"outside_range,omitempty"`
 }
