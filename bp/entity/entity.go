@@ -135,12 +135,8 @@ func (e *entity) GetComponent(name interface{}) (interface{}, error) {
 	return nil, fmt.Errorf("component %s not found", name)
 }
 
-func (e *entity) GetComponents() []interface{} {
-	components := make([]interface{}, 0)
-	for component := range e.Entity.Components {
-		components = append(components, component)
-	}
-	return components
+func (e *entity) GetComponents() map[string]interface{} {
+	return e.Entity.Components
 }
 
 func (e *entity) AddComponent(components ...interface{}) {
