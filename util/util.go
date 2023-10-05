@@ -13,6 +13,7 @@ import (
 	"strings"
 
 	q "github.com/ericpauley/go-quantize/quantize"
+	jsoniter "github.com/json-iterator/go"
 	"github.com/respectZ/glowstone/util/jsonc"
 
 	"golang.org/x/text/cases"
@@ -28,6 +29,7 @@ func Makedir(path string) error {
 }
 
 func MarshalJSON(e interface{}) ([]byte, error) {
+	var json = jsoniter.ConfigFastest
 	return json.MarshalIndent(e, "", "  ")
 }
 
@@ -75,9 +77,15 @@ func Writejson(path string, data interface{}) error {
 	file, _ := os.OpenFile(path, os.O_RDWR|os.O_CREATE|os.O_TRUNC, os.ModePerm)
 	defer file.Close()
 
-	encoder := json.NewEncoder(file)
-	encoder.SetIndent("", "  ")
-	err := encoder.Encode(data)
+	// encoder := json.NewEncoder(file)
+	// encoder.SetIndent("", "  ")
+	// err := encoder.Encode(data)
+	d, err := MarshalJSON(data)
+	if err != nil {
+		return err
+	}
+	// Write
+	_, err = file.Write(d)
 	return err
 }
 
