@@ -19,7 +19,7 @@
 - RP
   - [ ] Animation Controller
   - [ ] Animation (most likely no, just the header information)
-  - [ ] Attachable
+  - [x] Attachable
   - [x] Entity
   - [ ] Material
   - [ ] Model

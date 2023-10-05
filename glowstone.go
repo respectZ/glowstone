@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	animation "github.com/respectZ/glowstone/animation"
+	attachable "github.com/respectZ/glowstone/attachable"
 	"github.com/respectZ/glowstone/entity"
 	item "github.com/respectZ/glowstone/item"
 	recipe "github.com/respectZ/glowstone/recipe"
@@ -42,6 +43,7 @@ func NewProject() Glowstone {
 		Items:       make(map[string]*item.Item),
 		BPAnimation: make(map[string]*animation.BPAnimation),
 		Recipes:     make(map[string]interface{}),
+		Attachables: make(map[string]*attachable.Attachable),
 
 		IsUpfront: false,
 	}
@@ -199,6 +201,16 @@ func (g *glowstone) Save() {
 		default:
 			g.Logger.Error.Printf("invalid type %T", r)
 		}
+	}
+
+	// Attachable
+	for _, a := range g.Attachables {
+		data, err := a.Encode()
+		if err != nil {
+			g.Logger.Error.Println(err)
+			continue
+		}
+		g_util.Writefile(path.Join(g.RPDir, "attachables", a.Subdir, fmt.Sprintf("%s.json", a.GetIdentifier())), data)
 	}
 }
 
@@ -462,6 +474,35 @@ func (g *glowstone) NewRecipeSmithingTransform(namespace string, identifier stri
 	r := recipe.NewSmithingTransform(namespace, identifier)
 	g.Recipes[r.GetNamespaceIdentifier()] = r
 	return r
+}
+
+/******************* Attachable *******************/
+
+func (g *glowstone) AddAttachable(a attachable.Attachable) {
+	if g.Attachables == nil {
+		g.Attachables = make(map[string]*attachable.Attachable)
+	}
+	g.Attachables[a.GetNamespaceIdentifier()] = &a
+}
+
+func (g *glowstone) GetAttachables() map[string]*attachable.Attachable {
+	return g.Attachables
+}
+
+func (g *glowstone) GetAttachable(identifier string) (*attachable.Attachable, error) {
+	if a, ok := g.Attachables[identifier]; ok {
+		return a, nil
+	}
+	return nil, fmt.Errorf("attachable %s not found", identifier)
+}
+
+func (g *glowstone) NewAttachable(namespace string, identifier string, subdir ...string) *attachable.Attachable {
+	a := attachable.New(namespace, identifier)
+	if len(subdir) > 0 {
+		a.Subdir = subdir[0]
+	}
+	g.Attachables[fmt.Sprintf("%s:%s", namespace, identifier)] = a
+	return a
 }
 
 /******************* ItemTexture *******************/

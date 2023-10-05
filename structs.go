@@ -4,6 +4,7 @@ import (
 	"log"
 
 	animation "github.com/respectZ/glowstone/animation"
+	attachable "github.com/respectZ/glowstone/attachable"
 	entity "github.com/respectZ/glowstone/entity"
 	item "github.com/respectZ/glowstone/item"
 	recipe "github.com/respectZ/glowstone/recipe"
@@ -19,9 +20,9 @@ type glowstone struct {
 
 	// Data
 	Lang        map[string]string
-	Entities    map[string]*entity.Entity // TODO
-	Items       map[string]*item.Item     // TODO
-	Attachables map[string]interface{}    // TODO
+	Entities    map[string]*entity.Entity
+	Items       map[string]*item.Item
+	Attachables map[string]*attachable.Attachable
 
 	// BP Specific
 	BPAnimation map[string]*animation.BPAnimation
@@ -184,6 +185,29 @@ type Glowstone interface {
 	// Example:
 	// 	recipe := glowstone.NewRecipeSmithingAddition("minecraft", "stick")
 	NewRecipeSmithingTransform(string, string) *recipe.RecipeSmithingTransform
+
+	/******************* Attachable *******************/
+
+	// AddAttachable adds the attachable to the project
+	//
+	// Example:
+	// 	glowstone.AddAttachable(attachable)
+	AddAttachable(attachable.Attachable)
+
+	// GetAttachables returns the attachables
+	GetAttachables() map[string]*attachable.Attachable
+
+	// GetAttachable returns the attachable
+	//
+	// Example:
+	// 	attachable, err := glowstone.GetAttachable("minecraft:stick")
+	GetAttachable(string) (*attachable.Attachable, error)
+
+	// NewAttachable creates a new attachable
+	//
+	// Example:
+	// 	attachable := glowstone.NewAttachable("minecraft", "stick")
+	NewAttachable(string, string, ...string) *attachable.Attachable
 
 	/******************* Item Texture *******************/
 
