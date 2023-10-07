@@ -11,6 +11,8 @@ import (
 	recipe "github.com/respectZ/glowstone/recipe"
 	sound "github.com/respectZ/glowstone/rp/sound"
 	texture "github.com/respectZ/glowstone/rp/texture"
+
+	rp "github.com/respectZ/glowstone/rp"
 )
 
 type glowstone struct {
@@ -34,6 +36,7 @@ type glowstone struct {
 	ItemTexture     *texture.ItemTexture
 	TerrainTexture  *texture.TerrainTexture
 	SoundDefinition *sound.SoundDefinition
+	RPBlocks        *rp.Blocks
 
 	// Settings
 	IsUpfront bool
@@ -212,12 +215,17 @@ type Glowstone interface {
 	// 	attachable := glowstone.NewAttachable("minecraft", "stick")
 	NewAttachable(string, string, ...string) *attachable.Attachable
 
+	/******************* RPBlocks *******************/
+
+	// Returns the blocks.json
+	GetRPBlocks() *rp.Blocks
+
 	/******************* Item Texture *******************/
 
 	// GetItemTexture returns the item_texture.json
 	GetItemTexture() *texture.ItemTexture
 
-	/******************* Item Texture *******************/
+	/******************* Terrain Texture *******************/
 
 	// GetTerrainTexture returns the terrain_texture.json
 	GetTerrainTexture() *texture.TerrainTexture

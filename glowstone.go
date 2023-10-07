@@ -8,12 +8,14 @@ import (
 	"path/filepath"
 	"strings"
 
+	jsoniter "github.com/json-iterator/go"
 	animation "github.com/respectZ/glowstone/animation"
 	animationController "github.com/respectZ/glowstone/animation_controller"
 	attachable "github.com/respectZ/glowstone/attachable"
 	"github.com/respectZ/glowstone/entity"
 	item "github.com/respectZ/glowstone/item"
 	recipe "github.com/respectZ/glowstone/recipe"
+	"github.com/respectZ/glowstone/rp"
 	g_util "github.com/respectZ/glowstone/util"
 
 	entityBP "github.com/respectZ/glowstone/bp/entity"
@@ -106,6 +108,9 @@ func (g *glowstone) Initialize() error {
 		g.SetLang(data)
 	}
 
+	// Read blocks.json
+	g.RPBlocks, _ = rp.LoadBlocks(g.RPDir + "blocks.json")
+
 	// Read ItemTexture
 	g.ItemTexture, err = texture.LoadItemTexture(g.RPDir + "textures/item_texture.json")
 	if err != nil {
@@ -124,8 +129,35 @@ func (g *glowstone) SetUpfront(upfront bool) {
 }
 
 func (g *glowstone) Save() {
+	// RPBlocks
+	// Do some workaround to read format_version from blocks.json
+	blocksFormatVersion := [3]int{1, 1, 0}
+	blocksSrc := path.Join(g.RPDir, "blocks.json")
+	var blocks map[string][3]int
+	err := g_util.LoadJSON(blocksSrc, blocks)
+	if err == nil {
+		blocksFormatVersion = blocks["format_version"]
+	}
+
+	data, err := g.RPBlocks.Encode()
+	if err == nil {
+		// Reload to write format_version
+		var temp map[string]interface{}
+		var json = jsoniter.ConfigFastest
+
+		jsoniter.Unmarshal(data, &temp)
+		temp["format_version"] = blocksFormatVersion
+		data, err = json.MarshalIndent(temp, "", "  ")
+		if err != nil {
+			g.Logger.Error.Println(err)
+		}
+
+		// Encode
+		g_util.Writefile(path.Join(g.RPDir, "blocks.json"), data)
+	}
+
 	// ItemTexture
-	data, err := g.ItemTexture.Encode()
+	data, err = g.ItemTexture.Encode()
 	if err != nil {
 		g.Logger.Error.Println(err)
 	} else {
@@ -527,6 +559,17 @@ func (g *glowstone) NewAttachable(namespace string, identifier string, subdir ..
 	}
 	g.Attachables[fmt.Sprintf("%s:%s", namespace, identifier)] = a
 	return a
+}
+
+/******************* RPBlocks *******************/
+
+func (g *glowstone) GetRPBlocks() *rp.Blocks {
+	if g.RPBlocks == nil {
+		g.Logger.Warning.Println("Trying to access nil blocks.json.")
+		g.Logger.Warning.Println("Creating new blocks.json file.")
+		g.RPBlocks = rp.NewBlocks()
+	}
+	return g.RPBlocks
 }
 
 /******************* ItemTexture *******************/
