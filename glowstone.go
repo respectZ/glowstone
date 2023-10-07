@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	animation "github.com/respectZ/glowstone/animation"
+	animationController "github.com/respectZ/glowstone/animation_controller"
 	attachable "github.com/respectZ/glowstone/attachable"
 	"github.com/respectZ/glowstone/entity"
 	item "github.com/respectZ/glowstone/item"
@@ -39,11 +40,12 @@ func NewProject() Glowstone {
 		},
 		Lang: make(map[string]string),
 
-		Entities:    make(map[string]*entity.Entity),
-		Items:       make(map[string]*item.Item),
-		BPAnimation: make(map[string]*animation.BPAnimation),
-		Recipes:     make(map[string]interface{}),
-		Attachables: make(map[string]*attachable.Attachable),
+		Entities:              make(map[string]*entity.Entity),
+		Items:                 make(map[string]*item.Item),
+		BPAnimationController: make(map[string]*animationController.BPAnimationController),
+		BPAnimation:           make(map[string]*animation.BPAnimation),
+		Recipes:               make(map[string]interface{}),
+		Attachables:           make(map[string]*attachable.Attachable),
 
 		IsUpfront: false,
 	}
@@ -168,6 +170,16 @@ func (g *glowstone) Save() {
 			continue
 		}
 		g_util.Writefile(path.Join(g.BPDir, "items", i.Subdir, fmt.Sprintf("%s.json", i.GetIdentifier())), bp)
+	}
+
+	// BPAnimationController
+	for _, a := range g.BPAnimationController {
+		data, err := a.Encode()
+		if err != nil {
+			g.Logger.Error.Println(err)
+			continue
+		}
+		g_util.Writefile(path.Join(g.BPDir, "animation_controllers", a.Dest), data)
 	}
 
 	// BPAnimation
@@ -524,6 +536,27 @@ func (g *glowstone) GetSoundDefinition() *sound.SoundDefinition {
 		}
 	}
 	return g.SoundDefinition
+}
+
+/******************* BPAnimationController *******************/
+
+func (g *glowstone) AddBPAnimationController(bpAnimationControllers ...interface{}) {
+	for _, a := range bpAnimationControllers {
+		switch a := a.(type) {
+		case *animationController.BPAnimationController:
+			g.BPAnimationController[a.Dest] = a
+		case animationController.BPAnimationController:
+			g.BPAnimationController[a.Dest] = &a
+		default:
+			g.Logger.Error.Printf("invalid type %T", a)
+		}
+	}
+}
+
+func (g *glowstone) NewBPAnimationController(dest string) *animationController.BPAnimationController {
+	a := animationController.NewBP(dest)
+	g.BPAnimationController[dest] = a
+	return a
 }
 
 /******************* BPAnimation *******************/

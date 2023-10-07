@@ -4,6 +4,7 @@ import (
 	"log"
 
 	animation "github.com/respectZ/glowstone/animation"
+	animationController "github.com/respectZ/glowstone/animation_controller"
 	attachable "github.com/respectZ/glowstone/attachable"
 	entity "github.com/respectZ/glowstone/entity"
 	item "github.com/respectZ/glowstone/item"
@@ -25,8 +26,9 @@ type glowstone struct {
 	Attachables map[string]*attachable.Attachable
 
 	// BP Specific
-	BPAnimation map[string]*animation.BPAnimation
-	Recipes     map[string]interface{}
+	BPAnimationController map[string]*animationController.BPAnimationController
+	BPAnimation           map[string]*animation.BPAnimation
+	Recipes               map[string]interface{}
 
 	// RP Specific
 	ItemTexture     *texture.ItemTexture
@@ -218,6 +220,20 @@ type Glowstone interface {
 
 	// GetSoundDefinition returns the sound_definitions.json
 	GetSoundDefinition() *sound.SoundDefinition
+
+	/******************* BPAnimationController *******************/
+
+	// AddBPAnimationController adds the BPAnimationController to the project
+	//
+	// Example:
+	// 	glowstone.AddBPAnimationController(bpAnimationController)
+	AddBPAnimationController(...interface{})
+
+	// NewBPAnimationController creates a new BPAnimationController
+	//
+	// Example:
+	// 	bpAnimationController := glowstone.NewBPAnimationController("player.animation_controller.json")
+	NewBPAnimationController(string) *animationController.BPAnimationController
 
 	/******************* BPAnimation *******************/
 
