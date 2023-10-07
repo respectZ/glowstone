@@ -5,10 +5,10 @@ import (
 )
 
 type TerrainTexture struct {
-	NumMipLevels     int                               `json:"num_mip_levels,omitempty"`
-	Padding          int                               `json:"padding,omitempty"`
-	ResourcePackName string                            `json:"resource_pack_name,omitempty"`
-	TextureData      map[string]TerrainTexture_Texture `json:"texture_data"`
+	NumMipLevels     int                                `json:"num_mip_levels,omitempty"`
+	Padding          int                                `json:"padding,omitempty"`
+	ResourcePackName string                             `json:"resource_pack_name,omitempty"`
+	TextureData      map[string]*TerrainTexture_Texture `json:"texture_data"`
 }
 
 type TerrainTexture_Texture struct {
@@ -24,7 +24,7 @@ type TerrainTexture_TextureData struct {
 // Creates a new terrain_texture.json file
 func NewTerrainTexture() *TerrainTexture {
 	return &TerrainTexture{
-		TextureData: make(map[string]TerrainTexture_Texture),
+		TextureData: make(map[string]*TerrainTexture_Texture),
 	}
 }
 
@@ -49,9 +49,9 @@ func (i *TerrainTexture) Encode() ([]byte, error) {
 //	terrain_texture.AddTexture("grass", "textures/blocks/grass")
 func (i *TerrainTexture) AddTexture(name string, texture interface{}) {
 	if i.TextureData == nil {
-		i.TextureData = make(map[string]TerrainTexture_Texture)
+		i.TextureData = make(map[string]*TerrainTexture_Texture)
 	}
-	i.TextureData[name] = TerrainTexture_Texture{
+	i.TextureData[name] = &TerrainTexture_Texture{
 		Textures: texture,
 	}
 }
