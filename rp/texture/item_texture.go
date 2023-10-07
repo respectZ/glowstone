@@ -15,14 +15,14 @@ type ItemTexture_Texture struct {
 }
 
 // Creates a new item_texture.json file
-func New() *ItemTexture {
+func NewItemTexture() *ItemTexture {
 	return &ItemTexture{
 		TextureData: make(map[string]ItemTexture_Texture),
 	}
 }
 
 // Loads a item_texture.json file
-func Load(src string) (*ItemTexture, error) {
+func LoadItemTexture(src string) (*ItemTexture, error) {
 	var texture ItemTexture
 	err := g_util.LoadJSON(src, &texture)
 	if err != nil {

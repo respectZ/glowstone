@@ -105,13 +105,17 @@ func (g *glowstone) Initialize() error {
 	} else {
 		g.SetLang(data)
 	}
+
 	// Read ItemTexture
-	g.ItemTexture, err = texture.Load(g.RPDir + "textures/item_texture.json")
+	g.ItemTexture, err = texture.LoadItemTexture(g.RPDir + "textures/item_texture.json")
 	if err != nil {
 		g.Logger.Warning.Println("Failed to read item_texture.json file, creating new item_texture.json file.")
-		g.ItemTexture = texture.New()
+		g.ItemTexture = texture.NewItemTexture()
 	}
-	// TODO: Upfront here.
+
+	// Read TerrainTexture
+	g.TerrainTexture, _ = texture.LoadTerrainTexture(g.RPDir + "textures/terrain_texture.json")
+
 	return nil
 }
 
@@ -127,6 +131,14 @@ func (g *glowstone) Save() {
 	} else {
 		g_util.Writefile(path.Join(g.RPDir, "textures", "item_texture.json"), data)
 	}
+
+	// TerrainTexture
+	data, err = g.TerrainTexture.Encode()
+	if err == nil {
+		g_util.Writefile(path.Join(g.RPDir, "textures", "terrain_texture.json"), data)
+	}
+
+	// Sound Definition
 	if g.SoundDefinition != nil {
 		data, err := g.SoundDefinition.Encode()
 		if err != nil {
@@ -521,6 +533,17 @@ func (g *glowstone) NewAttachable(namespace string, identifier string, subdir ..
 
 func (g *glowstone) GetItemTexture() *texture.ItemTexture {
 	return g.ItemTexture
+}
+
+/******************* TerrainTexture *******************/
+
+func (g *glowstone) GetTerrainTexture() *texture.TerrainTexture {
+	if g.TerrainTexture == nil {
+		g.Logger.Warning.Println("Trying to access nil terrain_texture.json.")
+		g.Logger.Warning.Println("Creating new terrain_texture.json file.")
+		g.TerrainTexture = texture.NewTerrainTexture()
+	}
+	return g.TerrainTexture
 }
 
 /******************* Sound Definition *******************/

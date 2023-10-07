@@ -32,6 +32,7 @@ type glowstone struct {
 
 	// RP Specific
 	ItemTexture     *texture.ItemTexture
+	TerrainTexture  *texture.TerrainTexture
 	SoundDefinition *sound.SoundDefinition
 
 	// Settings
@@ -215,6 +216,11 @@ type Glowstone interface {
 
 	// GetItemTexture returns the item_texture.json
 	GetItemTexture() *texture.ItemTexture
+
+	/******************* Item Texture *******************/
+
+	// GetTerrainTexture returns the terrain_texture.json
+	GetTerrainTexture() *texture.TerrainTexture
 
 	/******************* Sound Definition *******************/
 
