@@ -60,6 +60,12 @@ func convertMapToStruct(m map[string]interface{}, s interface{}) error {
 					} else {
 						return fmt.Errorf("map value for slice field %s is not an array", fieldName)
 					}
+				case reflect.Ptr:
+					if reflect.TypeOf(val).ConvertibleTo(fieldType.Type) {
+						field.Set(reflect.ValueOf(val).Convert(fieldType.Type))
+					} else {
+						return fmt.Errorf("map value for field %s is not convertible to type %s", fieldName, fieldType.Type)
+					}
 				default:
 					field.Set(reflect.ValueOf(val))
 				}
