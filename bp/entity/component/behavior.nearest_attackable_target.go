@@ -11,11 +11,11 @@ type BehaviorNearestAttackableTargetEntityTypes struct {
   // Conditions that make this target a valid type.
   Filters *f.Filter `json:"filters,omitempty"`
   // To be a valid target choice, the target type cannot be farther away from this entity than "max_dist".
-  MaxDist float64 `json:"max_dist,omitempty"`
+  MaxDist *float64 `json:"max_dist,omitempty"`
   // Determines if target-validity requires this entity to be in range only, or both in range and in sight.
   MustSee bool `json:"must_see,omitempty"`
   // Time (in seconds) the target must not be seen by this entity to become invalid. Used only if "must_see" is true.
-  MustSeeForgetDuration bool `json:"must_see_forget_duration,omitempty"`
+  MustSeeForgetDuration *bool `json:"must_see_forget_duration,omitempty"`
   // If true, the mob will stop being targeted if it stops meeting any conditions.
   ReevaluateDescription bool `json:"reevaluate_description,omitempty"`
 }
@@ -36,21 +36,21 @@ type Behavior_NearestAttackableTarget struct {
   // Determines if target-validity requires this entity to be in range only, or both in range and in sight.
   MustSee bool `json:"must_see,omitempty"`
   // Time (in seconds) the target must not be seen by this entity to become invalid. Used only if "must_see" is true.
-  MustSeeForgetDuration float64 `json:"must_see_forget_duration,omitempty"`
+  MustSeeForgetDuration *float64 `json:"must_see_forget_duration,omitempty"`
   // Time (in seconds) this entity can continue attacking the target after the target is no longer valid.
   PersistTime float64 `json:"persist_time,omitempty"`
   // Allows the attacking entity to update the nearest target, otherwise a target is only reselected after each "scan_interval" or "attack_interval".
   ReselectTargets bool `json:"reselect_targets,omitempty"`
   // If "attack_interval" is 0 or isn't declared, then between attacks: scanning for a new target occurs every amount of ticks equal to "scan_interval", minimum value is 1. Values under 10 can affect performance.
-  ScanInterval int `json:"scan_interval,omitempty"`
+  ScanInterval *int `json:"scan_interval,omitempty"`
   // Allows the actor to be set to persist upon targeting a player
   SetPersistent bool `json:"set_persistent,omitempty"`
   // Multiplied with the target's armor coverage percentage to modify "max_dist" when detecting an invisible target.
-  TargetInvisibleMultiplier float64 `json:"target_invisible_multiplier,omitempty"`
+  TargetInvisibleMultiplier *float64 `json:"target_invisible_multiplier,omitempty"`
   // Maximum vertical target-search distance, if it's greater than the target type's "max_dist". A negative value defaults to "entity_types" greatest "max_dist".
-  TargetSearchHeight float64 `json:"target_search_height,omitempty"`
+  TargetSearchHeight *float64 `json:"target_search_height,omitempty"`
   // Multiplied with the target type's "max_dist" when trying to detect a sneaking target.
-  TargetSneakVisibilityMultiplier float64 `json:"target_sneak_visibility_multiplier,omitempty"`
+  TargetSneakVisibilityMultiplier *float64 `json:"target_sneak_visibility_multiplier,omitempty"`
   // Maximum distance this entity can be from the target when following it, otherwise the target becomes invalid. This value is only used if the entity doesn't declare "minecraft:follow_range".
   WithinRadius float64 `json:"within_radius,omitempty"`
   // The priority of this behavior. Lower values are higher priority.

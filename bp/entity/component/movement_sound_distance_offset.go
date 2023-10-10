@@ -5,5 +5,5 @@ package component
 // Sets the offset used to determine the next step distance for playing a movement sound.  
 type MovementSoundDistanceOffset struct {
   // The higher the number, the less often the movement sound will be played.
-  Value float64 `json:"value,omitempty"`
+  Value *float64 `json:"value,omitempty"`
 }

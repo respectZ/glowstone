@@ -7,21 +7,21 @@ type Breathable struct {
   // List of blocks this entity can breathe in, in addition to the other "breathes" parameters.
   BreatheBlocks []interface{} `json:"breathe_blocks,omitempty"`
   // If true, this entity can breathe in air.
-  BreathesAir bool `json:"breathes_air,omitempty"`
+  BreathesAir *bool `json:"breathes_air,omitempty"`
   // If true, this entity can breathe in lava.
-  BreathesLava bool `json:"breathes_lava,omitempty"`
+  BreathesLava *bool `json:"breathes_lava,omitempty"`
   // If true, this entity can breathe in solid blocks.
   BreathesSolids bool `json:"breathes_solids,omitempty"`
   // If true, this entity can breathe in water.
   BreathesWater bool `json:"breathes_water,omitempty"`
   // If true, this entity will have visible bubbles while in water.
-  GeneratesBubbles bool `json:"generates_bubbles,omitempty"`
+  GeneratesBubbles *bool `json:"generates_bubbles,omitempty"`
   // Time in seconds to recover breath to maximum.
   InhaleTime float64 `json:"inhale_time,omitempty"`
   // List of blocks this entity can't breathe in, in addition to the other "breathes" parameters.
   NonBreatheBlocks []interface{} `json:"non_breathe_blocks,omitempty"`
   // Time in seconds between suffocation damage.
-  SuffocateTime int `json:"suffocate_time,omitempty"`
+  SuffocateTime *int `json:"suffocate_time,omitempty"`
   // Time in seconds the entity can hold its breath.
-  TotalSupply int `json:"total_supply,omitempty"`
+  TotalSupply *int `json:"total_supply,omitempty"`
 }

@@ -13,9 +13,9 @@ type Behavior_Tempt struct {
   // List of items this mob is tempted by
   Items []interface{} `json:"items,omitempty"`
   // Range of random ticks to wait between tempt sounds.
-  SoundInterval float64 `json:"sound_interval,omitempty"`
+  SoundInterval *float64 `json:"sound_interval,omitempty"`
   // Movement speed multiplier of the mob when using this AI Goal
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // Sound to play while the mob is being tempted.
   TemptSound string `json:"tempt_sound,omitempty"`
   // Distance in blocks this mob can get tempted by a player holding an item they like

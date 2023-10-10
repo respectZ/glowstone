@@ -13,15 +13,15 @@ type BehaviorSummonEntitySequence struct {
   // Amount of time in seconds before each entity is summoned in this step
   DelayPerSummon float64 `json:"delay_per_summon,omitempty"`
   // Amount of time in seconds that the spawned entity will be alive for. A value of -1.0 means it will remain alive for as long as it can
-  EntityLifespan float64 `json:"entity_lifespan,omitempty"`
+  EntityLifespan *float64 `json:"entity_lifespan,omitempty"`
   // The entity type of the entities we will spawn in this step
   EntityType string `json:"entity_type,omitempty"`
   // Number of entities that will be spawned in this step
-  NumEntitiesSpawned int `json:"num_entities_spawned,omitempty"`
+  NumEntitiesSpawned *int `json:"num_entities_spawned,omitempty"`
   // The base shape of this step. Valid values are circle and line
-  Shape string `json:"shape,omitempty"`
+  Shape *string `json:"shape,omitempty"`
   // The base size of the entity
-  Size float64 `json:"size,omitempty"`
+  Size *float64 `json:"size,omitempty"`
   // The sound event to play for this step
   SoundEvent string `json:"sound_event,omitempty"`
   // Maximum number of summoned entities at any given time
@@ -29,23 +29,23 @@ type BehaviorSummonEntitySequence struct {
   // 
   SummonCapRadius float64 `json:"summon_cap_radius,omitempty"`
   // The target of the spell. This is where the spell will start (line will start here, circle will be centered here)
-  Target string `json:"target,omitempty"`
+  Target *string `json:"target,omitempty"`
 }
 
 // [Not a component] List of spells for the mob to use to summon entities. Each spell has the following parameters:
 type BehaviorSummonEntitySummonChoices struct {
   // Time in seconds the spell casting will take
-  CastDuration float64 `json:"cast_duration,omitempty"`
+  CastDuration *float64 `json:"cast_duration,omitempty"`
   // Time in seconds the mob has to wait before using the spell again
   CooldownTime float64 `json:"cooldown_time,omitempty"`
   // If true, the mob will do the casting animations and render spell particles
-  DoCasting bool `json:"do_casting,omitempty"`
+  DoCasting *bool `json:"do_casting,omitempty"`
   // 
   Filters *f.Filter `json:"filters,omitempty"`
   // Upper bound of the activation distance in blocks for this spell, must not be negative.
-  MaxActivationRange float64 `json:"max_activation_range,omitempty"`
+  MaxActivationRange *float64 `json:"max_activation_range,omitempty"`
   // Lower bound of the activation distance in blocks for this spell, must not be negative.
-  MinActivationRange float64 `json:"min_activation_range,omitempty"`
+  MinActivationRange *float64 `json:"min_activation_range,omitempty"`
   // The color of the particles for this spell
   ParticleColor int `json:"particle_color,omitempty"`
   // List of steps for the spell. Each step has the following parameters:

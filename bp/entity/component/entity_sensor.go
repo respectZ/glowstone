@@ -13,13 +13,13 @@ type EntitySensor struct {
   // The set of conditions that must be satisfied to fire the event.
   EventFilters *f.Filter `json:"event_filters,omitempty"`
   // The maximum number of entities that must pass the filter conditions for the event to send.
-  MaximumCount int `json:"maximum_count,omitempty"`
+  MaximumCount *int `json:"maximum_count,omitempty"`
   // The minimum number of entities that must pass the filter conditions for the event to send.
-  MinimumCount int `json:"minimum_count,omitempty"`
+  MinimumCount *int `json:"minimum_count,omitempty"`
   // If true the sensor range is additive on top of the entity's size.
-  RelativeRange bool `json:"relative_range,omitempty"`
+  RelativeRange *bool `json:"relative_range,omitempty"`
   // If true requires all nearby entities to pass the filter conditions for the event to send.
   RequireAll bool `json:"require_all,omitempty"`
   // The maximum distance another entity can be from this and have the filters checked against it.
-  SensorRange float64 `json:"sensor_range,omitempty"`
+  SensorRange *float64 `json:"sensor_range,omitempty"`
 }

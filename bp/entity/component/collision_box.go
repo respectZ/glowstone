@@ -5,7 +5,7 @@ package component
 // Sets the width and height of the Entity's collision box.  
 type CollisionBox struct {
   // Height of the collision box in blocks. A negative value will be assumed to be 0.
-  Height float64 `json:"height,omitempty"`
+  Height *float64 `json:"height,omitempty"`
   // Width of the collision box in blocks. A negative value will be assumed to be 0.
-  Width float64 `json:"width,omitempty"`
+  Width *float64 `json:"width,omitempty"`
 }

@@ -5,13 +5,13 @@ package component
 // Allows this entity to use a flame-breath attack. Can only be used by the Ender Dragon.  
 type Behavior_Dragonflaming struct {
   // Time (in seconds), after roar, to breath flame.
-  CooldownTime float64 `json:"cooldown_time,omitempty"`
+  CooldownTime *float64 `json:"cooldown_time,omitempty"`
   // Time (in seconds), after roar, to breath flame.
-  FlameTime float64 `json:"flame_time,omitempty"`
+  FlameTime *float64 `json:"flame_time,omitempty"`
   // Number of ground flame-breath attacks to use before flight-takeoff.
-  GroundFlameCount int `json:"ground_flame_count,omitempty"`
+  GroundFlameCount *int `json:"ground_flame_count,omitempty"`
   // Time (in seconds) to roar, before breathing flame.
-  RoarTime float64 `json:"roar_time,omitempty"`
+  RoarTime *float64 `json:"roar_time,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

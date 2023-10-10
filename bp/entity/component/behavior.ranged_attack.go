@@ -17,25 +17,25 @@ type Behavior_RangedAttack struct {
   // Time (in seconds) between each individual shot when firing a burst of shots from a charged up attack.
   BurstInterval float64 `json:"burst_interval,omitempty"`
   // Number of shots fired every time the attacking entity uses a charged up attack.
-  BurstShots int `json:"burst_shots,omitempty"`
+  BurstShots *int `json:"burst_shots,omitempty"`
   // Time (in seconds, then add "charge_shoot_trigger"), before a charged up attack is done charging. Charge-time decays while target is not in sight.
   ChargeChargedTrigger float64 `json:"charge_charged_trigger,omitempty"`
   // Amount of time (in seconds, then doubled) a charged shot must be charging before reloading burst shots. Charge-time decays while target is not in sight.
   ChargeShootTrigger float64 `json:"charge_shoot_trigger,omitempty"`
   // Field of view (in degrees) when using sensing to detect a target for attack.
-  RangedFov float64 `json:"ranged_fov,omitempty"`
+  RangedFov *float64 `json:"ranged_fov,omitempty"`
   // Allows the actor to be set to persist upon targeting a player
   SetPersistent bool `json:"set_persistent,omitempty"`
   // During attack behavior, this multiplier modifies the entity's speed when moving toward the target.
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // If a swing animation (using variable.attack_time) exists, this causes the actor to swing their arm(s) upon firing the ranged attack.
   Swing bool `json:"swing,omitempty"`
   // Minimum amount of time (in seconds) the attacking entity needs to see the target before moving toward it.
-  TargetInSightTime float64 `json:"target_in_sight_time,omitempty"`
+  TargetInSightTime *float64 `json:"target_in_sight_time,omitempty"`
   // Maximum rotation (in degrees), on the X-axis, this entity can rotate while trying to look at the target.
-  XMaxRotation float64 `json:"x_max_rotation,omitempty"`
+  XMaxRotation *float64 `json:"x_max_rotation,omitempty"`
   // Maximum rotation (in degrees), on the Y-axis, this entity can rotate its head while trying to look at the target.
-  YMaxHeadRotation float64 `json:"y_max_head_rotation,omitempty"`
+  YMaxHeadRotation *float64 `json:"y_max_head_rotation,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

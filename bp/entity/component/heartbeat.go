@@ -5,7 +5,7 @@ package component
 // Defines the entity's heartbeat.  
 type Heartbeat struct {
   // [Molang String] A Molang expression defining the inter-beat interval in seconds. A value of zero or less means no heartbeat.
-  Interval string `json:"interval,omitempty"`
+  Interval *string `json:"interval,omitempty"`
   // Level sound event to be played as the heartbeat sound.
-  SoundEvent string `json:"sound_event,omitempty"`
+  SoundEvent *string `json:"sound_event,omitempty"`
 }

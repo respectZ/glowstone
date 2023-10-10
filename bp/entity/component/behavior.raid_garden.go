@@ -7,19 +7,19 @@ type Behavior_RaidGarden struct {
   // Blocks that the mob is looking for to eat/raid
   Blocks []interface{} `json:"blocks,omitempty"`
   // Time in seconds between each time it eats/raids
-  EatDelay int `json:"eat_delay,omitempty"`
+  EatDelay *int `json:"eat_delay,omitempty"`
   // Amount of time in seconds before this mob wants to eat/raid again after eating its maximum
-  FullDelay int `json:"full_delay,omitempty"`
+  FullDelay *int `json:"full_delay,omitempty"`
   // Distance in blocks within the mob considers it has reached the goal. This is the "wiggle room" to stop the AI from bouncing back and forth trying to reach a specific spot
-  GoalRadius float64 `json:"goal_radius,omitempty"`
+  GoalRadius *float64 `json:"goal_radius,omitempty"`
   // Time in seconds before starting to eat/raid once it arrives at it
   InitialEatDelay int `json:"initial_eat_delay,omitempty"`
   // Maximum number of crops this entity wants to eat/raid. If set to zero or less then it doesn't have a maximum
-  MaxToEat int `json:"max_to_eat,omitempty"`
+  MaxToEat *int `json:"max_to_eat,omitempty"`
   // Distance in blocks the mob will look for crops to eat
   SearchRange int `json:"search_range,omitempty"`
   // Movement speed multiplier of the mob when using this AI Goal
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

@@ -5,5 +5,5 @@ package component
 // Defines the entity's movement on the rails. An entity with this component is only allowed to move on the rail.  
 type RailMovement struct {
   // Maximum speed that this entity will move at when on the rail.
-  MaxSpeed float64 `json:"max_speed,omitempty"`
+  MaxSpeed *float64 `json:"max_speed,omitempty"`
 }

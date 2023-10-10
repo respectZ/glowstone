@@ -5,7 +5,7 @@ package component
 // Allows to mob to be able to sit in place like the ocelot.  
 type Behavior_OcelotSitOnBlock struct {
   // Movement speed multiplier of the mob when using this AI Goal
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

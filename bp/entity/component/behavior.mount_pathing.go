@@ -5,7 +5,7 @@ package component
 // Allows the mob to move around on its own while mounted seeking a target to attack.  
 type Behavior_MountPathing struct {
   // Movement speed multiplier of the mob when using this AI Goal
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The distance at which this mob wants to be away from its target
   TargetDist float64 `json:"target_dist,omitempty"`
   // If true, this mob will chase after the target as long as it's a valid target

@@ -5,5 +5,5 @@ package component
 // Sets this entity's default head rotation angle.  
 type DefaultLookAngle struct {
   // Angle in degrees.
-  Value float64 `json:"value,omitempty"`
+  Value *float64 `json:"value,omitempty"`
 }

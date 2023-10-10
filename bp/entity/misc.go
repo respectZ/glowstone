@@ -25,6 +25,11 @@ func convertMapToStruct(m map[string]interface{}, s interface{}) error {
 
 				// Set the value of the field to the dereferenced map value
 				field.Elem().Set(reflect.ValueOf(val).Elem())
+			} else if field.Kind() == reflect.Ptr && field.Type().Elem().Kind() == reflect.Int {
+				if v, ok := val.(float64); ok {
+					intV := int(v)
+					field.Set(reflect.ValueOf(&intV))
+				}
 			} else {
 				// Set the value of the field directly
 				switch fieldType.Type.Kind() {
@@ -54,6 +59,12 @@ func convertMapToStruct(m map[string]interface{}, s interface{}) error {
 						field.Set(slice)
 					} else {
 						return fmt.Errorf("map value for slice field %s is not an array", fieldName)
+					}
+				case reflect.Ptr:
+					if reflect.TypeOf(val).ConvertibleTo(fieldType.Type) {
+						field.Set(reflect.ValueOf(val).Convert(fieldType.Type))
+					} else {
+						return fmt.Errorf("map value for field %s is not convertible to type %s", fieldName, fieldType.Type)
 					}
 				default:
 					field.Set(reflect.ValueOf(val))

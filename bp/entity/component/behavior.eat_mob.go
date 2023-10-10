@@ -5,17 +5,17 @@ package component
 // Allows the entity to eat a specified Mob.  
 type Behavior_EatMob struct {
   // Sets the time in seconds the eat animation should play for.
-  EatAnimationTime float64 `json:"eat_animation_time,omitempty"`
+  EatAnimationTime *float64 `json:"eat_animation_time,omitempty"`
   // Sets the sound that should play when eating a mob.
   EatMobSound string `json:"eat_mob_sound,omitempty"`
   // The loot table for loot to be dropped when eating a mob.
   LootTable string `json:"loot_table,omitempty"`
   // Sets the force which the mob-to-be-eaten is pulled towards the eating mob.
-  PullInForce float64 `json:"pull_in_force,omitempty"`
+  PullInForce *float64 `json:"pull_in_force,omitempty"`
   // Sets the desired distance to be reached before eating the mob.
-  ReachMobDistance float64 `json:"reach_mob_distance,omitempty"`
+  ReachMobDistance *float64 `json:"reach_mob_distance,omitempty"`
   // Sets the entity's speed when running toward the target.
-  RunSpeed float64 `json:"run_speed,omitempty"`
+  RunSpeed *float64 `json:"run_speed,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

@@ -5,11 +5,11 @@ package component
 // Allows the entity to move in random directions like a slime.  
 type Behavior_SlimeRandomDirection struct {
   // Additional time (in whole seconds), chosen randomly in the range of [0, "add_random_time_range"], to add to "min_change_direction_time".
-  AddRandomTimeRange int `json:"add_random_time_range,omitempty"`
+  AddRandomTimeRange *int `json:"add_random_time_range,omitempty"`
   // Constant minimum time (in seconds) to wait before choosing a new direction.
-  MinChangeDirectionTime float64 `json:"min_change_direction_time,omitempty"`
+  MinChangeDirectionTime *float64 `json:"min_change_direction_time,omitempty"`
   // Maximum rotation angle range (in degrees) when randomly choosing a new direction.
-  TurnRange int `json:"turn_range,omitempty"`
+  TurnRange *int `json:"turn_range,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

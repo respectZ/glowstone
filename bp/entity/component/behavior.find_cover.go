@@ -7,7 +7,7 @@ type Behavior_FindCover struct {
   // Time in seconds the mob has to wait before using the goal again
   CooldownTime float64 `json:"cooldown_time,omitempty"`
   // Movement speed multiplier of the mob when using this AI Goal
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

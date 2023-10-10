@@ -5,19 +5,19 @@ package component
 // Allows this entity to use a laser beam attack. Can only be used by Guardians and Elder Guardians.  
 type Behavior_GuardianAttack struct {
   // Amount of additional damage dealt from an elder guardian's magic attack.
-  ElderExtraMagicDamage int `json:"elder_extra_magic_damage,omitempty"`
+  ElderExtraMagicDamage *int `json:"elder_extra_magic_damage,omitempty"`
   // In hard difficulty, amount of additional damage dealt from a guardian's magic attack.
-  HardModeExtraMagicDamage int `json:"hard_mode_extra_magic_damage,omitempty"`
+  HardModeExtraMagicDamage *int `json:"hard_mode_extra_magic_damage,omitempty"`
   // Amount of damage dealt from a guardian's magic attack. Magic attack damage is added to the guardian's base attack damage.
-  MagicDamage int `json:"magic_damage,omitempty"`
+  MagicDamage *int `json:"magic_damage,omitempty"`
   // Guardian attack behavior stops if the target is closer than this distance (doesn't apply to elders).
-  MinDistance float64 `json:"min_distance,omitempty"`
+  MinDistance *float64 `json:"min_distance,omitempty"`
   // Time (in seconds) to wait after starting an attack before playing the guardian attack sound.
-  SoundDelayTime float64 `json:"sound_delay_time,omitempty"`
+  SoundDelayTime *float64 `json:"sound_delay_time,omitempty"`
   // Maximum rotation (in degrees), on the X-axis, this entity can rotate while trying to look at the target.
-  XMaxRotation float64 `json:"x_max_rotation,omitempty"`
+  XMaxRotation *float64 `json:"x_max_rotation,omitempty"`
   // Maximum rotation (in degrees), on the Y-axis, this entity can rotate its head while trying to look at the target.
-  YMaxHeadRotation float64 `json:"y_max_head_rotation,omitempty"`
+  YMaxHeadRotation *float64 `json:"y_max_head_rotation,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

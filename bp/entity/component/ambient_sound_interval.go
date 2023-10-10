@@ -5,13 +5,13 @@ package component
 // Sets the entity's delay between playing its ambient sound.  
 type AmbientSoundInterval struct {
   // Level sound event to be played as the ambient sound.
-  EventName string `json:"event_name,omitempty"`
+  EventName *string `json:"event_name,omitempty"`
   // List of dynamic level sound events, with conditions for choosing between them. Evaluated in order, first one wins. If none evaluate to true, 'event_name' will take precedence.condition#
   EventNames []interface{} `json:"event_names,omitempty"`
   // Maximum time in seconds to randomly add to the ambient sound delay time.
-  Range float64 `json:"range,omitempty"`
+  Range *float64 `json:"range,omitempty"`
   // Minimum time in seconds before the entity plays its ambient sound again.
-  Value float64 `json:"value,omitempty"`
+  Value *float64 `json:"value,omitempty"`
 }
 
 // Defines the sound events that can be played by this entity.

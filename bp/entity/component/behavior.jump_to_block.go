@@ -5,25 +5,25 @@ package component
 // Allows an entity to jump to another random block.  
 type Behavior_JumpToBlock struct {
   // Minimum and maximum cooldown time-range (positive, in seconds) between each attempted jump.
-  CooldownRange float64 `json:"cooldown_range,omitempty"`
+  CooldownRange *float64 `json:"cooldown_range,omitempty"`
   // Blocks that the mob can't jump to.
   ForbiddenBlocks []interface{} `json:"forbidden_blocks,omitempty"`
   // The maximum velocity with which the mob can jump.
-  MaxVelocity float64 `json:"max_velocity,omitempty"`
+  MaxVelocity *float64 `json:"max_velocity,omitempty"`
   // The minimum distance (in blocks) from the mob to a block, in order to consider jumping to it.
-  MinimumDistance int `json:"minimum_distance,omitempty"`
+  MinimumDistance *int `json:"minimum_distance,omitempty"`
   // The minimum length (in blocks) of the mobs path to a block, in order to consider jumping to it.
-  MinimumPathLength int `json:"minimum_path_length,omitempty"`
+  MinimumPathLength *int `json:"minimum_path_length,omitempty"`
   // Blocks that the mob prefers jumping to.
   PreferredBlocks []interface{} `json:"preferred_blocks,omitempty"`
   // Chance (between 0.0 and 1.0) that the mob will jump to a preferred block, if in range. Only matters if preferred blocks are defined.
-  PreferredBlocksChance float64 `json:"preferred_blocks_chance,omitempty"`
+  PreferredBlocksChance *float64 `json:"preferred_blocks_chance,omitempty"`
   // The scalefactor of the bounding box of the mob while it is jumping.
-  ScaleFactor float64 `json:"scale_factor,omitempty"`
+  ScaleFactor *float64 `json:"scale_factor,omitempty"`
   // The height (in blocks, in range [2, 15]) of the search box, centered around the mob.
-  SearchHeight int `json:"search_height,omitempty"`
+  SearchHeight *int `json:"search_height,omitempty"`
   // The width (in blocks, in range [2, 15]) of the search box, centered around the mob.
-  SearchWidth int `json:"search_width,omitempty"`
+  SearchWidth *int `json:"search_width,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

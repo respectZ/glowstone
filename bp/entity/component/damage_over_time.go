@@ -5,7 +5,7 @@ package component
 // Applies defined amount of damage to the entity at specified intervals.  
 type DamageOverTime struct {
   // Amount of damage caused each hurt.
-  DamagePerHurt int `json:"damage_per_hurt,omitempty"`
+  DamagePerHurt *int `json:"damage_per_hurt,omitempty"`
   // Time in seconds between damage.
   TimeBetweenHurt float64 `json:"time_between_hurt,omitempty"`
 }

@@ -9,7 +9,7 @@ type PreferredPath struct {
   // Added cost for jumping up a node
   JumpCost int `json:"jump_cost,omitempty"`
   // Distance mob can fall without taking damage
-  MaxFallBlocks int `json:"max_fall_blocks,omitempty"`
+  MaxFallBlocks *int `json:"max_fall_blocks,omitempty"`
   // A list of blocks with their associated cost
   PreferredPathBlocks []interface{} `json:"preferred_path_blocks,omitempty"`
 }

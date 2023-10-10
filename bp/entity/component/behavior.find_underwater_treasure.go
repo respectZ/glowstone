@@ -7,9 +7,9 @@ type Behavior_FindUnderwaterTreasure struct {
   // The range that the mob will search for a treasure chest within a ruin or shipwreck to move towards.
   SearchRange int `json:"search_range,omitempty"`
   // Movement speed multiplier of the mob when using this AI Goal
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The distance the mob will move before stopping.
-  StopDistance float64 `json:"stop_distance,omitempty"`
+  StopDistance *float64 `json:"stop_distance,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

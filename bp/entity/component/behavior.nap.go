@@ -9,9 +9,9 @@ type Behavior_Nap struct {
   // Minimum time in seconds the mob has to wait before using the goal again
   CooldownMin float64 `json:"cooldown_min,omitempty"`
   // The block distance in x and z that will be checked for mobs that this mob detects
-  MobDetectDist float64 `json:"mob_detect_dist,omitempty"`
+  MobDetectDist *float64 `json:"mob_detect_dist,omitempty"`
   // The block distance in y that will be checked for mobs that this mob detects
-  MobDetectHeight float64 `json:"mob_detect_height,omitempty"`
+  MobDetectHeight *float64 `json:"mob_detect_height,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

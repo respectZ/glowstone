@@ -5,5 +5,5 @@ package component
 // This move control causes the mob to hop as it moves.  
 type Movement_Skip struct {
   // The maximum number in degrees the mob can turn per tick.
-  MaxTurn float64 `json:"max_turn,omitempty"`
+  MaxTurn *float64 `json:"max_turn,omitempty"`
 }

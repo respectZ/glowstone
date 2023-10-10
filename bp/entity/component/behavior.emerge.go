@@ -5,9 +5,9 @@ package component
 // Allows this entity to emerge from the ground  
 type Behavior_Emerge struct {
   // Time in seconds the mob has to wait before using the goal again
-  CooldownTime int `json:"cooldown_time,omitempty"`
+  CooldownTime *int `json:"cooldown_time,omitempty"`
   // Goal duration in seconds
-  Duration float64 `json:"duration,omitempty"`
+  Duration *float64 `json:"duration,omitempty"`
   // [Trigger] Trigger to be executed when the goal execution is about to end
   OnDone interface{} `json:"on_done,omitempty"`
   // The priority of this behavior. Lower values are higher priority.

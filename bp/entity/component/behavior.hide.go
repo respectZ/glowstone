@@ -5,13 +5,13 @@ package component
 // Allows a mob with the hide component to attempt to move to - and hide at - an owned or nearby POI.  
 type Behavior_Hide struct {
   // Amount of time in seconds that the mob reacts.
-  Duration float64 `json:"duration,omitempty"`
+  Duration *float64 `json:"duration,omitempty"`
   // Defines what POI type to hide at.
   PoiType string `json:"poi_type,omitempty"`
   // Movement speed multiplier of the mob when using this AI Goal
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The cooldown time in seconds before the goal can be reused after a internal failure or timeout condition.
-  TimeoutCooldown float64 `json:"timeout_cooldown,omitempty"`
+  TimeoutCooldown *float64 `json:"timeout_cooldown,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

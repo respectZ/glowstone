@@ -5,7 +5,7 @@ package component
 // Defines the entity's size interpolation based on the entity's age.  
 type ScaleByAge struct {
   // Ending scale of the entity when it's fully grown.
-  EndScale float64 `json:"end_scale,omitempty"`
+  EndScale *float64 `json:"end_scale,omitempty"`
   // Initial scale of the newborn entity.
-  StartScale float64 `json:"start_scale,omitempty"`
+  StartScale *float64 `json:"start_scale,omitempty"`
 }

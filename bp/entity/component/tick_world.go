@@ -5,9 +5,9 @@ package component
 // Defines if the entity ticks the world and the radius around it to tick.  
 type TickWorld struct {
   // The distance at which the closest player has to be before this entity despawns. This option will be ignored if never_despawn is true. Min: 128 blocks.
-  DistanceToPlayers float64 `json:"distance_to_players,omitempty"`
+  DistanceToPlayers *float64 `json:"distance_to_players,omitempty"`
   // If true, this entity will not despawn even if players are far away. If false, distance_to_players will be used to determine when to despawn.
-  NeverDespawn bool `json:"never_despawn,omitempty"`
+  NeverDespawn *bool `json:"never_despawn,omitempty"`
   // The area around the entity to tick. Default: 2. Allowed range: 2-6.
-  Radius uint `json:"radius,omitempty"`
+  Radius *uint `json:"radius,omitempty"`
 }

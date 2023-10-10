@@ -5,7 +5,7 @@ package component
 // Defines the rules for a mob to be tamed by the player.  
 type Tameable struct {
   // The chance of taming the entity with each item use between 0.0 and 1.0, where 1.0 is 100%
-  Probability float64 `json:"probability,omitempty"`
+  Probability *float64 `json:"probability,omitempty"`
   // Event to run when this entity becomes tamed
   TameEvent string `json:"tame_event,omitempty"`
   // The list of items that can be used to tame this entity

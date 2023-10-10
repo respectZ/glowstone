@@ -7,7 +7,7 @@ type Behavior_MoveToPoi struct {
   // Tells the goal what POI type it should be looking for
   PoiType string `json:"poi_type,omitempty"`
   // Movement speed multiplier of the mob when using this AI Goal
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

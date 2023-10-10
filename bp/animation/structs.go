@@ -21,7 +21,7 @@ type animationData struct {
 // Example:
 //
 //	a := animation.New()
-func New() *animation {
+func New() Animation {
 	return &animation{
 		FormatVersion: "1.12.0",
 		Animations:    make(map[string]*animationData),
@@ -33,7 +33,7 @@ func New() *animation {
 // Example:
 //
 //	a, err := animation.Load("player.animation.json")
-func Load(src string) (*animation, error) {
+func Load(src string) (Animation, error) {
 	a := New()
 	err := g_util.LoadJSON(src, a)
 	return a, err

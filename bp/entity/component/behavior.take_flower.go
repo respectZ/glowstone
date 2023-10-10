@@ -11,19 +11,19 @@ type Behavior_TakeFlower struct {
   // Conditions that need to be met for the behavior to start.
   Filters *f.Filter `json:"filters,omitempty"`
   // Maximum rotation (in degrees), on the Y-axis, this entity can rotate its head while trying to look at the target.
-  MaxHeadRotationY float64 `json:"max_head_rotation_y,omitempty"`
+  MaxHeadRotationY *float64 `json:"max_head_rotation_y,omitempty"`
   // Maximum rotation (in degrees), on the X-axis, this entity can rotate while trying to look at the target.
-  MaxRotationX float64 `json:"max_rotation_x,omitempty"`
+  MaxRotationX *float64 `json:"max_rotation_x,omitempty"`
   // The maximum amount of time (in seconds) for the mob to randomly wait for before taking the flower.
-  MaxWaitTime float64 `json:"max_wait_time,omitempty"`
+  MaxWaitTime *float64 `json:"max_wait_time,omitempty"`
   // Minimum distance (in blocks) for the entity to be considered having reached its target.
-  MinDistanceToTarget float64 `json:"min_distance_to_target,omitempty"`
+  MinDistanceToTarget *float64 `json:"min_distance_to_target,omitempty"`
   // The minimum amount of time (in seconds) for the mob to randomly wait for before taking the flower.
-  MinWaitTime float64 `json:"min_wait_time,omitempty"`
+  MinWaitTime *float64 `json:"min_wait_time,omitempty"`
   // [Vector3 [a,b,c]] The dimensions of the AABB used to search for a potential mob to take a flower from.
-  SearchArea []float64 `json:"search_area,omitempty"`
+  SearchArea *[]float64 `json:"search_area,omitempty"`
   // Movement speed multiplier of the mob when using this AI Goal.
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

@@ -5,23 +5,23 @@ package component
 // Causes an entity to circle around an anchor point placed near a point or target.  
 type Behavior_CircleAroundAnchor struct {
   // Number of degrees to change this entity's facing by, when the entity selects its next anchor point.
-  AngleChange float64 `json:"angle_change,omitempty"`
+  AngleChange *float64 `json:"angle_change,omitempty"`
   // Maximum distance from the anchor-point in which this entity considers itself to have reached the anchor point. This is to prevent the entity from bouncing back and forth trying to reach a specific spot.
-  GoalRadius float64 `json:"goal_radius,omitempty"`
+  GoalRadius *float64 `json:"goal_radius,omitempty"`
   // The number of blocks above the target that the next anchor point can be set. This value is used only when the entity is tracking a target.
-  HeightAboveTargetRange float64 `json:"height_above_target_range,omitempty"`
+  HeightAboveTargetRange *float64 `json:"height_above_target_range,omitempty"`
   // Percent chance to determine how often to increase or decrease the current height around the anchor point. 1 = 100%. "height_change_chance" is deprecated and has been replaced with "height_adjustment_chance".
-  HeightAdjustmentChance float64 `json:"height_adjustment_chance,omitempty"`
+  HeightAdjustmentChance *float64 `json:"height_adjustment_chance,omitempty"`
   // Vertical distance from the anchor point this entity must stay within, upon a successful height adjustment.
-  HeightOffsetRange float64 `json:"height_offset_range,omitempty"`
+  HeightOffsetRange *float64 `json:"height_offset_range,omitempty"`
   // Percent chance to determine how often to increase the size of the current movement radius around the anchor point. 1 = 100%. "radius_change_chance" is deprecated and has been replaced with "radius_adjustment_chance".
-  RadiusAdjustmentChance float64 `json:"radius_adjustment_chance,omitempty"`
+  RadiusAdjustmentChance *float64 `json:"radius_adjustment_chance,omitempty"`
   // The number of blocks to increase the current movement radius by, upon successful "radius_adjustment_chance". If the current radius increases over the range maximum, the current radius will be set back to the range minimum and the entity will change between clockwise and counter-clockwise movement..
-  RadiusChange float64 `json:"radius_change,omitempty"`
+  RadiusChange *float64 `json:"radius_change,omitempty"`
   // Horizontal distance from the anchor point this entity must stay within upon a successful radius adjustment.
-  RadiusRange float64 `json:"radius_range,omitempty"`
+  RadiusRange *float64 `json:"radius_range,omitempty"`
   // Multiplies the speed at which this entity travels to its next desired position.
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

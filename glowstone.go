@@ -8,11 +8,14 @@ import (
 	"path/filepath"
 	"strings"
 
+	jsoniter "github.com/json-iterator/go"
 	animation "github.com/respectZ/glowstone/animation"
+	animationController "github.com/respectZ/glowstone/animation_controller"
 	attachable "github.com/respectZ/glowstone/attachable"
 	"github.com/respectZ/glowstone/entity"
 	item "github.com/respectZ/glowstone/item"
 	recipe "github.com/respectZ/glowstone/recipe"
+	"github.com/respectZ/glowstone/rp"
 	g_util "github.com/respectZ/glowstone/util"
 
 	entityBP "github.com/respectZ/glowstone/bp/entity"
@@ -39,11 +42,12 @@ func NewProject() Glowstone {
 		},
 		Lang: make(map[string]string),
 
-		Entities:    make(map[string]*entity.Entity),
-		Items:       make(map[string]*item.Item),
-		BPAnimation: make(map[string]*animation.BPAnimation),
-		Recipes:     make(map[string]interface{}),
-		Attachables: make(map[string]*attachable.Attachable),
+		Entities:              make(map[string]*entity.Entity),
+		Items:                 make(map[string]*item.Item),
+		BPAnimationController: make(map[string]*animationController.BPAnimationController),
+		BPAnimation:           make(map[string]*animation.BPAnimation),
+		Recipes:               make(map[string]interface{}),
+		Attachables:           make(map[string]*attachable.Attachable),
 
 		IsUpfront: false,
 	}
@@ -103,13 +107,20 @@ func (g *glowstone) Initialize() error {
 	} else {
 		g.SetLang(data)
 	}
+
+	// Read blocks.json
+	g.RPBlocks, _ = rp.LoadBlocks(g.RPDir + "blocks.json")
+
 	// Read ItemTexture
-	g.ItemTexture, err = texture.Load(g.RPDir + "textures/item_texture.json")
+	g.ItemTexture, err = texture.LoadItemTexture(g.RPDir + "textures/item_texture.json")
 	if err != nil {
 		g.Logger.Warning.Println("Failed to read item_texture.json file, creating new item_texture.json file.")
-		g.ItemTexture = texture.New()
+		g.ItemTexture = texture.NewItemTexture()
 	}
-	// TODO: Upfront here.
+
+	// Read TerrainTexture
+	g.TerrainTexture, _ = texture.LoadTerrainTexture(g.RPDir + "textures/terrain_texture.json")
+
 	return nil
 }
 
@@ -118,6 +129,35 @@ func (g *glowstone) SetUpfront(upfront bool) {
 }
 
 func (g *glowstone) Save() {
+	// RPBlocks
+	// Do some workaround to read format_version from blocks.json
+	blocksFormatVersion := [3]int{1, 1, 0}
+	blocksSrc := path.Join(g.RPDir, "blocks.json")
+	var blocks map[string][3]int
+	err := g_util.LoadJSON(blocksSrc, blocks)
+	if err == nil {
+		blocksFormatVersion = blocks["format_version"]
+	}
+
+	if g.RPBlocks != nil {
+		data, err := g.RPBlocks.Encode()
+		if err == nil {
+			// Reload to write format_version
+			var temp map[string]interface{}
+			var json = jsoniter.ConfigFastest
+
+			jsoniter.Unmarshal(data, &temp)
+			temp["format_version"] = blocksFormatVersion
+			data, err = json.MarshalIndent(temp, "", "  ")
+			if err != nil {
+				g.Logger.Error.Println(err)
+			}
+
+			// Encode
+			g_util.Writefile(path.Join(g.RPDir, "blocks.json"), data)
+		}
+	}
+
 	// ItemTexture
 	data, err := g.ItemTexture.Encode()
 	if err != nil {
@@ -125,6 +165,16 @@ func (g *glowstone) Save() {
 	} else {
 		g_util.Writefile(path.Join(g.RPDir, "textures", "item_texture.json"), data)
 	}
+
+	// TerrainTexture
+	if g.TerrainTexture != nil {
+		data, err = g.TerrainTexture.Encode()
+		if err == nil {
+			g_util.Writefile(path.Join(g.RPDir, "textures", "terrain_texture.json"), data)
+		}
+	}
+
+	// Sound Definition
 	if g.SoundDefinition != nil {
 		data, err := g.SoundDefinition.Encode()
 		if err != nil {
@@ -168,6 +218,16 @@ func (g *glowstone) Save() {
 			continue
 		}
 		g_util.Writefile(path.Join(g.BPDir, "items", i.Subdir, fmt.Sprintf("%s.json", i.GetIdentifier())), bp)
+	}
+
+	// BPAnimationController
+	for _, a := range g.BPAnimationController {
+		data, err := a.Encode()
+		if err != nil {
+			g.Logger.Error.Println(err)
+			continue
+		}
+		g_util.Writefile(path.Join(g.BPDir, "animation_controllers", a.Dest), data)
 	}
 
 	// BPAnimation
@@ -505,10 +565,32 @@ func (g *glowstone) NewAttachable(namespace string, identifier string, subdir ..
 	return a
 }
 
+/******************* RPBlocks *******************/
+
+func (g *glowstone) GetRPBlocks() *rp.Blocks {
+	if g.RPBlocks == nil {
+		g.Logger.Warning.Println("Trying to access nil blocks.json.")
+		g.Logger.Warning.Println("Creating new blocks.json file.")
+		g.RPBlocks = rp.NewBlocks()
+	}
+	return g.RPBlocks
+}
+
 /******************* ItemTexture *******************/
 
 func (g *glowstone) GetItemTexture() *texture.ItemTexture {
 	return g.ItemTexture
+}
+
+/******************* TerrainTexture *******************/
+
+func (g *glowstone) GetTerrainTexture() *texture.TerrainTexture {
+	if g.TerrainTexture == nil {
+		g.Logger.Warning.Println("Trying to access nil terrain_texture.json.")
+		g.Logger.Warning.Println("Creating new terrain_texture.json file.")
+		g.TerrainTexture = texture.NewTerrainTexture()
+	}
+	return g.TerrainTexture
 }
 
 /******************* Sound Definition *******************/
@@ -524,6 +606,27 @@ func (g *glowstone) GetSoundDefinition() *sound.SoundDefinition {
 		}
 	}
 	return g.SoundDefinition
+}
+
+/******************* BPAnimationController *******************/
+
+func (g *glowstone) AddBPAnimationController(bpAnimationControllers ...interface{}) {
+	for _, a := range bpAnimationControllers {
+		switch a := a.(type) {
+		case *animationController.BPAnimationController:
+			g.BPAnimationController[a.Dest] = a
+		case animationController.BPAnimationController:
+			g.BPAnimationController[a.Dest] = &a
+		default:
+			g.Logger.Error.Printf("invalid type %T", a)
+		}
+	}
+}
+
+func (g *glowstone) NewBPAnimationController(dest string) *animationController.BPAnimationController {
+	a := animationController.NewBP(dest)
+	g.BPAnimationController[dest] = a
+	return a
 }
 
 /******************* BPAnimation *******************/

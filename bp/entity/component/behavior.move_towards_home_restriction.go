@@ -5,7 +5,7 @@ package component
 // Allows mobs with the home component to move toward their pre-defined area that the mob should be restricted to.  
 type Behavior_MoveTowardsHomeRestriction struct {
   // This multiplier modifies the entity's speed when moving towards it's restriction.
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

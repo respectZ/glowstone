@@ -9,9 +9,9 @@ type Inventory struct {
   // If true, the contents of this inventory can be removed by a hopper
   CanBeSiphonedFrom bool `json:"can_be_siphoned_from,omitempty"`
   // Type of container this entity has. Can be horse, minecart_chest, chest_boat, minecart_hopper, inventory, container or hopper
-  ContainerType string `json:"container_type,omitempty"`
+  ContainerType *string `json:"container_type,omitempty"`
   // Number of slots the container has
-  InventorySize int `json:"inventory_size,omitempty"`
+  InventorySize *int `json:"inventory_size,omitempty"`
   // If true, the entity will not drop its inventory on death
   Private bool `json:"private,omitempty"`
   // If true, the entity's inventory can only be accessed by its owner or itself

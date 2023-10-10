@@ -5,9 +5,9 @@ package component
 // Allows the entity go idle, if swimming. Entity must be in water.  
 type Behavior_SwimIdle struct {
   // Amount of time (in seconds) to stay idle.
-  IdleTime float64 `json:"idle_time,omitempty"`
+  IdleTime *float64 `json:"idle_time,omitempty"`
   // Percent chance this entity will go idle, 1.0 = 100%.
-  SuccessRate float64 `json:"success_rate,omitempty"`
+  SuccessRate *float64 `json:"success_rate,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

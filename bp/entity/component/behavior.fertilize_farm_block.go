@@ -5,19 +5,19 @@ package component
 // Allows the mob to search within an area for a growable crop block. If found, the mob will use any available fertilizer in their inventory on the crop. This goal will not execute if the mob does not have a fertilizer item in its inventory.  
 type Behavior_FertilizeFarmBlock struct {
   // Distance in blocks within the mob considers it has reached it's target position. 
-  GoalRadius float64 `json:"goal_radius,omitempty"`
+  GoalRadius *float64 `json:"goal_radius,omitempty"`
   // The maximum number of times the mob will use fertilzer on the target block.
-  MaxFertilizerUsage int `json:"max_fertilizer_usage,omitempty"`
+  MaxFertilizerUsage *int `json:"max_fertilizer_usage,omitempty"`
   // The maximum amount of time in seconds that the goal can take before searching again. The time is chosen between 0 and this number.
-  SearchCooldownMaxSeconds float64 `json:"search_cooldown_max_seconds,omitempty"`
+  SearchCooldownMaxSeconds *float64 `json:"search_cooldown_max_seconds,omitempty"`
   // The number of randomly selected blocks each tick that the mob will check within its search range and height for a valid block to move to. A value of 0 will have the mob check every block within range in one tick.
-  SearchCount int `json:"search_count,omitempty"`
+  SearchCount *int `json:"search_count,omitempty"`
   // The Height in blocks the mob will search within to find a valid target position.
-  SearchHeight int `json:"search_height,omitempty"`
+  SearchHeight *int `json:"search_height,omitempty"`
   // The distance in blocks the mob will search within to find a valid target position.
-  SearchRange int `json:"search_range,omitempty"`
+  SearchRange *int `json:"search_range,omitempty"`
   // Movement speed multiplier of the mob when using this Goal.
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

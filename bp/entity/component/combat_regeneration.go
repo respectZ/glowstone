@@ -9,5 +9,5 @@ type CombatRegeneration struct {
   // Determines if the mob will grant itself the combat buffs if it kills the target.
   ApplyToSelf bool `json:"apply_to_self,omitempty"`
   // The duration in seconds of Regeneration I added to the mob.
-  RegenerationDuration int `json:"regeneration_duration,omitempty"`
+  RegenerationDuration *int `json:"regeneration_duration,omitempty"`
 }

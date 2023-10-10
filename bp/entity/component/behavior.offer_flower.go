@@ -9,17 +9,17 @@ import (
 // Allows the mob to offer a flower to another mob with the minecraft:take_flower behavior.  
 type Behavior_OfferFlower struct {
   // Percent chance that the mob will start this goal from 0.0 to 1.0 (where 1.0 = 100%).
-  ChanceToStart float64 `json:"chance_to_start,omitempty"`
+  ChanceToStart *float64 `json:"chance_to_start,omitempty"`
   // Conditions that need to be met for the behavior to start.
   Filters *f.Filter `json:"filters,omitempty"`
   // Maximum rotation (in degrees), on the Y-axis, this entity can rotate its head while trying to look at the target.
-  MaxHeadRotationY float64 `json:"max_head_rotation_y,omitempty"`
+  MaxHeadRotationY *float64 `json:"max_head_rotation_y,omitempty"`
   // The max amount of time (in seconds) that the mob will offer the flower for before exiting the Goal.
-  MaxOfferFlowerDuration float64 `json:"max_offer_flower_duration,omitempty"`
+  MaxOfferFlowerDuration *float64 `json:"max_offer_flower_duration,omitempty"`
   // Maximum rotation (in degrees), on the X-axis, this entity can rotate while trying to look at the target.
-  MaxRotationX float64 `json:"max_rotation_x,omitempty"`
+  MaxRotationX *float64 `json:"max_rotation_x,omitempty"`
   // [Vector3 [a,b,c]] The dimensions of the AABB used to search for a potential mob to offer flower to.
-  SearchArea []float64 `json:"search_area,omitempty"`
+  SearchArea *[]float64 `json:"search_area,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

@@ -7,9 +7,9 @@ type Behavior_FollowMob struct {
   // The distance in blocks it will look for a mob to follow
   SearchRange int `json:"search_range,omitempty"`
   // Movement speed multiplier of the mob when using this AI Goal
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The distance in blocks this mob stops from the mob it is following
-  StopDistance float64 `json:"stop_distance,omitempty"`
+  StopDistance *float64 `json:"stop_distance,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

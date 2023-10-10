@@ -5,17 +5,17 @@ package component
 // Enables an entity to float on the specified liquid blocks.  
 type Buoyant struct {
   // Applies gravity each tick. Causes more of a wave simulation, but will cause more gravity to be applied outside liquids.
-  ApplyGravity bool `json:"apply_gravity,omitempty"`
+  ApplyGravity *bool `json:"apply_gravity,omitempty"`
   // Base buoyancy used to calculate how much will a mob float.
-  BaseBuoyancy float64 `json:"base_buoyancy,omitempty"`
+  BaseBuoyancy *float64 `json:"base_buoyancy,omitempty"`
   // Probability for a big wave hitting the entity. Only used if `simulate_waves` is true.
-  BigWaveProbability float64 `json:"big_wave_probability,omitempty"`
+  BigWaveProbability *float64 `json:"big_wave_probability,omitempty"`
   // Multiplier for the speed to make a big wave. Triggered depending on 'big_wave_probability'.
-  BigWaveSpeed float64 `json:"big_wave_speed,omitempty"`
+  BigWaveSpeed *float64 `json:"big_wave_speed,omitempty"`
   // How much an actor will be dragged down when the Buoyancy Component is removed.
   DragDownOnBuoyancyRemoved float64 `json:"drag_down_on_buoyancy_removed,omitempty"`
   // List of blocks this entity can float on. Must be a liquid block.
   LiquidBlocks []interface{} `json:"liquid_blocks,omitempty"`
   // Should the movement simulate waves going through.
-  SimulateWaves bool `json:"simulate_waves,omitempty"`
+  SimulateWaves *bool `json:"simulate_waves,omitempty"`
 }

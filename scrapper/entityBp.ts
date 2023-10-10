@@ -31,6 +31,7 @@ const write = (dest: string, data: string) =>
 interface GoField {
   name: string;
   type: string;
+  defaultVal?: string;
   description?: string;
 }
 
@@ -65,6 +66,21 @@ function toGoStruct(
     if (temp.includes(fieldName)) continue;
     temp.push(fieldName);
 
+    // Check default val
+    if (value.defaultVal) {
+      if (
+        value.defaultVal == "false" ||
+        value.defaultVal == "" ||
+        value.defaultVal == "0" ||
+        value.defaultVal == "0.0"
+      ) {
+        // Yes, we can canZero it
+        // value.type = "*" + value.type;
+      } else {
+        value.type = "*" + value.type;
+      }
+    }
+
     result += `  // ${value.description}\n`;
     result += `  ${fieldName} ${value.type} \`json:"${value.name},omitempty"\`\n`;
   }
@@ -95,6 +111,7 @@ function getFields(table: Element, parentName: string): GoField[] {
     const field: GoField = {
       name: row.children[0].innerText,
       type: row.children[1].innerText,
+      defaultVal: row.children[2].innerText,
       description: row.children[3].innerText,
     };
     // Change type to go type

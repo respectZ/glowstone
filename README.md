@@ -8,7 +8,7 @@
 # Todo
 - BP
   - [x] Animation
-  - [ ] Animation Controller
+  - [x] Animation Controller
   - [ ] Block
   - [x] Entity
   - [x] Item
@@ -29,7 +29,10 @@
   - [ ] sounds.json
   - [x] sound_definitions.json
   - [ ] blocks.json
-  - [ ] terrain_textures.json
+  - [x] terrain_textures.json
+
+- Misc
+  - [ ] Remove unnecessary pointer
 
 - Util
   - [ ] BBModel Parser 

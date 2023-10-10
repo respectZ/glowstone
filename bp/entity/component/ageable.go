@@ -7,7 +7,7 @@ type Ageable struct {
   // List of items that the entity drops when it grows up.
   DropItems []interface{} `json:"drop_items,omitempty"`
   // Amount of time before the entity grows up, -1 for always a baby.
-  Duration float64 `json:"duration,omitempty"`
+  Duration *float64 `json:"duration,omitempty"`
   // List of items that can be fed to the entity. Includes 'item' for the item name and 'growth' to define how much time it grows up by
   FeedItems []interface{} `json:"feed_items,omitempty"`
   // Event to run when this entity grows up.

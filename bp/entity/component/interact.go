@@ -23,7 +23,7 @@ type Interact struct {
   // Time in seconds before this entity can be interacted with after being attacked.
   CooldownAfterBeingAttacked float64 `json:"cooldown_after_being_attacked,omitempty"`
   // The entity's equipment slot to equip the item to, if any, upon successful interaction.
-  EquipItemSlot int `json:"equip_item_slot,omitempty"`
+  EquipItemSlot *int `json:"equip_item_slot,omitempty"`
   // The amount of health this entity will recover or hurt when interacting with this item. Negative values will harm the entity.
   HealthAmount int `json:"health_amount,omitempty"`
   // The amount of damage the item will take when used to interact with this entity. A value of 0 means the item won't lose durability.

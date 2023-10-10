@@ -5,9 +5,9 @@ package component
 // Entities with this component will have a maximum auto step height that is different depending on whether they are on a block that prevents jumping. Incompatible with "runtime_identifier": "minecraft:horse".  
 type VariableMaxAutoStep struct {
   // The maximum auto step height when on any other block.
-  BaseValue float64 `json:"base_value,omitempty"`
+  BaseValue *float64 `json:"base_value,omitempty"`
   // The maximum auto step height when on any other block and controlled by the player.
-  ControlledValue float64 `json:"controlled_value,omitempty"`
+  ControlledValue *float64 `json:"controlled_value,omitempty"`
   // The maximum auto step height when on a block that prevents jumping.
-  JumpPreventedValue float64 `json:"jump_prevented_value,omitempty"`
+  JumpPreventedValue *float64 `json:"jump_prevented_value,omitempty"`
 }

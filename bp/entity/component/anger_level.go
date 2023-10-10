@@ -9,21 +9,21 @@ import (
 // Allows this entity to track anger towards a set of nuisances  
 type AngerLevel struct {
   // Anger level will decay over time. Defines how often anger towards all nuisances will be decreased by one
-  AngerDecrementInterval float64 `json:"anger_decrement_interval,omitempty"`
+  AngerDecrementInterval *float64 `json:"anger_decrement_interval,omitempty"`
   // Anger boost applied to angry threshold when mob gets angry
-  AngryBoost uint `json:"angry_boost,omitempty"`
+  AngryBoost *uint `json:"angry_boost,omitempty"`
   // Threshold that define when the mob is considered angry at a nuisance
-  AngryThreshold uint `json:"angry_threshold,omitempty"`
+  AngryThreshold *uint `json:"angry_threshold,omitempty"`
   // The default amount of annoyingness for any given nuisance. Specifies how much to raise anger level on each provocation
   DefaultAnnoyingness string `json:"default_annoyingness,omitempty"`
   // The maximum anger level that can be reached. Applies to any nuisance
-  MaxAnger uint `json:"max_anger,omitempty"`
+  MaxAnger *uint `json:"max_anger,omitempty"`
   // Filter that is applied to determine if a mob can be a nuisance
   NuisanceFilter *f.Filter `json:"nuisance_filter,omitempty"`
   // Sounds to play when the entity is getting provoked. Evaluated in order. First matching condition winscondition#
   OnIncreaseSounds []interface{} `json:"on_increase_sounds,omitempty"`
   // Defines if the mob should remove target if it falls below 'angry' threshold
-  RemoveTargetsBelowAngryThreshold bool `json:"remove_targets_below_angry_threshold,omitempty"`
+  RemoveTargetsBelowAngryThreshold *bool `json:"remove_targets_below_angry_threshold,omitempty"`
 }
 
 // Sounds to play when the entity is getting provoked. Evaluated in order. First matching condition wins.

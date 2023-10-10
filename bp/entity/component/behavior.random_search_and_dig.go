@@ -5,13 +5,13 @@ package component
 // [EXPERIMENTAL] Allows this entity to locate a random target block that it can path find to. Once found, the entity will move towards it and dig up an item. [Valid target block type: Dirt, Grass, Podzol, DirtWithRoots, MossBlock, Mud, MuddyMangroveRoots].  
 type Behavior_RandomSearchAndDig struct {
   // Goal cooldown range in seconds.
-  CooldownRange float64 `json:"cooldown_range,omitempty"`
+  CooldownRange *float64 `json:"cooldown_range,omitempty"`
   // Digging duration in seconds.
-  DiggingDurationRange float64 `json:"digging_duration_range,omitempty"`
+  DiggingDurationRange *float64 `json:"digging_duration_range,omitempty"`
   // Amount of retries to find a valid target position within search range.
-  FindValidPositionRetries float64 `json:"find_valid_position_retries,omitempty"`
+  FindValidPositionRetries *float64 `json:"find_valid_position_retries,omitempty"`
   // Distance in blocks within the entity to considers it has reached it's target position.
-  GoalRadius float64 `json:"goal_radius,omitempty"`
+  GoalRadius *float64 `json:"goal_radius,omitempty"`
   // Weighted list of item(s) to spawn on successful dig
   Items []interface{} `json:"items,omitempty"`
   // [Trigger] Event to run when the goal ends searching has begins digging.
@@ -27,17 +27,17 @@ type Behavior_RandomSearchAndDig struct {
   // [Trigger] Event to run when searching and digging has ended.
   OnSuccess interface{} `json:"on_success,omitempty"`
   // Width and length of the volume around the entity used to find a valid target position
-  SearchRangeXz float64 `json:"search_range_xz,omitempty"`
+  SearchRangeXz *float64 `json:"search_range_xz,omitempty"`
   // Height of the volume around the entity used to find a valid target position
-  SearchRangeY float64 `json:"search_range_y,omitempty"`
+  SearchRangeY *float64 `json:"search_range_y,omitempty"`
   // Digging duration before spawning item in seconds.
-  SpawnItemAfterSeconds float64 `json:"spawn_item_after_seconds,omitempty"`
+  SpawnItemAfterSeconds *float64 `json:"spawn_item_after_seconds,omitempty"`
   // Distance to offset the item's spawn location in the direction the mob is facing.
-  SpawnItemPosOffset float64 `json:"spawn_item_pos_offset,omitempty"`
+  SpawnItemPosOffset *float64 `json:"spawn_item_pos_offset,omitempty"`
   // Searching movement speed multiplier.
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // Dig target position offset from the feet position of the mob in their facing direction.
-  TargetDigPositionOffset float64 `json:"target_dig_position_offset,omitempty"`
+  TargetDigPositionOffset *float64 `json:"target_dig_position_offset,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

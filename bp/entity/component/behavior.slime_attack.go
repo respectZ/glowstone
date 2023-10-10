@@ -7,11 +7,11 @@ type Behavior_SlimeAttack struct {
   // Allows the actor to be set to persist upon targeting a player
   SetPersistent bool `json:"set_persistent,omitempty"`
   // During attack behavior, this multiplier modifies the entity's speed when moving toward the target.
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // Maximum rotation (in degrees), on the X-axis, this entity can rotate while trying to look at the target.
-  XMaxRotation float64 `json:"x_max_rotation,omitempty"`
+  XMaxRotation *float64 `json:"x_max_rotation,omitempty"`
   // Maximum rotation (in degrees), on the Y-axis, this entity can rotate while trying to look at the target.
-  YMaxRotation float64 `json:"y_max_rotation,omitempty"`
+  YMaxRotation *float64 `json:"y_max_rotation,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

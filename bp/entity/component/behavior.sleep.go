@@ -9,15 +9,15 @@ type Behavior_Sleep struct {
   // Time in seconds the mob has to wait before using the goal again
   CooldownTime float64 `json:"cooldown_time,omitempty"`
   // The height of the mob's collider while sleeping
-  SleepColliderHeight float64 `json:"sleep_collider_height,omitempty"`
+  SleepColliderHeight *float64 `json:"sleep_collider_height,omitempty"`
   // The width of the mob's collider while sleeping
-  SleepColliderWidth float64 `json:"sleep_collider_width,omitempty"`
+  SleepColliderWidth *float64 `json:"sleep_collider_width,omitempty"`
   // The y offset of the mob's collider while sleeping
-  SleepYOffset float64 `json:"sleep_y_offset,omitempty"`
+  SleepYOffset *float64 `json:"sleep_y_offset,omitempty"`
   // Movement speed multiplier of the mob when using this AI Goal
-  SpeedMultiplier float64 `json:"speed_multiplier,omitempty"`
+  SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The cooldown time in seconds before the goal can be reused after a internal failure or timeout condition
-  TimeoutCooldown float64 `json:"timeout_cooldown,omitempty"`
+  TimeoutCooldown *float64 `json:"timeout_cooldown,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

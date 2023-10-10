@@ -5,5 +5,5 @@ package component
 // This move control causes the mob to fly.  
 type Movement_Fly struct {
   // The maximum number in degrees the mob can turn per tick.
-  MaxTurn float64 `json:"max_turn,omitempty"`
+  MaxTurn *float64 `json:"max_turn,omitempty"`
 }

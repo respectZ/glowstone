@@ -11,9 +11,9 @@ type Flocking struct {
   // The amount of push back given to a flocker that breaches out of the water.
   BreachInfluence float64 `json:"breach_influence,omitempty"`
   // The threshold in which to start applying cohesion.
-  CohesionThreshold float64 `json:"cohesion_threshold,omitempty"`
+  CohesionThreshold *float64 `json:"cohesion_threshold,omitempty"`
   // The weight applied for the cohesion steering of the flock.
-  CohesionWeight float64 `json:"cohesion_weight,omitempty"`
+  CohesionWeight *float64 `json:"cohesion_weight,omitempty"`
   // The weight on which to apply on the goal output.
   GoalWeight float64 `json:"goal_weight,omitempty"`
   // Determines the high bound amount of entities that can be allowed in the flock.
@@ -35,9 +35,9 @@ type Flocking struct {
   // The min height allowable in the air or water.
   MinHeight float64 `json:"min_height,omitempty"`
   // The distance that is determined to be to close to another flocking and to start applying separation.
-  SeparationThreshold float64 `json:"separation_threshold,omitempty"`
+  SeparationThreshold *float64 `json:"separation_threshold,omitempty"`
   // The weight applied to the separation of the flock.
-  SeparationWeight float64 `json:"separation_weight,omitempty"`
+  SeparationWeight *float64 `json:"separation_weight,omitempty"`
   // Tells the flockers that they will follow flocks based on the center of mass.
   UseCenterOfMass bool `json:"use_center_of_mass,omitempty"`
 }

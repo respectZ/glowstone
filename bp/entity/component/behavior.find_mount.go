@@ -7,7 +7,7 @@ type Behavior_FindMount struct {
   // If true, the mob will not go into water blocks when going towards a mount
   AvoidWater bool `json:"avoid_water,omitempty"`
   // This is the distance the mob needs to be, in blocks, from the desired mount to mount it. If the value is below 0, the mob will use its default attack distance
-  MountDistance float64 `json:"mount_distance,omitempty"`
+  MountDistance *float64 `json:"mount_distance,omitempty"`
   // Time the mob will wait before starting to move towards the mount
   StartDelay int `json:"start_delay,omitempty"`
   // If true, the mob will only look for a mount if it has a target

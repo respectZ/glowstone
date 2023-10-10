@@ -19,13 +19,13 @@ type Angry struct {
   // Conditions that make this entry in the list valid
   BroadcastFilters *f.Filter `json:"broadcast_filters,omitempty"`
   // Distance in blocks within which other entities of the same entity definition will become angry
-  BroadcastRange int `json:"broadcast_range,omitempty"`
+  BroadcastRange *int `json:"broadcast_range,omitempty"`
   // A list of entity families to broadcast anger to
   BroadcastTargets []interface{} `json:"broadcast_targets,omitempty"`
   // Event to run after the number of seconds specified in duration expires (when the entity stops being 'angry')
   CalmEvent string `json:"calm_event,omitempty"`
   // The amount of time in seconds that the entity will be angry
-  Duration int `json:"duration,omitempty"`
+  Duration *int `json:"duration,omitempty"`
   // Variance in seconds added to the duration [-delta, delta]
   DurationDelta int `json:"duration_delta,omitempty"`
   // Filter out mob types that it should not attack while angry (other Piglins)

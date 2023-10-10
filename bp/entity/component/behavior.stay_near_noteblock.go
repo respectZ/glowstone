@@ -5,13 +5,13 @@ package component
 // The entity will attempt to toss the items from its inventory to a nearby recently played noteblock.  
 type Behavior_StayNearNoteblock struct {
   // Sets the time an entity should stay near a noteblock after hearing it.
-  ListenTime int `json:"listen_time,omitempty"`
+  ListenTime *int `json:"listen_time,omitempty"`
   // Sets the entity's speed when moving toward the block.
-  Speed float64 `json:"speed,omitempty"`
+  Speed *float64 `json:"speed,omitempty"`
   // Sets the distance the entity needs to be away from the block to attempt to start the goal.
-  StartDistance float64 `json:"start_distance,omitempty"`
+  StartDistance *float64 `json:"start_distance,omitempty"`
   // Sets the distance from the block the entity will attempt to reach.
-  StopDistance float64 `json:"stop_distance,omitempty"`
+  StopDistance *float64 `json:"stop_distance,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }
