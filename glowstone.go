@@ -139,25 +139,27 @@ func (g *glowstone) Save() {
 		blocksFormatVersion = blocks["format_version"]
 	}
 
-	data, err := g.RPBlocks.Encode()
-	if err == nil {
-		// Reload to write format_version
-		var temp map[string]interface{}
-		var json = jsoniter.ConfigFastest
+	if g.RPBlocks != nil {
+		data, err := g.RPBlocks.Encode()
+		if err == nil {
+			// Reload to write format_version
+			var temp map[string]interface{}
+			var json = jsoniter.ConfigFastest
 
-		jsoniter.Unmarshal(data, &temp)
-		temp["format_version"] = blocksFormatVersion
-		data, err = json.MarshalIndent(temp, "", "  ")
-		if err != nil {
-			g.Logger.Error.Println(err)
+			jsoniter.Unmarshal(data, &temp)
+			temp["format_version"] = blocksFormatVersion
+			data, err = json.MarshalIndent(temp, "", "  ")
+			if err != nil {
+				g.Logger.Error.Println(err)
+			}
+
+			// Encode
+			g_util.Writefile(path.Join(g.RPDir, "blocks.json"), data)
 		}
-
-		// Encode
-		g_util.Writefile(path.Join(g.RPDir, "blocks.json"), data)
 	}
 
 	// ItemTexture
-	data, err = g.ItemTexture.Encode()
+	data, err := g.ItemTexture.Encode()
 	if err != nil {
 		g.Logger.Error.Println(err)
 	} else {
