@@ -167,9 +167,11 @@ func (g *glowstone) Save() {
 	}
 
 	// TerrainTexture
-	data, err = g.TerrainTexture.Encode()
-	if err == nil {
-		g_util.Writefile(path.Join(g.RPDir, "textures", "terrain_texture.json"), data)
+	if g.TerrainTexture != nil {
+		data, err = g.TerrainTexture.Encode()
+		if err == nil {
+			g_util.Writefile(path.Join(g.RPDir, "textures", "terrain_texture.json"), data)
+		}
 	}
 
 	// Sound Definition
