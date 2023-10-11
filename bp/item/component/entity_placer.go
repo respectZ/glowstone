@@ -10,7 +10,7 @@ type EntityPlacer struct {
   // The entity to be placed in the world. Note that this parameter is required.
   Entity string `json:"entity,omitempty"`
 
-  // List of block descriptors that contain blocks that this item can be used on. If left empty, all blocks will be allowed.
+  // List of block descriptors that contain blocks that this item can be used on. If left empty, all blocks will be allowed. See Custom Item Use Priority for more information on use behavior.
   UseOn []interface{} `json:"use_on,omitempty"`
 
 }
