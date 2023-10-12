@@ -92,14 +92,15 @@ func (i *item) SetIsHiddenInCommands(isHiddenInCommands bool) {
 }
 
 func (i *item) GetComponent(name interface{}) (interface{}, error) {
-	if component, ok := i.Item.Components[util_component.GetComponentName(name)]; ok {
+	componentName := util_component.GetComponentName(name)
+	if component, ok := i.Item.Components[componentName]; ok {
 		if reflect.TypeOf(component) == reflect.TypeOf(name) {
 			return component, nil
 		}
 		// Convert map to struct
 		util_component.ConvertMapToStruct(component.(map[string]interface{}), name)
 		// Assign component to the struct
-		i.Item.Components[util_component.GetComponentName(name)] = name
+		i.Item.Components[componentName] = name
 
 		return component, nil
 	}

@@ -5,6 +5,7 @@ import (
 	"reflect"
 
 	glowstone "github.com/respectZ/glowstone/util"
+	util_component "github.com/respectZ/glowstone/util/component"
 )
 
 func (e *entity) Encode() ([]byte, error) {
@@ -108,27 +109,20 @@ func (e *entity) RemoveComponentGroup(name string) {
 	delete(e.Entity.ComponentGroups, name)
 }
 
-// TODO: Rework parameter to the struct, so we can cast it.
-//
-//	func (e *entity) GetComponent(name string) (interface{}, error) {
-//		if component, ok := e.Entity.Components[name]; ok {
-//			return component, nil
-//		}
-//		return nil, fmt.Errorf("component %s not found", name)
-//	}
 func (e *entity) GetComponent(name interface{}) (interface{}, error) {
-	if component, ok := e.Entity.Components[GetComponentName(name)]; ok {
+	componentName := util_component.GetComponentName(name)
+	if component, ok := e.Entity.Components[componentName]; ok {
 		// If the type is match, return it
 		if reflect.TypeOf(component) == reflect.TypeOf(name) {
 			return component, nil
 		}
 		// Convert map to struct
-		err := convertMapToStruct(component.(map[string]interface{}), name)
+		err := util_component.ConvertMapToStruct(component.(map[string]interface{}), name)
 		if err != nil {
 			return nil, err
 		}
 		// Assign component to the struct
-		e.Entity.Components[GetComponentName(name)] = name
+		e.Entity.Components[componentName] = name
 
 		return component, nil
 	}
@@ -141,7 +135,13 @@ func (e *entity) GetComponents() map[string]interface{} {
 
 func (e *entity) AddComponent(components ...interface{}) {
 	for _, component := range components {
-		e.Entity.Components[GetComponentName(component)] = component
+		componentName := util_component.GetComponentName(component)
+		c := reflect.TypeOf(component)
+		if c.Kind() == reflect.String && c.Name() == "string" {
+			e.Entity.Components[componentName] = struct{}{}
+		} else {
+			e.Entity.Components[componentName] = component
+		}
 	}
 }
 
