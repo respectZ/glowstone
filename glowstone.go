@@ -29,6 +29,7 @@ import (
 
 	blockBPCompnent "github.com/respectZ/glowstone/bp/block/component"
 	entityBPComponent "github.com/respectZ/glowstone/bp/entity/component"
+	itemBPComponent "github.com/respectZ/glowstone/bp/item/component"
 )
 
 var MIN_ENGINE_VERSION = [3]int{1, 20, 0}
@@ -235,6 +236,14 @@ func (g *glowstone) Save() {
 
 	// Item
 	for _, i := range g.Items {
+		// Display nam
+		var displayName itemBPComponent.DisplayName
+		_, err := i.BP.GetComponent(&displayName)
+		if err != nil {
+			// Add component
+			displayName.Value = fmt.Sprintf("item.%s.name", i.GetNamespaceIdentifier())
+			i.BP.AddComponent(&displayName)
+		}
 		bp, err := i.Encode()
 		if err != nil {
 			g.Logger.Error.Println(err)

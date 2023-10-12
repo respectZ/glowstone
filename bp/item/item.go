@@ -2,6 +2,7 @@ package item
 
 import (
 	"fmt"
+	"reflect"
 
 	g_util "github.com/respectZ/glowstone/util"
 )
@@ -91,6 +92,9 @@ func (i *item) SetIsHiddenInCommands(isHiddenInCommands bool) {
 
 func (i *item) GetComponent(name interface{}) (interface{}, error) {
 	if component, ok := i.Item.Components[GetComponentName(name)]; ok {
+		if reflect.TypeOf(component) == reflect.TypeOf(name) {
+			return component, nil
+		}
 		// Convert map to struct
 		convertMapToStruct(component.(map[string]interface{}), name)
 		// Assign component to the struct
