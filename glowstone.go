@@ -12,12 +12,14 @@ import (
 	animation "github.com/respectZ/glowstone/animation"
 	animationController "github.com/respectZ/glowstone/animation_controller"
 	attachable "github.com/respectZ/glowstone/attachable"
+	block "github.com/respectZ/glowstone/block"
 	"github.com/respectZ/glowstone/entity"
 	item "github.com/respectZ/glowstone/item"
 	recipe "github.com/respectZ/glowstone/recipe"
 	"github.com/respectZ/glowstone/rp"
 	g_util "github.com/respectZ/glowstone/util"
 
+	blockBP "github.com/respectZ/glowstone/bp/block"
 	entityBP "github.com/respectZ/glowstone/bp/entity"
 	itemBP "github.com/respectZ/glowstone/bp/item"
 	recipeBP "github.com/respectZ/glowstone/bp/recipe"
@@ -25,6 +27,7 @@ import (
 	sound "github.com/respectZ/glowstone/rp/sound"
 	texture "github.com/respectZ/glowstone/rp/texture"
 
+	blockBPCompnent "github.com/respectZ/glowstone/bp/block/component"
 	entityBPComponent "github.com/respectZ/glowstone/bp/entity/component"
 )
 
@@ -130,7 +133,7 @@ func (g *glowstone) SetUpfront(upfront bool) {
 
 func (g *glowstone) Save() {
 	// RPBlocks
-	// Do some workaround to read format_version from blocks.json
+	// TODO: some workaround to read format_version from blocks.json
 	blocksFormatVersion := [3]int{1, 1, 0}
 	blocksSrc := path.Join(g.RPDir, "blocks.json")
 	var blocks map[string][3]int
@@ -207,6 +210,26 @@ func (g *glowstone) Save() {
 		}
 		if rp != nil {
 			g_util.Writefile(path.Join(g.RPDir, "entity", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), rp)
+		}
+	}
+
+	// Block
+	if g.Blocks != nil {
+		for _, b := range g.Blocks {
+			// Display name
+			var displayName blockBPCompnent.DisplayName
+			err := b.BP.GetComponent(&displayName)
+			if err != nil {
+				// Add component
+				displayName = blockBPCompnent.DisplayName(fmt.Sprintf("block.%s.name", b.GetNamespaceIdentifier()))
+				b.BP.AddComponent(&displayName)
+			}
+			bp, err := b.Encode()
+			if err != nil {
+				g.Logger.Error.Println(err)
+				continue
+			}
+			g_util.Writefile(path.Join(g.BPDir, "blocks", b.Subdir, fmt.Sprintf("%s.json", b.GetIdentifier())), bp)
 		}
 	}
 
@@ -433,6 +456,54 @@ func (g *glowstone) NewEntity(namespace string, identifier string) *entity.Entit
 	g.AddLang(fmt.Sprintf("entity.%s:%s.name", namespace, identifier), e.Lang)
 	g.AddLang(fmt.Sprintf("item.spawn_egg.entity.%s:%s.name", namespace, identifier), fmt.Sprintf("Spawn %s", lang))
 	return e
+}
+
+/******************* Block *******************/
+
+func (g *glowstone) AddBlock(blocks ...interface{}) {
+	if g.Blocks == nil {
+		g.Blocks = make(map[string]*block.Block)
+	}
+	for _, b := range blocks {
+		switch b := b.(type) {
+		case *block.Block:
+			g.Blocks[b.GetNamespaceIdentifier()] = b
+		case blockBP.Block:
+			p := &block.Block{
+				BP: b,
+			}
+			g.Blocks[p.GetNamespaceIdentifier()] = p
+		default:
+			g.Logger.Error.Printf("invalid type %T", b)
+		}
+	}
+}
+
+func (g *glowstone) GetBlocks() map[string]*block.Block {
+	return g.Blocks
+}
+
+func (g *glowstone) GetBlock(identifier string) (*block.Block, error) {
+	if b, ok := g.Blocks[identifier]; ok {
+		return b, nil
+	}
+	return nil, fmt.Errorf("block %s not found", identifier)
+}
+
+func (g *glowstone) NewBlock(namespace string, identifier string, subdir ...string) *block.Block {
+	b := block.New(namespace, identifier)
+	if g.Blocks == nil {
+		g.Blocks = make(map[string]*block.Block)
+	}
+	g.Blocks[fmt.Sprintf("%s:%s", namespace, identifier)] = b
+	// Set lang
+	lang := g_util.TitleCase(strings.ReplaceAll(identifier, "_", " "))
+	b.Lang = lang
+	g.AddLang(fmt.Sprintf("block.%s:%s.name", namespace, identifier), b.Lang)
+	if len(subdir) > 0 {
+		b.Subdir = subdir[0]
+	}
+	return b
 }
 
 /******************* Items *******************/

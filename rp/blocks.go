@@ -37,7 +37,19 @@ func NewBlocks() *Blocks {
 // Loads a blocks.json file
 func LoadBlocks(src string) (*Blocks, error) {
 	var block Blocks
-	err := g_util.LoadJSON(src, &block)
+	var temp map[string]interface{}
+	err := g_util.LoadJSON(src, &temp)
+	if err != nil {
+		return nil, err
+	}
+	// We remove format_version if exists
+	delete(temp, "format_version")
+	// Cast to Blocks
+	t, err := g_util.MarshalJSON(temp)
+	if err != nil {
+		return nil, err
+	}
+	err = g_util.UnmarshalJSON(t, &block)
 	if err != nil {
 		return nil, err
 	}
