@@ -5,6 +5,7 @@ import (
 	"reflect"
 
 	g_util "github.com/respectZ/glowstone/util"
+	util_component "github.com/respectZ/glowstone/util/component"
 )
 
 const (
@@ -91,14 +92,14 @@ func (i *item) SetIsHiddenInCommands(isHiddenInCommands bool) {
 }
 
 func (i *item) GetComponent(name interface{}) (interface{}, error) {
-	if component, ok := i.Item.Components[GetComponentName(name)]; ok {
+	if component, ok := i.Item.Components[util_component.GetComponentName(name)]; ok {
 		if reflect.TypeOf(component) == reflect.TypeOf(name) {
 			return component, nil
 		}
 		// Convert map to struct
-		convertMapToStruct(component.(map[string]interface{}), name)
+		util_component.ConvertMapToStruct(component.(map[string]interface{}), name)
 		// Assign component to the struct
-		i.Item.Components[GetComponentName(name)] = name
+		i.Item.Components[util_component.GetComponentName(name)] = name
 
 		return component, nil
 	}
@@ -115,7 +116,13 @@ func (i *item) GetComponents() []interface{} {
 
 func (i *item) AddComponent(components ...interface{}) {
 	for _, component := range components {
-		i.Item.Components[GetComponentName(component)] = component
+		componentName := util_component.GetComponentName(component)
+		c := reflect.TypeOf(component)
+		if c.Kind() == reflect.String && c.Name() == "string" {
+			i.Item.Components[componentName] = struct{}{}
+		} else {
+			i.Item.Components[componentName] = component
+		}
 	}
 }
 
