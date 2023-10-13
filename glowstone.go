@@ -210,6 +210,32 @@ func (g *glowstone) Save() {
 			}
 		}
 		if rp != nil {
+			// AutoSpawnEggTexture
+			if e.AutoSpawnEggTexture {
+				// Get texture
+				rp_textures := e.RP.GetTextures()
+				// Get first texture
+				var texture string
+				for _, v := range rp_textures {
+					texture = v
+					break
+				}
+				// Add rpdir
+				texture = path.Join(g.RPDir, texture)
+				// Check if texture exists
+				if _, err := os.Stat(texture); err == nil {
+					primary, secondary, err := g_util.GetEggColor(texture)
+					if err == nil {
+						// Set color
+						e.RP.GetSpawnEgg().SetBaseColor(primary)
+						e.RP.GetSpawnEgg().SetOverlayColor(secondary)
+					} else {
+						g.Logger.Warning.Printf("failed to get egg color for %s: %s", e.GetIdentifier(), err)
+					}
+				} else {
+					g.Logger.Warning.Printf("missing texture auto for %s: %s", e.GetIdentifier(), err)
+				}
+			}
 			g_util.Writefile(path.Join(g.RPDir, "entity", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), rp)
 		}
 	}
