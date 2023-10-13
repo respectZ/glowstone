@@ -1,7 +1,7 @@
 package recipe
 
 const (
-	FORMAT_VERSION string = "1.20.30"
+	FORMAT_VERSION string = "1.20.0"
 )
 
 const (
