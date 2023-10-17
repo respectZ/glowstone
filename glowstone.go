@@ -240,6 +240,18 @@ func (g *glowstone) Save() {
 		}
 	}
 
+	// Loot Table
+	if g.LootTables != nil {
+		for _, lootTable := range g.LootTables {
+			data, err := lootTable.Encode()
+			if err != nil {
+				g.Logger.Error.Println(err)
+				continue
+			}
+			g_util.Writefile(path.Join(g.BPDir, "loot_tables", lootTable.Dest), data)
+		}
+	}
+
 	// Block
 	if g.Blocks != nil {
 		for _, b := range g.Blocks {

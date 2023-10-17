@@ -12,7 +12,7 @@
   - [x] Block
   - [x] Entity
   - [x] Item
-  - [ ] Loot Table
+  - [x] Loot Table
   - [x] Recipe
   - [ ] Spawn Rule
   - [ ] Structure
@@ -45,5 +45,4 @@
   - [ ] Block
   - [ ] Entity (RP)
   - [ ] Blocks (RP)
-  - [ ] Entity (RP)
   - [ ] Attachable (RP)

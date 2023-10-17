@@ -9,6 +9,7 @@ import (
 	block "github.com/respectZ/glowstone/block"
 	entity "github.com/respectZ/glowstone/entity"
 	item "github.com/respectZ/glowstone/item"
+	loot_table "github.com/respectZ/glowstone/loot_table"
 	recipe "github.com/respectZ/glowstone/recipe"
 	sound "github.com/respectZ/glowstone/rp/sound"
 	texture "github.com/respectZ/glowstone/rp/texture"
@@ -33,6 +34,7 @@ type glowstone struct {
 	BPAnimation           map[string]*animation.BPAnimation
 	Recipes               map[string]interface{}
 	Blocks                map[string]*block.Block
+	LootTables            map[string]*loot_table.LootTable
 
 	// RP Specific
 	ItemTexture     *texture.ItemTexture
@@ -162,6 +164,29 @@ type Glowstone interface {
 	// Example:
 	// 	glowstone.PreloadItems()
 	PreloadItems()
+
+	/******************* Loot Tables *******************/
+
+	// AddLootTable adds the loot table to the project
+	//
+	// Example:
+	// 	glowstone.AddLootTable("entities/zombie.json", lootTable)
+	AddLootTable(name string, lootTable *loot_table.LootTable)
+
+	// GetLootTables returns the loot tables
+	GetLootTables() map[string]*loot_table.LootTable
+
+	// GetLootTable returns the loot table
+	//
+	// Example:
+	// 	lootTable, err := glowstone.GetLootTable("entities/zombie.json")
+	GetLootTable(string) (*loot_table.LootTable, error)
+
+	// NewLootTable creates a new loot table
+	//
+	// Example:
+	// 	lootTable := glowstone.NewLootTable("entities/zombie.json")
+	NewLootTable(string) *loot_table.LootTable
 
 	/******************* Recipes *******************/
 
