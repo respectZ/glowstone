@@ -192,13 +192,11 @@ func (g *glowstone) Save() {
 
 	// Entity
 	for _, e := range g.Entities {
-		bp, rp, err := e.Encode()
 		if err != nil {
 			g.Logger.Error.Println(err)
 			continue
 		}
-		if bp != nil {
-			g_util.Writefile(path.Join(g.BPDir, "entities", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), bp)
+		if e.BP != nil {
 			if e.RideHint == "" {
 				// Check if rideable
 				var ridebable entityBPComponent.Rideable
@@ -208,8 +206,14 @@ func (g *glowstone) Save() {
 					e.SetRideHint(fmt.Sprintf("Tap jump to exit the %s", e.Lang))
 				}
 			}
+			bp, err := e.BP.Encode()
+			if err != nil {
+				g.Logger.Error.Println(err)
+				continue
+			}
+			g_util.Writefile(path.Join(g.BPDir, "entities", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), bp)
 		}
-		if rp != nil {
+		if e.RP != nil {
 			// AutoSpawnEggTexture
 			if e.AutoSpawnEggTexture {
 				// Get texture
@@ -222,6 +226,8 @@ func (g *glowstone) Save() {
 				}
 				// Add rpdir
 				texture = path.Join(g.RPDir, texture)
+				// Add .png
+				texture = texture + ".png"
 				// Check if texture exists
 				if _, err := os.Stat(texture); err == nil {
 					primary, secondary, err := g_util.GetEggColor(texture)
@@ -235,6 +241,11 @@ func (g *glowstone) Save() {
 				} else {
 					g.Logger.Warning.Printf("missing texture auto for %s: %s", e.GetIdentifier(), err)
 				}
+			}
+			rp, err := e.RP.Encode()
+			if err != nil {
+				g.Logger.Error.Println(err)
+				continue
 			}
 			g_util.Writefile(path.Join(g.RPDir, "entity", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), rp)
 		}
