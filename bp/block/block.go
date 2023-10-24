@@ -5,7 +5,7 @@ import (
 	"reflect"
 
 	g_util "github.com/respectZ/glowstone/util"
-	comp "github.com/respectZ/glowstone/util/component"
+	util_component "github.com/respectZ/glowstone/util/component"
 )
 
 const (
@@ -49,23 +49,17 @@ func (b *block) GetDescription() BlockDescription {
 	return b.MinecraftBlock.Description
 }
 
-func (b *block) GetComponent(component interface{}) error {
-	componentName := comp.GetComponentName(component)
+func (b *block) GetComponent(component interface{}) (interface{}, error) {
+	componentName := util_component.GetComponentName(component)
 	if c, ok := b.MinecraftBlock.Component[componentName]; ok {
-		// If the type is match, return it
-		if reflect.TypeOf(c) == reflect.TypeOf(component) {
-			component = c
-			return nil
-		}
-		// Convert map to struct
-		err := comp.ConvertMapToStruct(c.(map[string]interface{}), component)
+		r, err := util_component.Get(c, component)
 		if err != nil {
-			return err
+			return nil, err
 		}
 		// Assign component to the struct
-		b.MinecraftBlock.Component[componentName] = component
+		b.MinecraftBlock.Component[componentName] = r
 	}
-	return fmt.Errorf("component %s not found", componentName)
+	return nil, fmt.Errorf("component %s not found", componentName)
 }
 
 func (b *block) GetPermutations() []BlockPermutation {
@@ -83,13 +77,15 @@ func (b *block) GetPermutations() []BlockPermutation {
 
 func (b *block) AddComponent(components ...interface{}) {
 	for _, component := range components {
-		componentName := comp.GetComponentName(component)
+		componentName := util_component.GetComponentName(component)
 		// If component is a string, add it, so the result will "component": {}
 		c := reflect.TypeOf(component)
 		if c.Kind() == reflect.String && c.Name() == "string" {
 			b.MinecraftBlock.Component[componentName] = struct{}{}
-		} else {
+		} else if reflect.TypeOf(component).Kind() == reflect.Ptr {
 			b.MinecraftBlock.Component[componentName] = component
+		} else {
+			b.MinecraftBlock.Component[componentName] = &component
 		}
 	}
 }
@@ -103,8 +99,12 @@ func (b *block) AddPermutation(condition string, components ...interface{}) {
 		Components: make(map[string]interface{}),
 	}
 	for _, component := range components {
-		componentName := comp.GetComponentName(component)
-		permutation.Components[componentName] = component
+		componentName := util_component.GetComponentName(component)
+		if reflect.TypeOf(component).Kind() == reflect.Ptr {
+			permutation.Components[componentName] = component
+		} else {
+			permutation.Components[componentName] = &component
+		}
 	}
 	// Add to struct
 	b.MinecraftBlock.Permutations = append(b.MinecraftBlock.Permutations, permutation)

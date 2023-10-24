@@ -109,20 +109,33 @@ func (e *entity) RemoveComponentGroup(name string) {
 	delete(e.Entity.ComponentGroups, name)
 }
 
+func (e *entity) AddComponentGroup(name string, components ...interface{}) {
+	if e.Entity.ComponentGroups == nil {
+		e.Entity.ComponentGroups = make(map[string]interface{})
+	}
+	if _, ok := e.Entity.ComponentGroups[name]; !ok {
+		e.Entity.ComponentGroups[name] = make(map[string]interface{})
+	}
+	for _, component := range components {
+		componentName := util_component.GetComponentName(component)
+		c := reflect.TypeOf(component)
+		if c.Kind() == reflect.String && c.Name() == "string" {
+			e.Entity.ComponentGroups[name].(map[string]interface{})[componentName] = struct{}{}
+		} else {
+			e.Entity.ComponentGroups[name].(map[string]interface{})[componentName] = component
+		}
+	}
+}
+
 func (e *entity) GetComponent(name interface{}) (interface{}, error) {
 	componentName := util_component.GetComponentName(name)
 	if component, ok := e.Entity.Components[componentName]; ok {
-		// If the type is match, return it
-		if reflect.TypeOf(component) == reflect.TypeOf(name) {
-			return component, nil
-		}
-		// Convert map to struct
-		err := util_component.ConvertMapToStruct(component.(map[string]interface{}), name)
+		r, err := util_component.Get(component, name)
 		if err != nil {
 			return nil, err
 		}
 		// Assign component to the struct
-		e.Entity.Components[componentName] = name
+		e.Entity.Components[componentName] = r
 
 		return component, nil
 	}
@@ -134,6 +147,9 @@ func (e *entity) GetComponents() map[string]interface{} {
 }
 
 func (e *entity) AddComponent(components ...interface{}) {
+	if e.Entity.Components == nil {
+		e.Entity.Components = make(map[string]interface{})
+	}
 	for _, component := range components {
 		componentName := util_component.GetComponentName(component)
 		c := reflect.TypeOf(component)

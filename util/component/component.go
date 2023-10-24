@@ -105,3 +105,25 @@ func GetComponentName(component interface{}) string {
 	name = strings.Replace(name, "._", ".", -1)
 	return name
 }
+
+func Get(old interface{}, new interface{}) (interface{}, error) {
+	oldType := reflect.TypeOf(old)
+	newType := reflect.TypeOf(new)
+	// We have 4 cases:
+	// 1. old is a pointer and new is not a pointer
+	// 2. old is not a pointer and new is a pointer
+	// 3. old is a pointer and new is a pointer
+	// 4. old is not a pointer and new is not a pointer
+	// If the type is match, return it
+	if newType == oldType {
+		return new, nil
+	}
+	// Convert map to struct
+	err := ConvertMapToStruct(old.(map[string]interface{}), new)
+	if err != nil {
+		return nil, err
+	}
+	// Assign new to the struct
+	old = new
+	return new, nil
+}

@@ -80,5 +80,8 @@ func (e *entity) GetScripts() ClientEntityDescriptionScripts {
 }
 
 func (e *entity) GetSpawnEgg() ClientEntitySpawnEgg {
+	if e.Entity.Description.SpawnEgg == nil {
+		e.Entity.Description.SpawnEgg = &clientEntitySpawnEgg{}
+	}
 	return e.Entity.Description.SpawnEgg
 }

@@ -1,19 +1,24 @@
 package entity
 
 import (
+	"fmt"
+
 	util_component "github.com/respectZ/glowstone/util/component"
 )
 
-func (c *cg) GetComponent(name interface{}) {
+func (c *cg) GetComponent(name interface{}) (interface{}, error) {
 	componentName := util_component.GetComponentName(name)
-	value, exists := (*c)[componentName]
+	component, exists := (*c)[componentName]
 	if !exists {
-		return
+		return nil, fmt.Errorf("component %s not found", name)
 	}
-	// Convert map to struct
-	util_component.ConvertMapToStruct(value.(map[string]interface{}), name)
+	r, err := util_component.Get(component, name)
+	if err != nil {
+		return nil, err
+	}
 	// Assign component to the struct
-	(*c)[componentName] = name
+	(*c)[componentName] = r
+	return component, nil
 }
 
 func (c *cg) GetComponents() []interface{} {

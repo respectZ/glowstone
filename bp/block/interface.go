@@ -7,7 +7,7 @@ type Block interface {
 	SetIdentifier(string)
 
 	GetDescription() BlockDescription
-	GetComponent(interface{}) error
+	GetComponent(interface{}) (interface{}, error)
 	GetPermutations() []BlockPermutation
 
 	AddComponent(...interface{})

@@ -66,7 +66,9 @@ type Item interface {
 	//     components := item.GetComponents() // returns []interface{}
 	GetComponents() []interface{}
 
-	// AddComponent adds the component to the item
+	// AddComponent adds the component to the item.
+	//
+	// You can pass by reference or by value.
 	//
 	// Example:
 	//

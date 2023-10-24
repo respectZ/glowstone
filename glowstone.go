@@ -268,7 +268,7 @@ func (g *glowstone) Save() {
 		for _, b := range g.Blocks {
 			// Display name
 			var displayName blockBPCompnent.DisplayName
-			err := b.BP.GetComponent(&displayName)
+			_, err = b.BP.GetComponent(&displayName)
 			if err != nil {
 				// Add component
 				displayName = blockBPCompnent.DisplayName(fmt.Sprintf("block.%s.name", b.GetNamespaceIdentifier()))
