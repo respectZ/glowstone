@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	FORMAT_VERSION = "1.20.30"
+	FORMAT_VERSION = "1.20.40"
 )
 
 // Create a new item
@@ -94,27 +94,6 @@ func (i *item) SetIsHiddenInCommands(isHiddenInCommands bool) {
 func (i *item) GetComponent(name interface{}) (interface{}, error) {
 	componentName := util_component.GetComponentName(name)
 	if component, ok := i.Item.Components[componentName]; ok {
-		// switch componentType.Kind() {
-		// case reflect.Ptr:
-		// 	if nameType == reflect.TypeOf(reflect.ValueOf(component).Elem().Interface()) {
-		// 		reflect.ValueOf(component).Elem().Set(reflect.ValueOf(name))
-		// 		return component, nil
-		// 	}
-		// case reflect.Struct:
-		// 	if nameType.Kind() == reflect.Ptr {
-		// 		if componentType == reflect.TypeOf(reflect.ValueOf(name).Elem().Interface()) {
-		// 			reflect.ValueOf(name).Elem().Set(reflect.ValueOf(component))
-		// 			return component, nil
-		// 		}
-		// 	} else {
-		// 		if componentType == reflect.TypeOf(reflect.ValueOf(name).Interface()) {
-		// 			reflect.ValueOf(name).Set(reflect.ValueOf(component))
-		// 			return component, nil
-		// 		}
-		// 	}
-		// }
-		// Convert map to struct
-		// util_component.ConvertMapToStruct(component.(map[string]interface{}), name)
 		// Assign component to the struct
 		r, err := util_component.Get(component, name)
 		if err != nil {
