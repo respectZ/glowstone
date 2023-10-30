@@ -134,7 +134,7 @@ func (g *glowstone) SetUpfront(upfront bool) {
 
 func (g *glowstone) Save() {
 	// RPBlocks
-	// TODO: some workaround to read format_version from blocks.json
+	// Do some workaround to read format_version from blocks.json
 	blocksFormatVersion := [3]int{1, 1, 0}
 	blocksSrc := path.Join(g.RPDir, "blocks.json")
 	var blocks map[string][3]int
