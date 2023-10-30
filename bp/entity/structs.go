@@ -15,10 +15,10 @@ type entity struct {
 }
 
 type MinecraftEntity struct {
-	Description     EntityDescription      `json:"description"`
-	ComponentGroups map[string]interface{} `json:"component_groups,omitempty"` // TODO: implement component groups
-	Components      map[string]interface{} `json:"components,omitempty"`       // TODO: implement components
-	Events          map[string]EntityEvent `json:"events,omitempty"`           // TODO: implement events
+	Description     EntityDescription       `json:"description"`
+	ComponentGroups map[string]interface{}  `json:"component_groups,omitempty"` // TODO: implement component groups
+	Components      map[string]interface{}  `json:"components,omitempty"`       // TODO: implement components
+	Events          map[string]*EntityEvent `json:"events,omitempty"`           // TODO: implement events
 }
 
 type EntityDescription struct {

@@ -5,6 +5,7 @@ import (
 	"reflect"
 
 	glowstone "github.com/respectZ/glowstone/util"
+	util_component "github.com/respectZ/glowstone/util/component"
 )
 
 func (e *entity) Encode() ([]byte, error) {
@@ -108,27 +109,33 @@ func (e *entity) RemoveComponentGroup(name string) {
 	delete(e.Entity.ComponentGroups, name)
 }
 
-// TODO: Rework parameter to the struct, so we can cast it.
-//
-//	func (e *entity) GetComponent(name string) (interface{}, error) {
-//		if component, ok := e.Entity.Components[name]; ok {
-//			return component, nil
-//		}
-//		return nil, fmt.Errorf("component %s not found", name)
-//	}
-func (e *entity) GetComponent(name interface{}) (interface{}, error) {
-	if component, ok := e.Entity.Components[GetComponentName(name)]; ok {
-		// If the type is match, return it
-		if reflect.TypeOf(component) == reflect.TypeOf(name) {
-			return component, nil
+func (e *entity) AddComponentGroup(name string, components ...interface{}) {
+	if e.Entity.ComponentGroups == nil {
+		e.Entity.ComponentGroups = make(map[string]interface{})
+	}
+	if _, ok := e.Entity.ComponentGroups[name]; !ok {
+		e.Entity.ComponentGroups[name] = make(map[string]interface{})
+	}
+	for _, component := range components {
+		componentName := util_component.GetComponentName(component)
+		c := reflect.TypeOf(component)
+		if c.Kind() == reflect.String && c.Name() == "string" {
+			e.Entity.ComponentGroups[name].(map[string]interface{})[componentName] = struct{}{}
+		} else {
+			e.Entity.ComponentGroups[name].(map[string]interface{})[componentName] = component
 		}
-		// Convert map to struct
-		err := convertMapToStruct(component.(map[string]interface{}), name)
+	}
+}
+
+func (e *entity) GetComponent(name interface{}) (interface{}, error) {
+	componentName := util_component.GetComponentName(name)
+	if component, ok := e.Entity.Components[componentName]; ok {
+		r, err := util_component.Get(component, name)
 		if err != nil {
 			return nil, err
 		}
 		// Assign component to the struct
-		e.Entity.Components[GetComponentName(name)] = name
+		e.Entity.Components[componentName] = r
 
 		return component, nil
 	}
@@ -140,8 +147,17 @@ func (e *entity) GetComponents() map[string]interface{} {
 }
 
 func (e *entity) AddComponent(components ...interface{}) {
+	if e.Entity.Components == nil {
+		e.Entity.Components = make(map[string]interface{})
+	}
 	for _, component := range components {
-		e.Entity.Components[GetComponentName(component)] = component
+		componentName := util_component.GetComponentName(component)
+		c := reflect.TypeOf(component)
+		if c.Kind() == reflect.String && c.Name() == "string" {
+			e.Entity.Components[componentName] = struct{}{}
+		} else {
+			e.Entity.Components[componentName] = component
+		}
 	}
 }
 
@@ -149,19 +165,22 @@ func (e *entity) RemoveComponent(name string) {
 	delete(e.Entity.Components, name)
 }
 
-func (e *entity) GetEvent(name string) (EntityEvent, error) {
+func (e *entity) GetEvent(name string) (*EntityEvent, error) {
 	if event, ok := e.Entity.Events[name]; ok {
 		return event, nil
 	}
-	return EntityEvent{}, fmt.Errorf("event %s not found", name)
+	return nil, fmt.Errorf("event %s not found", name)
 }
 
-func (e *entity) GetEvents() map[string]EntityEvent {
+func (e *entity) GetEvents() map[string]*EntityEvent {
 	return e.Entity.Events
 }
 
 func (e *entity) SetEvent(name string, event EntityEvent) {
-	e.Entity.Events[name] = event
+	if e.Entity.Events == nil {
+		e.Entity.Events = make(map[string]*EntityEvent)
+	}
+	e.Entity.Events[name] = &event
 }
 
 func (e *entity) RemoveEvent(name string) {

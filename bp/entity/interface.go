@@ -41,6 +41,12 @@ type Entity interface {
 	SetComponentGroup(string, ComponentGroup)
 	// RemoveComponentGroup removes the component group of the entity
 	RemoveComponentGroup(string)
+	// AddComponentGroup adds the component group to the entity
+	//
+	// Example:
+	//
+	//     entity.AddComponentGroup("despawn", &component.InstantDespawn{})
+	AddComponentGroup(string, ...interface{})
 
 	// GetComponent returns the component of the entity
 	GetComponent(interface{}) (interface{}, error)
@@ -52,9 +58,9 @@ type Entity interface {
 	RemoveComponent(string)
 
 	// GetEvent returns the event of the entity
-	GetEvent(string) (EntityEvent, error)
+	GetEvent(string) (*EntityEvent, error)
 	// GetEvents returns the events of the entity
-	GetEvents() map[string]EntityEvent
+	GetEvents() map[string]*EntityEvent
 	// SetEvent sets the event of the entity
 	SetEvent(string, EntityEvent)
 	// RemoveEvent removes the event from the entity
@@ -64,7 +70,7 @@ type Entity interface {
 type cg map[string]interface{}
 
 type component_group interface {
-	GetComponent(interface{})
+	GetComponent(interface{}) (interface{}, error)
 	GetComponents() [](interface{})
 	AddComponent(...interface{})
 	RemoveComponent(string)

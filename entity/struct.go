@@ -18,6 +18,10 @@ type Entity struct {
 	SpawnLang       string
 	RideHint        string
 	RideHintConsole string
+
+	// RPStuff
+
+	AutoSpawnEggTexture bool
 }
 
 func New(namespace string, identifier string, subdir ...string) *Entity {
@@ -27,7 +31,7 @@ func New(namespace string, identifier string, subdir ...string) *Entity {
 	}
 	entity := &Entity{
 		BP: bp.New(namespace, identifier),
-		RP: rp.New(namespace, identifier, s),
+		RP: rp.New(namespace, identifier),
 	}
 	entity.Subdir = s
 	return entity

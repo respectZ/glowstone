@@ -12,12 +12,14 @@ import (
 	animation "github.com/respectZ/glowstone/animation"
 	animationController "github.com/respectZ/glowstone/animation_controller"
 	attachable "github.com/respectZ/glowstone/attachable"
+	block "github.com/respectZ/glowstone/block"
 	"github.com/respectZ/glowstone/entity"
 	item "github.com/respectZ/glowstone/item"
 	recipe "github.com/respectZ/glowstone/recipe"
 	"github.com/respectZ/glowstone/rp"
 	g_util "github.com/respectZ/glowstone/util"
 
+	blockBP "github.com/respectZ/glowstone/bp/block"
 	entityBP "github.com/respectZ/glowstone/bp/entity"
 	itemBP "github.com/respectZ/glowstone/bp/item"
 	recipeBP "github.com/respectZ/glowstone/bp/recipe"
@@ -25,7 +27,9 @@ import (
 	sound "github.com/respectZ/glowstone/rp/sound"
 	texture "github.com/respectZ/glowstone/rp/texture"
 
+	blockBPCompnent "github.com/respectZ/glowstone/bp/block/component"
 	entityBPComponent "github.com/respectZ/glowstone/bp/entity/component"
+	itemBPComponent "github.com/respectZ/glowstone/bp/item/component"
 )
 
 var MIN_ENGINE_VERSION = [3]int{1, 20, 0}
@@ -188,13 +192,11 @@ func (g *glowstone) Save() {
 
 	// Entity
 	for _, e := range g.Entities {
-		bp, rp, err := e.Encode()
 		if err != nil {
 			g.Logger.Error.Println(err)
 			continue
 		}
-		if bp != nil {
-			g_util.Writefile(path.Join(g.BPDir, "entities", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), bp)
+		if e.BP != nil {
 			if e.RideHint == "" {
 				// Check if rideable
 				var ridebable entityBPComponent.Rideable
@@ -204,14 +206,93 @@ func (g *glowstone) Save() {
 					e.SetRideHint(fmt.Sprintf("Tap jump to exit the %s", e.Lang))
 				}
 			}
+			bp, err := e.BP.Encode()
+			if err != nil {
+				g.Logger.Error.Println(err)
+				continue
+			}
+			g_util.Writefile(path.Join(g.BPDir, "entities", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), bp)
 		}
-		if rp != nil {
+		if e.RP != nil {
+			// AutoSpawnEggTexture
+			if e.AutoSpawnEggTexture {
+				// Get texture
+				rp_textures := e.RP.GetTextures()
+				// Get first texture
+				var texture string
+				for _, v := range rp_textures {
+					texture = v
+					break
+				}
+				// Add rpdir
+				texture = path.Join(g.RPDir, texture)
+				// Add .png
+				texture = texture + ".png"
+				// Check if texture exists
+				if _, err := os.Stat(texture); err == nil {
+					primary, secondary, err := g_util.GetEggColor(texture)
+					if err == nil {
+						// Set color
+						e.RP.GetSpawnEgg().SetBaseColor(primary)
+						e.RP.GetSpawnEgg().SetOverlayColor(secondary)
+					} else {
+						g.Logger.Warning.Printf("failed to get egg color for %s: %s", e.GetIdentifier(), err)
+					}
+				} else {
+					g.Logger.Warning.Printf("missing texture auto for %s: %s", e.GetIdentifier(), err)
+				}
+			}
+			rp, err := e.RP.Encode()
+			if err != nil {
+				g.Logger.Error.Println(err)
+				continue
+			}
 			g_util.Writefile(path.Join(g.RPDir, "entity", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), rp)
+		}
+	}
+
+	// Loot Table
+	if g.LootTables != nil {
+		for _, lootTable := range g.LootTables {
+			data, err := lootTable.Encode()
+			if err != nil {
+				g.Logger.Error.Println(err)
+				continue
+			}
+			g_util.Writefile(path.Join(g.BPDir, "loot_tables", lootTable.Dest), data)
+		}
+	}
+
+	// Block
+	if g.Blocks != nil {
+		for _, b := range g.Blocks {
+			// Display name
+			var displayName blockBPCompnent.DisplayName
+			_, err = b.BP.GetComponent(&displayName)
+			if err != nil {
+				// Add component
+				displayName = blockBPCompnent.DisplayName(fmt.Sprintf("block.%s.name", b.GetNamespaceIdentifier()))
+				b.BP.AddComponent(&displayName)
+			}
+			bp, err := b.Encode()
+			if err != nil {
+				g.Logger.Error.Println(err)
+				continue
+			}
+			g_util.Writefile(path.Join(g.BPDir, "blocks", b.Subdir, fmt.Sprintf("%s.json", b.GetIdentifier())), bp)
 		}
 	}
 
 	// Item
 	for _, i := range g.Items {
+		// Display nam
+		var displayName itemBPComponent.DisplayName
+		_, err := i.BP.GetComponent(&displayName)
+		if err != nil {
+			// Add component
+			displayName.Value = fmt.Sprintf("item.%s.name", i.GetNamespaceIdentifier())
+			i.BP.AddComponent(&displayName)
+		}
 		bp, err := i.Encode()
 		if err != nil {
 			g.Logger.Error.Println(err)
@@ -433,6 +514,54 @@ func (g *glowstone) NewEntity(namespace string, identifier string) *entity.Entit
 	g.AddLang(fmt.Sprintf("entity.%s:%s.name", namespace, identifier), e.Lang)
 	g.AddLang(fmt.Sprintf("item.spawn_egg.entity.%s:%s.name", namespace, identifier), fmt.Sprintf("Spawn %s", lang))
 	return e
+}
+
+/******************* Block *******************/
+
+func (g *glowstone) AddBlock(blocks ...interface{}) {
+	if g.Blocks == nil {
+		g.Blocks = make(map[string]*block.Block)
+	}
+	for _, b := range blocks {
+		switch b := b.(type) {
+		case *block.Block:
+			g.Blocks[b.GetNamespaceIdentifier()] = b
+		case blockBP.Block:
+			p := &block.Block{
+				BP: b,
+			}
+			g.Blocks[p.GetNamespaceIdentifier()] = p
+		default:
+			g.Logger.Error.Printf("invalid type %T", b)
+		}
+	}
+}
+
+func (g *glowstone) GetBlocks() map[string]*block.Block {
+	return g.Blocks
+}
+
+func (g *glowstone) GetBlock(identifier string) (*block.Block, error) {
+	if b, ok := g.Blocks[identifier]; ok {
+		return b, nil
+	}
+	return nil, fmt.Errorf("block %s not found", identifier)
+}
+
+func (g *glowstone) NewBlock(namespace string, identifier string, subdir ...string) *block.Block {
+	b := block.New(namespace, identifier)
+	if g.Blocks == nil {
+		g.Blocks = make(map[string]*block.Block)
+	}
+	g.Blocks[fmt.Sprintf("%s:%s", namespace, identifier)] = b
+	// Set lang
+	lang := g_util.TitleCase(strings.ReplaceAll(identifier, "_", " "))
+	b.Lang = lang
+	g.AddLang(fmt.Sprintf("block.%s:%s.name", namespace, identifier), b.Lang)
+	if len(subdir) > 0 {
+		b.Subdir = subdir[0]
+	}
+	return b
 }
 
 /******************* Items *******************/

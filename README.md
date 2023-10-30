@@ -9,10 +9,10 @@
 - BP
   - [x] Animation
   - [x] Animation Controller
-  - [ ] Block
+  - [x] Block
   - [x] Entity
   - [x] Item
-  - [ ] Loot Table
+  - [x] Loot Table
   - [x] Recipe
   - [ ] Spawn Rule
   - [ ] Structure
@@ -28,12 +28,21 @@
   - [x] Item Texture
   - [ ] sounds.json
   - [x] sound_definitions.json
-  - [ ] blocks.json
+  - [x] blocks.json
   - [x] terrain_textures.json
 
 - Misc
   - [ ] Remove unnecessary pointer
+  - [ ] Add project setting to minify JSON
+  - [ ] Add format version setting, especially for item, block, and entity
 
 - Util
   - [ ] BBModel Parser 
 - [ ] Documentation
+
+- Format Version
+  - [ ] Item
+  - [ ] Block
+  - [ ] Entity (RP)
+  - [ ] Blocks (RP)
+  - [ ] Attachable (RP)

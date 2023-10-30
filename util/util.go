@@ -28,9 +28,17 @@ func Makedir(path string) error {
 	return nil
 }
 
-func MarshalJSON(e interface{}) ([]byte, error) {
+func MarshalJSON(e interface{}, minify ...bool) ([]byte, error) {
 	var json = jsoniter.ConfigFastest
+	if len(minify) > 0 && minify[0] {
+		return json.Marshal(e)
+	}
 	return json.MarshalIndent(e, "", "  ")
+}
+
+func UnmarshalJSON(data []byte, e interface{}) error {
+	var json = jsoniter.ConfigFastest
+	return json.Unmarshal(data, e)
 }
 
 func Copyfile(source, destination string) error {

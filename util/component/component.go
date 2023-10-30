@@ -1,14 +1,12 @@
-package entity
+package component
 
 import (
 	"fmt"
 	"reflect"
 	"strings"
-
-	c "github.com/respectZ/glowstone/bp/entity/component"
 )
 
-func convertMapToStruct(m map[string]interface{}, s interface{}) error {
+func ConvertMapToStruct(m map[string]interface{}, s interface{}) error {
 	structValue := reflect.ValueOf(s).Elem()
 	structType := structValue.Type()
 
@@ -46,7 +44,7 @@ func convertMapToStruct(m map[string]interface{}, s interface{}) error {
 							switch elem.(type) {
 							case map[string]interface{}:
 								nestedStruct := reflect.New(sliceType).Interface()
-								err := convertMapToStruct(elem.(map[string]interface{}), nestedStruct)
+								err := ConvertMapToStruct(elem.(map[string]interface{}), nestedStruct)
 								if err != nil {
 									return err
 								}
@@ -69,7 +67,6 @@ func convertMapToStruct(m map[string]interface{}, s interface{}) error {
 				default:
 					field.Set(reflect.ValueOf(val))
 				}
-				// field.Set(reflect.ValueOf(val))
 			}
 		}
 	}
@@ -89,28 +86,18 @@ func PascalToLower(s string) string {
 	return strings.ToLower(result)
 }
 
-func LowerToPascal(s string) string {
-	words := strings.Split(s, "_")
-	for i := 0; i < len(words); i++ {
-		words[i] = strings.Title(words[i])
-	}
-	return strings.Join(words, "")
-}
-
 func GetComponentName(component interface{}) string {
 	// Check if component is a string
-	if reflect.TypeOf(component).Kind() == reflect.String {
+	t := reflect.TypeOf(component)
+	if t.Kind() == reflect.String && t.Name() == "string" {
 		return component.(string)
 	}
-	t := reflect.TypeOf(component)
 	var name string
 	switch t.Kind() {
 	case reflect.Ptr:
 		name = t.Elem().Name()
-	case reflect.Struct:
-		name = t.Name()
 	default:
-		panic(fmt.Sprintf("invalid component type: %s", t.Kind()))
+		name = t.Name()
 	}
 	name = strings.Replace(name, "_", ".", -1)
 	name = PascalToLower(name)
@@ -119,8 +106,24 @@ func GetComponentName(component interface{}) string {
 	return name
 }
 
-func castToComponent(data map[string]interface{}, input interface{}) {
-	if v, ok := input.(c.TypeFamily); ok {
-		convertMapToStruct(data, &v)
+func Get(old interface{}, new interface{}) (interface{}, error) {
+	oldType := reflect.TypeOf(old)
+	newType := reflect.TypeOf(new)
+	// We have 4 cases:
+	// 1. old is a pointer and new is not a pointer
+	// 2. old is not a pointer and new is a pointer
+	// 3. old is a pointer and new is a pointer
+	// 4. old is not a pointer and new is not a pointer
+	// If the type is match, return it
+	if newType == oldType {
+		return new, nil
 	}
+	// Convert map to struct
+	err := ConvertMapToStruct(old.(map[string]interface{}), new)
+	if err != nil {
+		return nil, err
+	}
+	// Assign new to the struct
+	old = new
+	return new, nil
 }

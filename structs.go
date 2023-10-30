@@ -6,8 +6,10 @@ import (
 	animation "github.com/respectZ/glowstone/animation"
 	animationController "github.com/respectZ/glowstone/animation_controller"
 	attachable "github.com/respectZ/glowstone/attachable"
+	block "github.com/respectZ/glowstone/block"
 	entity "github.com/respectZ/glowstone/entity"
 	item "github.com/respectZ/glowstone/item"
+	loot_table "github.com/respectZ/glowstone/loot_table"
 	recipe "github.com/respectZ/glowstone/recipe"
 	sound "github.com/respectZ/glowstone/rp/sound"
 	texture "github.com/respectZ/glowstone/rp/texture"
@@ -31,6 +33,8 @@ type glowstone struct {
 	BPAnimationController map[string]*animationController.BPAnimationController
 	BPAnimation           map[string]*animation.BPAnimation
 	Recipes               map[string]interface{}
+	Blocks                map[string]*block.Block
+	LootTables            map[string]*loot_table.LootTable
 
 	// RP Specific
 	ItemTexture     *texture.ItemTexture
@@ -39,7 +43,8 @@ type glowstone struct {
 	RPBlocks        *rp.Blocks
 
 	// Settings
-	IsUpfront bool
+	IsUpfront  bool
+	MinifyJSON bool
 }
 
 type logger struct {
@@ -108,6 +113,29 @@ type Glowstone interface {
 	// 	glowstone.PreloadEntities()
 	PreloadEntities()
 
+	/******************* Blocks *******************/
+
+	// AddBlock adds the block to the project
+	//
+	// Example:
+	// 	glowstone.AddBlock(block)
+	AddBlock(...interface{})
+
+	// GetBlocks returns the blocks
+	GetBlocks() map[string]*block.Block
+
+	// GetBlock returns the block
+	//
+	// Example:
+	// 	block, err := glowstone.GetBlock("minecraft:stone")
+	GetBlock(string) (*block.Block, error)
+
+	// NewBlock creates a new block
+	//
+	// Example:
+	// 	block := glowstone.NewBlock("minecraft", "stone")
+	NewBlock(string, string, ...string) *block.Block
+
 	/******************* Items *******************/
 
 	// AddItem adds the item to the project
@@ -136,6 +164,29 @@ type Glowstone interface {
 	// Example:
 	// 	glowstone.PreloadItems()
 	PreloadItems()
+
+	/******************* Loot Tables *******************/
+
+	// AddLootTable adds the loot table to the project
+	//
+	// Example:
+	// 	glowstone.AddLootTable("entities/zombie.json", lootTable)
+	AddLootTable(name string, lootTable *loot_table.LootTable)
+
+	// GetLootTables returns the loot tables
+	GetLootTables() map[string]*loot_table.LootTable
+
+	// GetLootTable returns the loot table
+	//
+	// Example:
+	// 	lootTable, err := glowstone.GetLootTable("entities/zombie.json")
+	GetLootTable(string) (*loot_table.LootTable, error)
+
+	// NewLootTable creates a new loot table
+	//
+	// Example:
+	// 	lootTable := glowstone.NewLootTable("entities/zombie.json")
+	NewLootTable(string) *loot_table.LootTable
 
 	/******************* Recipes *******************/
 
