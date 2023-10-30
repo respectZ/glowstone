@@ -58,9 +58,9 @@ type Entity interface {
 	RemoveComponent(string)
 
 	// GetEvent returns the event of the entity
-	GetEvent(string) (EntityEvent, error)
+	GetEvent(string) (*EntityEvent, error)
 	// GetEvents returns the events of the entity
-	GetEvents() map[string]EntityEvent
+	GetEvents() map[string]*EntityEvent
 	// SetEvent sets the event of the entity
 	SetEvent(string, EntityEvent)
 	// RemoveEvent removes the event from the entity

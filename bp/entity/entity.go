@@ -165,19 +165,22 @@ func (e *entity) RemoveComponent(name string) {
 	delete(e.Entity.Components, name)
 }
 
-func (e *entity) GetEvent(name string) (EntityEvent, error) {
+func (e *entity) GetEvent(name string) (*EntityEvent, error) {
 	if event, ok := e.Entity.Events[name]; ok {
 		return event, nil
 	}
-	return EntityEvent{}, fmt.Errorf("event %s not found", name)
+	return nil, fmt.Errorf("event %s not found", name)
 }
 
-func (e *entity) GetEvents() map[string]EntityEvent {
+func (e *entity) GetEvents() map[string]*EntityEvent {
 	return e.Entity.Events
 }
 
 func (e *entity) SetEvent(name string, event EntityEvent) {
-	e.Entity.Events[name] = event
+	if e.Entity.Events == nil {
+		e.Entity.Events = make(map[string]*EntityEvent)
+	}
+	e.Entity.Events[name] = &event
 }
 
 func (e *entity) RemoveEvent(name string) {
