@@ -20,6 +20,10 @@ type TransformationDelay struct {
   BlockRadius int `json:"block_radius,omitempty"`
   // List of blocks that can help the transformation of this entity
   BlockTypes []interface{} `json:"block_types,omitempty"`
+  // Time in seconds to be added to value to have the maximum random time range value until the entity transforms (if non-zero then the time in seconds before the entity transforms will be random between value+range_min and value+range_max)
+  RangeMax float64 `json:"range_max,omitempty"`
+  // Time in seconds to be added to value to have the minimum random time range value until the entity transforms (if non-zero then the time in seconds before the entity transforms will be random between value+range_min and value+range_max)
+  RangeMin float64 `json:"range_min,omitempty"`
   // Time in seconds before the entity transforms
   Value float64 `json:"value,omitempty"`
 }

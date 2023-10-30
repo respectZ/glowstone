@@ -6,6 +6,8 @@ package component
 type Behavior_RandomLookAroundAndSit struct {
   // If the goal should continue to be used as long as the mob is leashed.
   ContinueIfLeashed bool `json:"continue_if_leashed,omitempty"`
+  // The mob will stay sitting on reload.
+  ContinueSittingOnReload bool `json:"continue_sitting_on_reload,omitempty"`
   // The rightmost angle a mob can look at on the horizontal plane with respect to its initial facing direction.
   MaxAngleOfViewHorizontal *float64 `json:"max_angle_of_view_horizontal,omitempty"`
   // The max amount of unique looks a mob will have while looking around.
