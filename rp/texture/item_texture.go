@@ -1,6 +1,8 @@
 package texture
 
 import (
+	"strings"
+
 	g_util "github.com/respectZ/glowstone/util"
 )
 
@@ -43,6 +45,11 @@ func (i *ItemTexture) Encode() ([]byte, error) {
 func (i *ItemTexture) AddTexture(name string, texture interface{}) {
 	if i.TextureData == nil {
 		i.TextureData = make(map[string]ItemTexture_Texture)
+	}
+	switch v := texture.(type) {
+	case string:
+		// Replace double backslashes with single backslashes
+		texture = strings.Replace(v, "\\\\", "\\", -1)
 	}
 	i.TextureData[name] = ItemTexture_Texture{
 		Textures: texture,
