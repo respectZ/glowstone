@@ -285,7 +285,7 @@ func (g *glowstone) Save() {
 
 	// Item
 	for _, i := range g.Items {
-		// Display nam
+		// Display name
 		var displayName itemBPComponent.DisplayName
 		_, err := i.BP.GetComponent(&displayName)
 		if err != nil {
