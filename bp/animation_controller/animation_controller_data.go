@@ -1,5 +1,9 @@
 package animation_controller
 
+import (
+	"github.com/respectZ/glowstone/types"
+)
+
 func (a *animationControllerData) GetState(name string) *animationControllerState {
 	return a.States[name]
 }
@@ -13,7 +17,12 @@ func (a *animationControllerData) SetInitialState(name string) {
 }
 
 func (a *animationControllerData) NewState(name string) *animationControllerState {
-	v := &animationControllerState{}
+	v := &animationControllerState{
+		OnEntry:     &types.StringArray{},
+		OnExit:      &types.StringArray{},
+		Animations:  &types.StringArrayConditional{},
+		Transitions: &types.MapStringArray{},
+	}
 	a.States[name] = v
 	return v
 }
