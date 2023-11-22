@@ -1,8 +1,6 @@
 package types
 
 import (
-	"fmt"
-
 	jsoniter "github.com/json-iterator/go"
 )
 
@@ -19,7 +17,6 @@ type IStringArray interface {
 
 func (a *StringArray) Add(s ...string) {
 	if *a == nil {
-		fmt.Println("StringArray.Add")
 		*a = []string{}
 	}
 	*a = append(*a, s...)

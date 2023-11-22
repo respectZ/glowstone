@@ -97,6 +97,8 @@ func (m *EntityEventMap) New(name string) *EntityEvent {
 		Add:         &ComponentGroup{ComponentGroups: &types.StringArray{}},
 		Remove:      &ComponentGroup{ComponentGroups: &types.StringArray{}},
 		SetProperty: &SetProperty{},
+		Randomize:   &EntityEventArray{},
+		Sequence:    &EntityEventArray{},
 	}
 	(*m)[name] = event
 	return event

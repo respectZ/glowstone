@@ -6,6 +6,38 @@ import (
 	glowstone "github.com/respectZ/glowstone/util"
 )
 
+func checkEvents(event *EntityEvent) {
+	if event.Add != nil && event.Add.ComponentGroups.IsEmpty() {
+		event.Add = nil
+	}
+	if event.Remove != nil && event.Remove.ComponentGroups.IsEmpty() {
+		event.Remove = nil
+	}
+	if event.SetProperty != nil && event.SetProperty.IsEmpty() {
+		event.SetProperty = nil
+	}
+	if event.Randomize != nil {
+		if event.Randomize.IsEmpty() {
+			event.Randomize = nil
+		} else {
+			events := event.Randomize.All()
+			for _, event := range events {
+				checkEvents(event)
+			}
+		}
+	}
+	if event.Sequence != nil {
+		if event.Sequence.IsEmpty() {
+			event.Sequence = nil
+		} else {
+			events := event.Sequence.All()
+			for _, event := range events {
+				checkEvents(event)
+			}
+		}
+	}
+}
+
 func (e *Entity) Encode() ([]byte, error) {
 	if e.Entity.Description.Animations.IsEmpty() {
 		e.Entity.Description.Animations = nil
@@ -22,15 +54,10 @@ func (e *Entity) Encode() ([]byte, error) {
 	if e.Entity.Events != nil {
 		events := e.Entity.Events.All()
 		for _, event := range events {
-			if event.Add != nil && event.Add.ComponentGroups.IsEmpty() {
-				event.Add = nil
-			}
-			if event.Remove != nil && event.Remove.ComponentGroups.IsEmpty() {
-				event.Remove = nil
-			}
-			if event.SetProperty != nil && event.SetProperty.IsEmpty() {
-				event.SetProperty = nil
-			}
+			checkEvents(event)
+		}
+		if e.Entity.Events.IsEmpty() {
+			e.Entity.Events = nil
 		}
 	}
 	return glowstone.MarshalJSON(e)
