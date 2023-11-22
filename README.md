@@ -6,6 +6,7 @@
 </div>
 
 # Todo
+- Rework entity, so will be NewEvent, NewProps ...
 - BP
   - [x] Animation
   - [x] Animation Controller
