@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	jsoniter "github.com/json-iterator/go"
 	animation "github.com/respectZ/glowstone/animation"
 	animationController "github.com/respectZ/glowstone/animation_controller"
 	attachable "github.com/respectZ/glowstone/attachable"
@@ -32,7 +31,7 @@ import (
 	itemBPComponent "github.com/respectZ/glowstone/bp/item/component"
 )
 
-var MIN_ENGINE_VERSION = [3]int{1, 20, 0}
+var MIN_ENGINE_VERSION = [3]int{1, 20, 40}
 
 func NewProject() Glowstone {
 	return &glowstone{
@@ -148,11 +147,10 @@ func (g *glowstone) Save() {
 		if err == nil {
 			// Reload to write format_version
 			var temp map[string]interface{}
-			var json = jsoniter.ConfigFastest
 
-			jsoniter.Unmarshal(data, &temp)
+			g_util.UnmarshalJSON(data, &temp)
 			temp["format_version"] = blocksFormatVersion
-			data, err = json.MarshalIndent(temp, "", "  ")
+			data, err = g_util.MarshalJSON(temp)
 			if err != nil {
 				g.Logger.Error.Println(err)
 			}
@@ -200,7 +198,7 @@ func (g *glowstone) Save() {
 			if e.RideHint == "" {
 				// Check if rideable
 				var ridebable entityBPComponent.Rideable
-				_, err := e.BP.GetComponent(&ridebable)
+				_, err := e.BP.Entity.Components.Get(&ridebable)
 				if err == nil {
 					// Add to lang
 					e.SetRideHint(fmt.Sprintf("Tap jump to exit the %s", e.Lang))
@@ -285,7 +283,7 @@ func (g *glowstone) Save() {
 
 	// Item
 	for _, i := range g.Items {
-		// Display nam
+		// Display name
 		var displayName itemBPComponent.DisplayName
 		_, err := i.BP.GetComponent(&displayName)
 		if err != nil {
@@ -470,7 +468,7 @@ func (g *glowstone) AddEntity(entities ...interface{}) {
 			g.Entities[e.GetNamespaceIdentifier()] = e
 		case entityBP.Entity:
 			p := &entity.Entity{
-				BP: e,
+				BP: &e,
 			}
 			old, ok := g.Entities[p.GetNamespaceIdentifier()]
 			if ok {

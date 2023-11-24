@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+
+	g_util "github.com/respectZ/glowstone/util"
 )
 
 func ConvertMapToStruct(m map[string]interface{}, s interface{}) error {
@@ -115,8 +117,40 @@ func Get(old interface{}, new interface{}) (interface{}, error) {
 	// 3. old is a pointer and new is a pointer
 	// 4. old is not a pointer and new is not a pointer
 	// If the type is match, return it
+
 	if newType == oldType {
+		// Set value of new to old
+		reflect.ValueOf(new).Elem().Set(reflect.ValueOf(old).Elem())
+		// Replace old with new
+		old = new
+		return old, nil
+	}
+	// Old is reflect.Value and new is a pointer, we need to convert it
+	if oldType.Kind() == reflect.Ptr && newType.Kind() == reflect.Ptr {
+		// Create a new instance of the field's underlying type
+		// new = reflect.New(newType.Elem()).Interface()
+		// Set the value of the field to the dereferenced map value
+		// reflect.ValueOf(&new).Elem().Set(reflect.ValueOf(old).Elem())
+		// reflect.ValueOf(new).Elem().Set(reflect.ValueOf(old).Elem())
+		// reflect.ValueOf(new).Elem().Set(reflect.ValueOf(old).Elem())
+
+		// Idiot solution, we marshal old to json and unmarshal it to new
+		// TODO: Find a better solution
+		b, err := g_util.MarshalJSON(old)
+		if err != nil {
+			return nil, err
+		}
+		err = g_util.UnmarshalJSON(b, new)
+		if err != nil {
+			return nil, err
+		}
+		// Assign old to the struct
+		old = new
 		return new, nil
+	}
+	// Check if old is same type as new, but the old is not a pointer
+	if oldType.Kind() != reflect.Ptr && oldType == newType.Elem() {
+		return &old, nil
 	}
 	// Convert map to struct
 	err := ConvertMapToStruct(old.(map[string]interface{}), new)

@@ -9,7 +9,7 @@ import (
 )
 
 type Entity struct {
-	BP bp.Entity
+	BP *bp.Entity
 	RP rp.Entity
 
 	// Other stuff
@@ -62,7 +62,7 @@ func Load(srcBP string, srcRP string) (*Entity, error) {
 // Example:
 //
 //	e, err := entity.LoadBP("./bp/entities/humanoid.json")
-func LoadBP(src string) (bp.Entity, error) {
+func LoadBP(src string) (*bp.Entity, error) {
 	bp, err := bp.Load(src)
 	if err != nil {
 		return nil, err

@@ -1,6 +1,7 @@
 package animation_controller
 
 import (
+	"github.com/respectZ/glowstone/types"
 	g_util "github.com/respectZ/glowstone/util"
 )
 
@@ -15,10 +16,10 @@ type animationControllerData struct {
 }
 
 type animationControllerState struct {
-	OnEntry     []string            `json:"on_entry,omitempty"`
-	OnExit      []string            `json:"on_exit,omitempty"`
-	Animations  []string            `json:"animations,omitempty"`
-	Transitions []map[string]string `json:"transitions,omitempty"`
+	OnEntry     types.IStringArray            `json:"on_entry,omitempty"`
+	OnExit      types.IStringArray            `json:"on_exit,omitempty"`
+	Animations  types.IStringArrayConditional `json:"animations,omitempty"`
+	Transitions types.IMapStringArray         `json:"transitions,omitempty"`
 }
 
 // New returns a new animation controller

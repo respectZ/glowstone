@@ -1,6 +1,8 @@
 package sound
 
 import (
+	"strings"
+
 	g_util "github.com/respectZ/glowstone/util"
 )
 
@@ -95,6 +97,10 @@ func (s *SoundDefinition) AddSound(name string, path string) (*Definition, *Soun
 	r := &Definition{
 		Sounds: make([]interface{}, 0),
 	}
+
+	// Replace double backslashes with single backslashes
+	path = strings.Replace(path, "\\\\", "\\", -1)
+
 	sound := &Sound{
 		Name:   path,
 		Volume: 1.0,

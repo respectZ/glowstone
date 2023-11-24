@@ -2,7 +2,6 @@ package glowstone
 
 import (
 	"bufio"
-	"encoding/json"
 	"fmt"
 	"image"
 	"image/color"
@@ -13,7 +12,7 @@ import (
 	"strings"
 
 	q "github.com/ericpauley/go-quantize/quantize"
-	jsoniter "github.com/json-iterator/go"
+	json "github.com/goccy/go-json"
 	"github.com/respectZ/glowstone/util/jsonc"
 
 	"golang.org/x/text/cases"
@@ -29,7 +28,6 @@ func Makedir(path string) error {
 }
 
 func MarshalJSON(e interface{}, minify ...bool) ([]byte, error) {
-	var json = jsoniter.ConfigFastest
 	if len(minify) > 0 && minify[0] {
 		return json.Marshal(e)
 	}
@@ -37,7 +35,6 @@ func MarshalJSON(e interface{}, minify ...bool) ([]byte, error) {
 }
 
 func UnmarshalJSON(data []byte, e interface{}) error {
-	var json = jsoniter.ConfigFastest
 	return json.Unmarshal(data, e)
 }
 
