@@ -287,6 +287,7 @@ func (g *glowstone) Save() {
 		var displayName itemBPComponent.DisplayName
 		_, err := i.BP.GetComponent(&displayName)
 		if err != nil {
+			g.Logger.Error.Println(err)
 			// Add component
 			displayName.Value = fmt.Sprintf("item.%s.name", i.GetNamespaceIdentifier())
 			i.BP.AddComponent(&displayName)
@@ -509,8 +510,15 @@ func (g *glowstone) NewEntity(namespace string, identifier string) *entity.Entit
 	// Set lang
 	lang := g_util.TitleCase(strings.ReplaceAll(identifier, "_", " "))
 	e.Lang = lang
-	g.AddLang(fmt.Sprintf("entity.%s:%s.name", namespace, identifier), e.Lang)
-	g.AddLang(fmt.Sprintf("item.spawn_egg.entity.%s:%s.name", namespace, identifier), fmt.Sprintf("Spawn %s", lang))
+
+	entityLang := fmt.Sprintf("entity.%s:%s.name", namespace, identifier)
+	if g.GetLang(entityLang) == "" {
+		g.AddLang(entityLang, fmt.Sprintf("%s", lang))
+	}
+	spawnEggLang := fmt.Sprintf("item.spawn_egg.entity.%s:%s.name", namespace, identifier)
+	if g.GetLang(spawnEggLang) == "" {
+		g.AddLang(spawnEggLang, fmt.Sprintf("Spawn %s", lang))
+	}
 	return e
 }
 
@@ -597,7 +605,9 @@ func (g *glowstone) NewItem(namespace string, identifier string) *item.Item {
 	// Set lang
 	lang := g_util.TitleCase(strings.ReplaceAll(identifier, "_", " "))
 	i.Lang = lang
-	g.AddLang(fmt.Sprintf("item.%s:%s.name", namespace, identifier), i.Lang)
+	if g.GetLang(fmt.Sprintf("item.%s:%s.name", namespace, identifier)) == "" {
+		g.AddLang(fmt.Sprintf("item.%s:%s.name", namespace, identifier), i.Lang)
+	}
 	return i
 }
 
