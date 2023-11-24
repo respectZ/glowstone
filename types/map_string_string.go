@@ -1,7 +1,7 @@
 package types
 
 import (
-	jsoniter "github.com/json-iterator/go"
+	g_util "github.com/respectZ/glowstone/util"
 )
 
 type MapStringString map[string]string
@@ -71,9 +71,8 @@ func (m *MapStringString) UnmarshalJSON(data []byte) error {
 	if *m == nil {
 		*m = make(map[string]string)
 	}
-	var json = jsoniter.ConfigFastest
 	var temp map[string]string
-	if err := json.Unmarshal(data, &temp); err != nil {
+	if err := g_util.UnmarshalJSON(data, &temp); err != nil {
 		return err
 	}
 	*m = temp

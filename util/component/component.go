@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"strings"
 
-	jsoniter "github.com/json-iterator/go"
+	g_util "github.com/respectZ/glowstone/util"
 )
 
 func ConvertMapToStruct(m map[string]interface{}, s interface{}) error {
@@ -136,12 +136,11 @@ func Get(old interface{}, new interface{}) (interface{}, error) {
 
 		// Idiot solution, we marshal old to json and unmarshal it to new
 		// TODO: Find a better solution
-		var json = jsoniter.ConfigFastest
-		b, err := json.Marshal(old)
+		b, err := g_util.MarshalJSON(old)
 		if err != nil {
 			return nil, err
 		}
-		err = json.Unmarshal(b, new)
+		err = g_util.UnmarshalJSON(b, new)
 		if err != nil {
 			return nil, err
 		}

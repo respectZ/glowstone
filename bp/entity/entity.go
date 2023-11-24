@@ -3,7 +3,7 @@ package entity
 import (
 	"fmt"
 
-	glowstone "github.com/respectZ/glowstone/util"
+	g_util "github.com/respectZ/glowstone/util"
 )
 
 func checkEvents(event *EntityEvent) {
@@ -60,7 +60,7 @@ func (e *Entity) Encode() ([]byte, error) {
 			e.Entity.Events = nil
 		}
 	}
-	return glowstone.MarshalJSON(e)
+	return g_util.MarshalJSON(e)
 }
 
 func (e *Entity) GetIdentifier() string {

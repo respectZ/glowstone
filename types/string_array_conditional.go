@@ -1,7 +1,7 @@
 package types
 
 import (
-	jsoniter "github.com/json-iterator/go"
+	g_util "github.com/respectZ/glowstone/util"
 )
 
 type StringArrayConditional []interface{}
@@ -56,9 +56,8 @@ func (a *StringArrayConditional) Size() int {
 }
 
 func (a *StringArrayConditional) UnmarshalJSON(data []byte) error {
-	var json = jsoniter.ConfigFastest
 	var temp []interface{}
-	if err := json.Unmarshal(data, &temp); err != nil {
+	if err := g_util.UnmarshalJSON(data, &temp); err != nil {
 		return err
 	}
 	*a = temp

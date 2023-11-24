@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"reflect"
 
-	jsoniter "github.com/json-iterator/go"
+	g_util "github.com/respectZ/glowstone/util"
 	util_component "github.com/respectZ/glowstone/util/component"
 )
 
@@ -43,9 +43,8 @@ type IComponentGroups interface {
 }
 
 func (m *ComponentGroups) UnmarshalJSON(data []byte) error {
-	var json = jsoniter.ConfigFastest
 	var temp map[string]Component
-	if err := json.Unmarshal(data, &temp); err != nil {
+	if err := g_util.UnmarshalJSON(data, &temp); err != nil {
 		return err
 	}
 	*m = temp

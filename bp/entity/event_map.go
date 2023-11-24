@@ -1,8 +1,8 @@
 package entity
 
 import (
-	jsoniter "github.com/json-iterator/go"
 	"github.com/respectZ/glowstone/types"
+	g_util "github.com/respectZ/glowstone/util"
 )
 
 type EntityEventMap map[string]*EntityEvent
@@ -30,9 +30,8 @@ type IEntityEventMap interface {
 }
 
 func (m *EntityEventMap) UnmarshalJSON(data []byte) error {
-	var json = jsoniter.ConfigFastest
 	var temp map[string]*EntityEvent
-	if err := json.Unmarshal(data, &temp); err != nil {
+	if err := g_util.UnmarshalJSON(data, &temp); err != nil {
 		return err
 	}
 	*m = temp

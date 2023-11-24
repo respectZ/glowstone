@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/respectZ/glowstone/types"
-	glowstone "github.com/respectZ/glowstone/util"
+	g_util "github.com/respectZ/glowstone/util"
 )
 
 var FORMAT_VERSION = "1.20.40"
@@ -66,7 +66,7 @@ func Load(src string) (*Entity, error) {
 	e.Entity.ComponentGroups = &ComponentGroups{}
 	e.Entity.Events = &EntityEventMap{}
 
-	err := glowstone.LoadJSON(src, e)
+	err := g_util.LoadJSON(src, e)
 	if err != nil {
 		return nil, err
 	}

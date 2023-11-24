@@ -1,7 +1,7 @@
 package types
 
 import (
-	jsoniter "github.com/json-iterator/go"
+	g_util "github.com/respectZ/glowstone/util"
 )
 
 type StringArray []string
@@ -48,9 +48,8 @@ func (a *StringArray) Size() int {
 }
 
 func (a *StringArray) UnmarshalJSON(data []byte) error {
-	var json = jsoniter.ConfigFastest
 	var temp []string
-	if err := json.Unmarshal(data, &temp); err != nil {
+	if err := g_util.UnmarshalJSON(data, &temp); err != nil {
 		return err
 	}
 	*a = temp

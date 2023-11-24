@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	jsoniter "github.com/json-iterator/go"
 	animation "github.com/respectZ/glowstone/animation"
 	animationController "github.com/respectZ/glowstone/animation_controller"
 	attachable "github.com/respectZ/glowstone/attachable"
@@ -148,11 +147,10 @@ func (g *glowstone) Save() {
 		if err == nil {
 			// Reload to write format_version
 			var temp map[string]interface{}
-			var json = jsoniter.ConfigFastest
 
-			jsoniter.Unmarshal(data, &temp)
+			g_util.UnmarshalJSON(data, &temp)
 			temp["format_version"] = blocksFormatVersion
-			data, err = json.MarshalIndent(temp, "", "  ")
+			data, err = g_util.MarshalJSON(temp)
 			if err != nil {
 				g.Logger.Error.Println(err)
 			}

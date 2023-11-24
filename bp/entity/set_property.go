@@ -1,7 +1,7 @@
 package entity
 
 import (
-	util "github.com/respectZ/glowstone/util"
+	g_util "github.com/respectZ/glowstone/util"
 )
 
 type SetProperty map[string]interface{}
@@ -16,7 +16,7 @@ type ISetProperty interface {
 
 func (s *SetProperty) UnmarshalJSON(data []byte) error {
 	var temp map[string]interface{}
-	if err := util.UnmarshalJSON(data, &temp); err != nil {
+	if err := g_util.UnmarshalJSON(data, &temp); err != nil {
 		return err
 	}
 	*s = temp

@@ -1,6 +1,8 @@
 package entity
 
-import jsoniter "github.com/json-iterator/go"
+import (
+	g_util "github.com/respectZ/glowstone/util"
+)
 
 type EntityProperties map[string]*entityProperties
 
@@ -86,9 +88,8 @@ type IEntityProperties interface {
 }
 
 func (e *EntityProperties) UnmarshalJSON(data []byte) error {
-	var json = jsoniter.ConfigFastest
 	var temp map[string]*entityProperties
-	if err := json.Unmarshal(data, &temp); err != nil {
+	if err := g_util.UnmarshalJSON(data, &temp); err != nil {
 		return err
 	}
 	*e = temp

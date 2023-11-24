@@ -1,9 +1,9 @@
 package entity
 
 import (
-	jsoniter "github.com/json-iterator/go"
 	f "github.com/respectZ/glowstone/bp/types"
 	"github.com/respectZ/glowstone/types"
+	g_util "github.com/respectZ/glowstone/util"
 )
 
 type EntityEvent struct {
@@ -35,9 +35,7 @@ func (e *EntityEvent) UnmarshalJSON(data []byte) error {
 		Sequence:    &EntityEventArray{},
 	}
 
-	var json = jsoniter.ConfigFastest
-
-	if err := json.Unmarshal(data, (*Alias)(aux)); err != nil {
+	if err := g_util.UnmarshalJSON(data, (*Alias)(aux)); err != nil {
 		return err
 	}
 
@@ -59,9 +57,8 @@ type IEntityEvent interface {
 }
 
 func (a *EntityEventArray) UnmarshalJSON(data []byte) error {
-	var json = jsoniter.ConfigFastest
 	var temp []*EntityEvent
-	if err := json.Unmarshal(data, &temp); err != nil {
+	if err := g_util.UnmarshalJSON(data, &temp); err != nil {
 		return err
 	}
 	*a = temp
