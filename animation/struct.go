@@ -5,7 +5,7 @@ import (
 )
 
 type BPAnimation struct {
-	Animation animation.Animation
+	Data *animation.Animation
 
 	// Other stuff
 	Dest string
@@ -19,8 +19,8 @@ type BPAnimation struct {
 //	b := NewBP("player/effect.animation.json")
 func NewBP(dest string) *BPAnimation {
 	return &BPAnimation{
-		Animation: animation.New(),
-		Dest:      dest,
+		Data: animation.New(),
+		Dest: dest,
 	}
 }
 
@@ -35,7 +35,7 @@ func LoadBP(src string) (*BPAnimation, error) {
 		return nil, err
 	}
 	return &BPAnimation{
-		Animation: a,
+		Data: a,
 	}, nil
 }
 
@@ -45,5 +45,5 @@ func LoadBP(src string) (*BPAnimation, error) {
 //
 //	bp, err := e.Encode()
 func (a *BPAnimation) Encode() ([]byte, error) {
-	return a.Animation.Encode()
+	return a.Data.Encode()
 }
