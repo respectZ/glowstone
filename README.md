@@ -33,6 +33,7 @@
   - [x] terrain_textures.json
 
 - Misc
+  - [ ] Rework project fields, ```glowstone.NewBPAnimationController -> glowstone.BP.AnimationController.New("asdf")```
   - [ ] Remove unnecessary pointer
   - [ ] Add project setting to minify JSON
   - [ ] Add format version setting, especially for item, block, and entity

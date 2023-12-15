@@ -5,14 +5,14 @@ import (
 	g_util "github.com/respectZ/glowstone/util"
 )
 
-type animationController struct {
-	FormatVersion       string                              `json:"format_version"`
-	AnimationController map[string]*animationControllerData `json:"animation_controllers"`
+type AnimationControllerFile struct {
+	FormatVersion       string               `json:"format_version"`
+	AnimationController IAnimationController `json:"animation_controllers"`
 }
 
-type animationControllerData struct {
-	InitialState string                               `json:"initial_state,omitempty"`
-	States       map[string]*animationControllerState `json:"states"`
+type animationController struct {
+	InitialState string                     `json:"initial_state,omitempty"`
+	States       IAnimationControllerStates `json:"states"`
 }
 
 type animationControllerState struct {
@@ -27,10 +27,10 @@ type animationControllerState struct {
 // Example:
 //
 //	a := animation_controller.New()
-func New() AnimationController {
-	return &animationController{
+func New() *AnimationControllerFile {
+	return &AnimationControllerFile{
 		FormatVersion:       "1.12.0",
-		AnimationController: make(map[string]*animationControllerData),
+		AnimationController: &AnimationController{},
 	}
 }
 
@@ -39,8 +39,31 @@ func New() AnimationController {
 // Example:
 //
 //	a, err := animation_controller.Load("player.animation_controller.json")
-func Load(src string) (AnimationController, error) {
+func Load(src string) (*AnimationControllerFile, error) {
 	a := New()
 	err := g_util.LoadJSON(src, a)
 	return a, err
+}
+
+func (a *AnimationControllerFile) Encode() ([]byte, error) {
+	for _, v := range a.AnimationController.All() {
+		for _, v := range v.States.All() {
+			if v.Animations != nil && v.Animations.IsEmpty() {
+				v.Animations = nil
+			}
+			if v.OnEntry != nil && v.OnEntry.IsEmpty() {
+				v.OnEntry = nil
+			}
+			if v.OnExit != nil && v.OnExit.IsEmpty() {
+				v.OnExit = nil
+			}
+			if v.Transitions != nil && v.Transitions.IsEmpty() {
+				v.Transitions = nil
+			}
+		}
+	}
+	if a.AnimationController != nil && a.AnimationController.IsEmpty() {
+		a.AnimationController = nil
+	}
+	return g_util.MarshalJSON(a)
 }
