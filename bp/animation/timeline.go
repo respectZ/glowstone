@@ -18,6 +18,7 @@ type ITimeline interface {
 	//    entity.Entity.Timeline.Add(0.0, "/say hi")
 	Add(float64, ...string)
 	Get(float64) ([]string, bool)
+	Set(float64, ...string)
 	Clear()
 	Remove(float64)
 	IsEmpty() bool
@@ -34,18 +35,30 @@ func (m *Timeline) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (m *Timeline) Add(name float64, timeline ...string) {
+func (m *Timeline) Add(time float64, molang ...string) {
 	if *m == nil {
 		*m = make(Timeline)
 	}
-	(*m)[fmt.Sprintf("%f", name)] = timeline
+	k := fmt.Sprintf("%f", time)
+	if _, ok := (*m)[k]; !ok {
+		(*m)[k] = []string{}
+	}
+	(*m)[k] = append((*m)[k], molang...)
 }
 
-func (m *Timeline) Get(name float64) ([]string, bool) {
+func (m *Timeline) Set(time float64, molang ...string) {
 	if *m == nil {
 		*m = make(Timeline)
 	}
-	timeline, ok := (*m)[fmt.Sprintf("%f", name)]
+	k := fmt.Sprintf("%f", time)
+	(*m)[k] = molang
+}
+
+func (m *Timeline) Get(time float64) ([]string, bool) {
+	if *m == nil {
+		*m = make(Timeline)
+	}
+	timeline, ok := (*m)[fmt.Sprintf("%f", time)]
 	return timeline, ok
 }
 
@@ -56,11 +69,11 @@ func (m *Timeline) Clear() {
 	*m = make(Timeline)
 }
 
-func (m *Timeline) Remove(name float64) {
+func (m *Timeline) Remove(time float64) {
 	if *m == nil {
 		*m = make(Timeline)
 	}
-	delete(*m, fmt.Sprintf("%f", name))
+	delete(*m, fmt.Sprintf("%f", time))
 }
 
 func (m *Timeline) IsEmpty() bool {
