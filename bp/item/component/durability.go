@@ -4,10 +4,10 @@ package component
 
 // Determines how much damage the item can take before breaking, and allows the item to be combined in crafting. In format versions prior to 1.20.0, this component requires the 'Holiday Creator Features' experimental toggle.
 type Durability struct {
-  // Damage chance is the percentage chance of this item losing durability. Default is set at 100 to 100.
-  DamageChance []int `json:"damage_chance,omitempty"`
+  // Damage chance is the percentage chance of this item losing durability. Default is set at 100. Defined as an int range with min and max value.
+  DamageChance interface{} `json:"damage_chance,omitempty"`
 
-  // Max durability is the amount of damage that this item can take before breaking. The minimum value for this parameter is 0.
+  // Max durability is the amount of damage that this item can take before breaking. This is a required parameter with a minimum value of 0.
   MaxDurability int `json:"max_durability,omitempty"`
 
 }

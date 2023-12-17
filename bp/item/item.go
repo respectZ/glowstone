@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	FORMAT_VERSION = "1.20.40"
+	FORMAT_VERSION = "1.20.50"
 )
 
 // Create a new item
