@@ -20,7 +20,9 @@ func (a *StringArrayConditional) AddString(s ...string) {
 	if *a == nil {
 		*a = []interface{}{}
 	}
-	*a = append(*a, s)
+	for _, v := range s {
+		*a = append(*a, v)
+	}
 }
 
 func (a *StringArrayConditional) AddStringConditional(s, c string) {
