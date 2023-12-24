@@ -3,10 +3,11 @@ package entity
 import (
 	"fmt"
 
+	types "github.com/respectZ/glowstone/types"
 	g_util "github.com/respectZ/glowstone/util"
 )
 
-type entity struct {
+type Entity struct {
 	FormatVersion string        `json:"format_version"`
 	Entity        *ClientEntity `json:"minecraft:client_entity"`
 }
@@ -17,31 +18,31 @@ type ClientEntity struct {
 
 type ClientEntityDescription struct {
 	Identifier              string                          `json:"identifier"`
-	Materials               map[string]string               `json:"materials"`
-	Textures                map[string]string               `json:"textures"`
-	Geometry                map[string]string               `json:"geometry"`
-	Animations              map[string]string               `json:"animations,omitempty"`
+	Materials               types.IMapStringString          `json:"materials"`
+	Textures                types.IMapStringString          `json:"textures"`
+	Geometry                types.IMapStringString          `json:"geometry"`
+	Animations              types.IMapStringString          `json:"animations,omitempty"`
 	Scripts                 *clientEntityDescriptionScripts `json:"scripts,omitempty"`
 	SpawnEgg                *clientEntitySpawnEgg           `json:"spawn_egg,omitempty"`
-	RenderControllers       []interface{}                   `json:"render_controllers,omitempty"`
+	RenderControllers       types.IStringArrayConditional   `json:"render_controllers,omitempty"`
 	EnableAttachables       bool                            `json:"enable_attachables,omitempty"`
 	HeldItemIgnoresLighting bool                            `json:"held_item_ignores_lighting,omitempty"`
 	HideArmor               bool                            `json:"hide_armor,omitempty"`
-	ParticleEffects         map[string]string               `json:"particle_effects,omitempty"`
-	SoundEffects            map[string]string               `json:"sound_effects,omitempty"`
-	ParticleEmitters        map[string]string               `json:"particle_emitters,omitempty"`
+	ParticleEffects         types.IMapStringString          `json:"particle_effects,omitempty"`
+	SoundEffects            types.IMapStringString          `json:"sound_effects,omitempty"`
+	ParticleEmitters        types.IMapStringString          `json:"particle_emitters,omitempty"`
 }
 
 type clientEntityDescriptionScripts struct {
-	ParentSetup  string            `json:"parent_setup,omitempty"`
-	Variables    map[string]string `json:"variables,omitempty"`
-	ScaleX       string            `json:"scalex,omitempty"`
-	ScaleY       string            `json:"scaley,omitempty"`
-	ScaleZ       string            `json:"scalez,omitempty"`
-	Scale        string            `json:"scale,omitempty"`
-	Initialize   []string          `json:"initialize,omitempty"`
-	PreAnimation []string          `json:"pre_animation,omitempty"`
-	Animate      []interface{}     `json:"animate,omitempty"`
+	ParentSetup  string                        `json:"parent_setup,omitempty"`
+	Variables    types.IMapStringString        `json:"variables,omitempty"`
+	ScaleX       string                        `json:"scalex,omitempty"`
+	ScaleY       string                        `json:"scaley,omitempty"`
+	ScaleZ       string                        `json:"scalez,omitempty"`
+	Scale        string                        `json:"scale,omitempty"`
+	Initialize   types.IStringArray            `json:"initialize,omitempty"`
+	PreAnimation types.IStringArray            `json:"pre_animation,omitempty"`
+	Animate      types.IStringArrayConditional `json:"animate,omitempty"`
 }
 
 type clientEntitySpawnEgg struct {
@@ -52,32 +53,53 @@ type clientEntitySpawnEgg struct {
 	TextureIndex int    `json:"texture_index,omitempty"`
 }
 
-func New(namespace string, identifier string) Entity {
-	e := &entity{
+func New(namespace string, identifier string) *Entity {
+	e := &Entity{
 		FormatVersion: "1.12.0",
 		Entity: &ClientEntity{
 			Description: &ClientEntityDescription{
 				Identifier: fmt.Sprintf("%s:%s", namespace, identifier),
-				Materials: map[string]string{
+				Materials: &types.MapStringString{
 					"default": "entity_alphatest",
 				},
-				Textures: map[string]string{
+				Textures: &types.MapStringString{
 					"default": fmt.Sprintf("textures/entity/%s", identifier),
 				},
-				Geometry: map[string]string{
+				Geometry: &types.MapStringString{
 					"default": fmt.Sprintf("geometry.%s", identifier),
 				},
-				RenderControllers: []interface{}{
+				Scripts: &clientEntityDescriptionScripts{
+					Initialize:   &types.StringArray{},
+					PreAnimation: &types.StringArray{},
+					Animate:      &types.StringArrayConditional{},
+				},
+				RenderControllers: &types.StringArrayConditional{
 					"controller.render.default",
 				},
+				SpawnEgg: &clientEntitySpawnEgg{},
 			},
 		},
 	}
 	return e
 }
 
-func Load(dir string) (Entity, error) {
-	e := &entity{}
+func Load(dir string) (*Entity, error) {
+	e := &Entity{
+		Entity: &ClientEntity{
+			Description: &ClientEntityDescription{
+				Materials: &types.MapStringString{},
+				Textures:  &types.MapStringString{},
+				Geometry:  &types.MapStringString{},
+				Scripts: &clientEntityDescriptionScripts{
+					Initialize:   &types.StringArray{},
+					PreAnimation: &types.StringArray{},
+					Animate:      &types.StringArrayConditional{},
+				},
+				RenderControllers: &types.StringArrayConditional{},
+				SpawnEgg:          &clientEntitySpawnEgg{},
+			},
+		},
+	}
 	err := g_util.LoadJSON(dir, e)
 	if err != nil {
 		return nil, err

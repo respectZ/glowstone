@@ -215,10 +215,10 @@ func (g *glowstone) Save() {
 			// AutoSpawnEggTexture
 			if e.AutoSpawnEggTexture {
 				// Get texture
-				rp_textures := e.RP.GetTextures()
+				rp_textures := e.RP.Entity.Description.Textures
 				// Get first texture
 				var texture string
-				for _, v := range rp_textures {
+				for _, v := range rp_textures.All() {
 					texture = v
 					break
 				}
@@ -231,8 +231,10 @@ func (g *glowstone) Save() {
 					primary, secondary, err := g_util.GetEggColor(texture)
 					if err == nil {
 						// Set color
-						e.RP.GetSpawnEgg().SetBaseColor(primary)
-						e.RP.GetSpawnEgg().SetOverlayColor(secondary)
+						e.RP.Entity.Description.SpawnEgg.BaseColor = primary
+						e.RP.Entity.Description.SpawnEgg.OverlayColor = secondary
+						// e.RP.GetSpawnEgg().SetBaseColor(primary)
+						// e.RP.GetSpawnEgg().SetOverlayColor(secondary)
 					} else {
 						g.Logger.Warning.Printf("failed to get egg color for %s: %s", e.GetIdentifier(), err)
 					}
@@ -477,7 +479,27 @@ func (g *glowstone) AddEntity(entities ...interface{}) {
 			} else {
 				g.Entities[p.GetNamespaceIdentifier()] = p
 			}
+		case *entityBP.Entity:
+			p := &entity.Entity{
+				BP: e,
+			}
+			old, ok := g.Entities[p.GetNamespaceIdentifier()]
+			if ok {
+				old.BP = p.BP
+			} else {
+				g.Entities[p.GetNamespaceIdentifier()] = p
+			}
 		case entityRP.Entity:
+			p := &entity.Entity{
+				RP: &e,
+			}
+			old, ok := g.Entities[p.GetNamespaceIdentifier()]
+			if ok {
+				old.RP = p.RP
+			} else {
+				g.Entities[p.GetNamespaceIdentifier()] = p
+			}
+		case *entityRP.Entity:
 			p := &entity.Entity{
 				RP: e,
 			}
@@ -513,7 +535,7 @@ func (g *glowstone) NewEntity(namespace string, identifier string) *entity.Entit
 
 	entityLang := fmt.Sprintf("entity.%s:%s.name", namespace, identifier)
 	if g.GetLang(entityLang) == "" {
-		g.AddLang(entityLang, fmt.Sprintf("%s", lang))
+		g.AddLang(entityLang, lang)
 	}
 	spawnEggLang := fmt.Sprintf("item.spawn_egg.entity.%s:%s.name", namespace, identifier)
 	if g.GetLang(spawnEggLang) == "" {

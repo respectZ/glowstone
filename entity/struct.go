@@ -10,7 +10,7 @@ import (
 
 type Entity struct {
 	BP *bp.Entity
-	RP rp.Entity
+	RP *rp.Entity
 
 	// Other stuff
 	Subdir          string
@@ -75,7 +75,7 @@ func LoadBP(src string) (*bp.Entity, error) {
 // Example:
 //
 //	e, err := entity.LoadRP("./rp/entity/humanoid.json")
-func LoadRP(src string) (rp.Entity, error) {
+func LoadRP(src string) (*rp.Entity, error) {
 	rp, err := rp.Load(src)
 	if err != nil {
 		return nil, err

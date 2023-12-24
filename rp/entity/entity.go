@@ -1,87 +1,33 @@
 package entity
 
 import (
+	"reflect"
+
 	g_util "github.com/respectZ/glowstone/util"
 )
 
-func (e *entity) Encode(minify ...bool) ([]byte, error) {
+func (e *Entity) Encode(minify ...bool) ([]byte, error) {
+	if e.Entity.Description.Scripts != nil {
+		if e.Entity.Description.Scripts.Animate.IsEmpty() {
+			e.Entity.Description.Scripts.Animate = nil
+		}
+		if e.Entity.Description.Scripts.PreAnimation.IsEmpty() {
+			e.Entity.Description.Scripts.PreAnimation = nil
+		}
+		if e.Entity.Description.Scripts.Initialize.IsEmpty() {
+			e.Entity.Description.Scripts.Initialize = nil
+		}
+	}
+
+	if reflect.ValueOf(e.Entity.Description.Scripts).Elem().IsZero() {
+		e.Entity.Description.Scripts = nil
+	}
+	if reflect.ValueOf(e.Entity.Description.SpawnEgg).Elem().IsZero() {
+		e.Entity.Description.SpawnEgg = nil
+	}
 	return g_util.MarshalJSON(e, minify...)
 }
 
-func (e *entity) GetFormatVersion() string {
-	return e.FormatVersion
-}
-
-func (e *entity) SetFormatVersion(formatVersion string) {
-	e.FormatVersion = formatVersion
-}
-
-func (e *entity) GetIdentifier() string {
+func (e *Entity) GetIdentifier() string {
 	return e.Entity.Description.Identifier
-}
-
-func (e *entity) SetIdentifier(identifier string) {
-	e.Entity.Description.Identifier = identifier
-}
-
-func (e *entity) GetMaterials() map[string]string {
-	return e.Entity.Description.Materials
-}
-
-func (e *entity) SetMaterials(materials map[string]string) {
-	e.Entity.Description.Materials = materials
-}
-
-func (e *entity) AddMaterial(name string, material string) {
-	e.Entity.Description.Materials[name] = material
-}
-
-func (e *entity) GetTextures() map[string]string {
-	return e.Entity.Description.Textures
-}
-
-func (e *entity) SetTextures(textures map[string]string) {
-	e.Entity.Description.Textures = textures
-}
-
-func (e *entity) AddTexture(name string, path string) {
-	e.Entity.Description.Textures[name] = path
-}
-
-func (e *entity) GetGeometry() map[string]string {
-	return e.Entity.Description.Geometry
-}
-
-func (e *entity) SetGeometry(geometry map[string]string) {
-	e.Entity.Description.Geometry = geometry
-}
-
-func (e *entity) AddGeometry(name string, path string) {
-	e.Entity.Description.Geometry[name] = path
-}
-
-func (e *entity) GetAnimations() map[string]string {
-	return e.Entity.Description.Animations
-}
-
-func (e *entity) SetAnimations(animations map[string]string) {
-	e.Entity.Description.Animations = animations
-}
-
-func (e *entity) AddAnimation(name string, path string) {
-	if e.Entity.Description.Animations == nil {
-		e.Entity.Description.Animations = make(map[string]string)
-	}
-	e.Entity.Description.Animations[name] = path
-}
-
-func (e *entity) GetScripts() ClientEntityDescriptionScripts {
-	return e.Entity.Description.Scripts
-}
-
-func (e *entity) GetSpawnEgg() ClientEntitySpawnEgg {
-	if e.Entity.Description.SpawnEgg == nil {
-		e.Entity.Description.SpawnEgg = &clientEntitySpawnEgg{}
-	}
-	return e.Entity.Description.SpawnEgg
 }
