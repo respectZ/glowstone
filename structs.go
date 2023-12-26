@@ -37,10 +37,11 @@ type glowstone struct {
 	LootTables            map[string]*loot_table.LootTable
 
 	// RP Specific
-	ItemTexture     *texture.ItemTexture
-	TerrainTexture  *texture.TerrainTexture
-	SoundDefinition *sound.SoundDefinition
-	RPBlocks        *rp.Blocks
+	RPAnimationController map[string]*animationController.RPAnimationController
+	ItemTexture           *texture.ItemTexture
+	TerrainTexture        *texture.TerrainTexture
+	SoundDefinition       *sound.SoundDefinition
+	RPBlocks              *rp.Blocks
 
 	// Settings
 	IsUpfront  bool
@@ -299,6 +300,20 @@ type Glowstone interface {
 	// Example:
 	// 	bpAnimationController := glowstone.NewBPAnimationController("player.animation_controller.json")
 	NewBPAnimationController(string) *animationController.BPAnimationController
+
+	/******************* RPAnimationController *******************/
+
+	// AddRPAnimationController adds the RPAnimationController to the project
+	//
+	// Example:
+	// 	glowstone.AddRPAnimationController(bpAnimationController)
+	AddRPAnimationController(...interface{})
+
+	// NewRPAnimationController creates a new RPAnimationController
+	//
+	// Example:
+	// 	bpAnimationController := glowstone.NewRPAnimationController("player.animation_controller.json")
+	NewRPAnimationController(string) *animationController.RPAnimationController
 
 	/******************* BPAnimation *******************/
 

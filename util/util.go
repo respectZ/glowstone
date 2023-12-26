@@ -40,7 +40,6 @@ func UnmarshalJSON(data []byte, e interface{}) error {
 
 func Copyfile(source, destination string) error {
 	bytesRead, err := os.ReadFile(source)
-
 	if err != nil {
 		return err
 	}
@@ -172,7 +171,6 @@ func Walk(rootDir string) ([]string, error) {
 
 		return nil
 	})
-
 	if err != nil {
 		return nil, err
 	}

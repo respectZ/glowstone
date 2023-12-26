@@ -1,31 +1,32 @@
 package animation_controller
 
 import (
+	"github.com/respectZ/glowstone/types"
 	g_util "github.com/respectZ/glowstone/util"
 )
 
-type animationController struct {
-	FormatVersion       string                              `json:"format_version"`
-	AnimationController map[string]*animationControllerData `json:"animation_controllers"`
+type AnimationControllerFile struct {
+	FormatVersion       string               `json:"format_version"`
+	AnimationController IAnimationController `json:"animation_controllers"`
 }
 
-type animationControllerData struct {
-	InitialState string                               `json:"initial_state,omitempty"`
-	States       map[string]*animationControllerState `json:"states"`
+type animationController struct {
+	InitialState string                     `json:"initial_state,omitempty"`
+	States       IAnimationControllerStates `json:"states"`
 }
 
 type animationControllerState struct {
-	BlendTransition      float64             `json:"blend_transition,omitempty"`
-	BlendViaShortestPath *bool               `json:"blend_via_shortest_path,omitempty"`
-	OnEntry              []string            `json:"on_entry,omitempty"`
-	OnExit               []string            `json:"on_exit,omitempty"`
-	Animations           []interface{}       `json:"animations,omitempty"`
-	Transitions          []map[string]string `json:"transitions,omitempty"`
+	BlendTransition      float64                       `json:"blend_transition,omitempty"`
+	BlendViaShortestPath *bool                         `json:"blend_via_shortest_path,omitempty"`
+	OnEntry              types.IStringArray            `json:"on_entry,omitempty"`
+	OnExit               types.IStringArray            `json:"on_exit,omitempty"`
+	Animations           types.IStringArrayConditional `json:"animations,omitempty"`
+	Transitions          types.IMapStringArray         `json:"transitions,omitempty"`
 
-	ParticleEffects []*particleEffect     `json:"particle_effects,omitempty"`
-	Parameters      []interface{}         `json:"parameters,omitempty"` // TODO: implement
-	Variables       map[string]*variables `json:"variables,omitempty"`
-	SoundEffects    []*soundEffect        `json:"sound_effects,omitempty"`
+	ParticleEffects IParticleEffects `json:"particle_effects,omitempty"`
+	Parameters      []interface{}    `json:"parameters,omitempty"` // TODO: implement
+	Variables       IVariables       `json:"variables,omitempty"`
+	SoundEffects    ISoundEffects    `json:"sound_effects,omitempty"`
 }
 
 type particleEffect struct {
@@ -36,8 +37,8 @@ type particleEffect struct {
 }
 
 type variables struct {
-	Input      string             `json:"input,omitempty"`
-	RemapCurve map[string]float64 `json:"remap_curve,omitempty"`
+	Input      string                `json:"input,omitempty"`
+	RemapCurve types.IMapStringFloat `json:"remap_curve,omitempty"`
 }
 
 type soundEffect struct {
@@ -49,10 +50,10 @@ type soundEffect struct {
 // Example:
 //
 //	a := animation_controller.New()
-func New() AnimationController {
-	return &animationController{
+func New() *AnimationControllerFile {
+	return &AnimationControllerFile{
 		FormatVersion:       "1.12.0",
-		AnimationController: make(map[string]*animationControllerData),
+		AnimationController: IAnimationController(&AnimationController{}),
 	}
 }
 
@@ -61,8 +62,48 @@ func New() AnimationController {
 // Example:
 //
 //	a, err := animation_controller.Load("player.animation_controller.json")
-func Load(src string) (AnimationController, error) {
+func Load(src string) (*AnimationControllerFile, error) {
 	a := New()
 	err := g_util.LoadJSON(src, a)
 	return a, err
+}
+
+func (a *AnimationControllerFile) Encode() ([]byte, error) {
+	for _, v := range a.AnimationController.All() {
+		for _, v := range v.States.All() {
+			if v.Animations != nil && v.Animations.IsEmpty() {
+				v.Animations = nil
+			}
+			if v.OnEntry != nil && v.OnEntry.IsEmpty() {
+				v.OnEntry = nil
+			}
+			if v.OnExit != nil && v.OnExit.IsEmpty() {
+				v.OnExit = nil
+			}
+			if v.Transitions != nil && v.Transitions.IsEmpty() {
+				v.Transitions = nil
+			}
+			if v.ParticleEffects != nil && v.ParticleEffects.IsEmpty() {
+				v.ParticleEffects = nil
+			}
+			if v.Variables != nil {
+				_variables := v.Variables.All()
+				for k, vv := range _variables {
+					if vv.Input == "" {
+						delete(_variables, k)
+					}
+				}
+				if v.Variables.IsEmpty() {
+					v.Variables = nil
+				}
+			}
+			if v.SoundEffects != nil && v.SoundEffects.IsEmpty() {
+				v.SoundEffects = nil
+			}
+		}
+	}
+	if a.AnimationController != nil && a.AnimationController.IsEmpty() {
+		a.AnimationController = nil
+	}
+	return g_util.MarshalJSON(a)
 }

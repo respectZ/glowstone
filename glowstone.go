@@ -52,6 +52,8 @@ func NewProject() Glowstone {
 		Recipes:               make(map[string]interface{}),
 		Attachables:           make(map[string]*attachable.Attachable),
 
+		RPAnimationController: make(map[string]*animationController.RPAnimationController),
+
 		IsUpfront: false,
 	}
 }
@@ -310,6 +312,16 @@ func (g *glowstone) Save() {
 			continue
 		}
 		g_util.Writefile(path.Join(g.BPDir, "animation_controllers", a.Dest), data)
+	}
+
+	// RPAnimationController
+	for _, a := range g.RPAnimationController {
+		data, err := a.Encode()
+		if err != nil {
+			g.Logger.Error.Println(err)
+			continue
+		}
+		g_util.Writefile(path.Join(g.RPDir, "animation_controllers", a.Dest), data)
 	}
 
 	// BPAnimation
@@ -785,6 +797,27 @@ func (g *glowstone) AddBPAnimationController(bpAnimationControllers ...interface
 func (g *glowstone) NewBPAnimationController(dest string) *animationController.BPAnimationController {
 	a := animationController.NewBP(dest)
 	g.BPAnimationController[dest] = a
+	return a
+}
+
+/******************* RPAnimationController *******************/
+
+func (g *glowstone) AddRPAnimationController(bpAnimationControllers ...interface{}) {
+	for _, a := range bpAnimationControllers {
+		switch a := a.(type) {
+		case *animationController.RPAnimationController:
+			g.RPAnimationController[a.Dest] = a
+		case animationController.RPAnimationController:
+			g.RPAnimationController[a.Dest] = &a
+		default:
+			g.Logger.Error.Printf("invalid type %T", a)
+		}
+	}
+}
+
+func (g *glowstone) NewRPAnimationController(dest string) *animationController.RPAnimationController {
+	a := animationController.NewRP(dest)
+	g.RPAnimationController[dest] = a
 	return a
 }
 
