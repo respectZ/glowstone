@@ -53,8 +53,6 @@ func NewProject() Glowstone {
 		Attachables:           make(map[string]*attachable.Attachable),
 
 		RPAnimationController: make(map[string]*animationController.RPAnimationController),
-
-		IsUpfront: false,
 	}
 }
 
@@ -127,10 +125,6 @@ func (g *glowstone) Initialize() error {
 	g.TerrainTexture, _ = texture.LoadTerrainTexture(g.RPDir + "textures/terrain_texture.json")
 
 	return nil
-}
-
-func (g *glowstone) SetUpfront(upfront bool) {
-	g.IsUpfront = upfront
 }
 
 func (g *glowstone) Save() {

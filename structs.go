@@ -44,7 +44,6 @@ type glowstone struct {
 	RPBlocks              *rp.Blocks
 
 	// Settings
-	IsUpfront  bool
 	MinifyJSON bool
 }
 
@@ -77,11 +76,6 @@ type Glowstone interface {
 	Build() error
 	// Initialize initializes the lang and item_texture.json
 	Initialize() error
-
-	// SetUpfront will cache the project data upfront.
-	//
-	// Default: false
-	SetUpfront(bool)
 
 	// Save the project data to the disk.
 	Save()
