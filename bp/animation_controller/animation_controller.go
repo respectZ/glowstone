@@ -30,11 +30,35 @@ type IAnimationController interface {
 }
 
 func (a *AnimationController) UnmarshalJSON(data []byte) error {
-	var temp map[string]*animationController
+	var temp map[string]*animationControllerDummy
 	if err := g_util.UnmarshalJSON(data, &temp); err != nil {
 		return err
 	}
-	*a = temp
+	result := make(map[string]*animationController)
+	tempState := make(AnimationControllerStates)
+
+	for k, v := range temp {
+		for k, v := range v.States {
+			tempState[k] = &animationControllerState{}
+			if v.OnEntry != nil {
+				tempState[k].OnEntry = &v.OnEntry
+			}
+			if v.OnExit != nil {
+				tempState[k].OnExit = &v.OnExit
+			}
+			if v.Animations != nil {
+				tempState[k].Animations = &v.Animations
+			}
+			if v.Transitions != nil {
+				tempState[k].Transitions = &v.Transitions
+			}
+		}
+		result[k] = &animationController{
+			InitialState: v.InitialState,
+			States:       &tempState,
+		}
+	}
+	*a = result
 	return nil
 }
 
