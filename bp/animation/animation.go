@@ -29,11 +29,20 @@ type IAnimationMap interface {
 }
 
 func (m *AnimationMap) UnmarshalJSON(data []byte) error {
-	var temp map[string]*animationData
+	var temp map[string]*animationDataDummy
 	if err := g_util.UnmarshalJSON(data, &temp); err != nil {
 		return err
 	}
-	*m = temp
+
+	result := make(map[string]*animationData)
+	for k, v := range temp {
+		result[k] = &animationData{
+			AnimationLength: v.AnimationLength,
+			Loop:            v.Loop,
+			Timeline:        &v.Timeline,
+		}
+	}
+
 	return nil
 }
 

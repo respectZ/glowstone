@@ -16,6 +16,13 @@ type animationData struct {
 	Timeline        ITimeline `json:"timeline"`
 }
 
+type animationDataDummy struct {
+	AnimationLength float64  `json:"animation_length"`
+	Loop            bool     `json:"loop"`
+	AnimUpdateTime  string   `json:"anim_time_update,omitempty"`
+	Timeline        Timeline `json:"timeline"`
+}
+
 // New returns a new animation
 //
 // Example:
