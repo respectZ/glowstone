@@ -29,12 +29,15 @@ func New(namespace string, identifier string, subdir ...string) *Block {
 // Example:
 //
 //	e, err := block.LoadBP("./bp/block/super_stone.json")
-func LoadBP(src string) (bp.Block, error) {
+func LoadBP(src string) (*Block, error) {
 	bp, err := bp.Load(src)
 	if err != nil {
 		return nil, err
 	}
-	return bp, nil
+	block := &Block{
+		BP: bp,
+	}
+	return block, nil
 }
 
 // Encode returns []byte of the BP.

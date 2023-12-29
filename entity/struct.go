@@ -111,7 +111,7 @@ func (e *Entity) Encode() ([]byte, []byte, error) {
 //
 //	identifier := e.GetIdentifier()
 func (e *Entity) GetIdentifier() string {
-	return strings.Split(e.BP.GetIdentifier(), ":")[1]
+	return strings.Split(e.GetNamespaceIdentifier(), ":")[1]
 }
 
 // GetNamespaceIdentifier returns the identifier of the entity with namespace
@@ -120,7 +120,10 @@ func (e *Entity) GetIdentifier() string {
 //
 //	identifier := e.GetNamespaceIdentifier()
 func (e *Entity) GetNamespaceIdentifier() string {
-	return e.BP.GetIdentifier()
+	if e.BP != nil {
+		return e.BP.GetIdentifier()
+	}
+	return e.RP.GetIdentifier()
 }
 
 // SetLang sets the lang of the item name.

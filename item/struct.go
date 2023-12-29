@@ -24,6 +24,16 @@ func New(namespace string, identifier string, subdir ...string) *Item {
 	return item
 }
 
+func Load(src string) (*Item, error) {
+	bp, err := bp.Load(src)
+	if err != nil {
+		return nil, err
+	}
+	return &Item{
+		BP: bp,
+	}, nil
+}
+
 // LoadBP loads the BP from the given path
 //
 // Example:
