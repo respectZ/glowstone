@@ -45,7 +45,7 @@ type RecipeFurnace interface {
 	SetOutput(string)
 }
 
-func NewFurnace(identifier string) *recipeFurnace {
+func NewFurnace(identifier string) RecipeFurnace {
 	return &recipeFurnace{
 		FormatVersion: FORMAT_VERSION,
 		RecipeFurnace: &recipeFurnaceData{
