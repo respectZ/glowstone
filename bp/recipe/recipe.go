@@ -51,24 +51,48 @@ type RecipeInterface interface {
 }
 
 func Load(src string) (RecipeInterface, error) {
-	var r interface{}
-	err := g_util.LoadJSON(src, &r)
-	if err != nil {
-		return nil, err
+	var _brewingContainer recipeBrewingContainer
+	var _brewingMix recipeBrewingMix
+	var _smithingTransform recipeSmithingTransform
+	var _shaped recipeShaped
+	var _shapeless recipeShapeless
+	var _furnace recipeFurnace
+
+	err := g_util.LoadJSON(src, &_brewingContainer)
+	if err == nil {
+		if _brewingContainer.RecipeBrewingContainer != nil {
+			return &_brewingContainer, nil
+		}
 	}
-	switch v := r.(type) {
-	case recipeBrewingContainer:
-		return &v, nil
-	case recipeBrewingMix:
-		return &v, nil
-	case recipeSmithingTransform:
-		return &v, nil
-	case recipeShaped:
-		return &v, nil
-	case recipeShapeless:
-		return &v, nil
-	case recipeFurnace:
-		return &v, nil
+	err = g_util.LoadJSON(src, &_brewingMix)
+	if err == nil {
+		if _brewingMix.RecipeBrewingMix != nil {
+			return &_brewingMix, nil
+		}
+	}
+	err = g_util.LoadJSON(src, &_smithingTransform)
+	if err == nil {
+		if _smithingTransform.RecipeSmithingTransform != nil {
+			return &_smithingTransform, nil
+		}
+	}
+	err = g_util.LoadJSON(src, &_shaped)
+	if err == nil {
+		if _shaped.RecipeShaped != nil {
+			return &_shaped, nil
+		}
+	}
+	err = g_util.LoadJSON(src, &_shapeless)
+	if err == nil {
+		if _shapeless.RecipeShapeless != nil {
+			return &_shapeless, nil
+		}
+	}
+	err = g_util.LoadJSON(src, &_furnace)
+	if err == nil {
+		if _furnace.RecipeFurnace != nil {
+			return &_furnace, nil
+		}
 	}
 	return nil, fmt.Errorf("recipe: %s is not a recipe", src)
 }

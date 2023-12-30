@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"reflect"
 
 	bp "github.com/respectZ/glowstone/bp"
 	rp "github.com/respectZ/glowstone/rp"
@@ -59,47 +60,67 @@ func NewProjectV2() *Project {
 	}
 }
 
-func (g *Project) Initialize() {
-	// Animatinon Controller
-	err := g.BP.AnimationController.LoadAll(g.BP.Path)
-	if err != nil {
-		g.Logger.Error.Println(err)
+func (g *Project) Load() {
+	val := reflect.ValueOf(g.BP).Elem()
+
+	for i := 0; i < val.NumField(); i++ {
+		field := val.Field(i)
+		if loadMethod := field.MethodByName("LoadAll"); loadMethod.IsValid() {
+			result := loadMethod.Call([]reflect.Value{reflect.ValueOf(g.BP.Path)})
+			if len(result) > 0 && !result[0].IsNil() {
+				g.Logger.Error.Println(result[0].Interface().(error))
+			}
+		} else {
+			fieldName := val.Type().Field(i).Name
+			switch fieldName {
+			case "Manifest":
+				err := g.BP.Manifest.Load(filepath.Join(g.BP.Path, "manifest.json"))
+				if err != nil {
+					g.Logger.Error.Println(err)
+				}
+			}
+		}
 	}
-	// Animation
-	err = g.BP.Animation.LoadAll(g.BP.Path)
-	if err != nil {
-		g.Logger.Error.Println(err)
-	}
-	// Block
-	err = g.BP.Block.LoadAll(g.BP.Path)
-	if err != nil {
-		g.Logger.Error.Println(err)
-	}
-	// Entity
-	err = g.BP.Entity.LoadAll(g.BP.Path)
-	if err != nil {
-		g.Logger.Error.Println(err)
-	}
-	// Item
-	err = g.BP.Item.LoadAll(g.BP.Path)
-	if err != nil {
-		g.Logger.Error.Println(err)
-	}
-	// Loot Table
-	err = g.BP.LootTable.LoadAll(g.BP.Path)
-	if err != nil {
-		g.Logger.Error.Println(err)
-	}
-	// Recipe
-	err = g.BP.Recipe.LoadAll(g.BP.Path)
-	if err != nil {
-		g.Logger.Error.Println(err)
-	}
-	// Manifest
-	err = g.BP.Manifest.Load(filepath.Join(g.BP.Path, "manifest.json"))
-	if err != nil {
-		g.Logger.Error.Println(err)
-	}
+	// // Animatinon Controller
+	// err := g.BP.AnimationController.LoadAll(g.BP.Path)
+	// if err != nil {
+	// 	g.Logger.Error.Println(err)
+	// }
+	// // Animation
+	// err = g.BP.Animation.LoadAll(g.BP.Path)
+	// if err != nil {
+	// 	g.Logger.Error.Println(err)
+	// }
+	// // Block
+	// err = g.BP.Block.LoadAll(g.BP.Path)
+	// if err != nil {
+	// 	g.Logger.Error.Println(err)
+	// }
+	// // Entity
+	// err = g.BP.Entity.LoadAll(g.BP.Path)
+	// if err != nil {
+	// 	g.Logger.Error.Println(err)
+	// }
+	// // Item
+	// err = g.BP.Item.LoadAll(g.BP.Path)
+	// if err != nil {
+	// 	g.Logger.Error.Println(err)
+	// }
+	// // Loot Table
+	// err = g.BP.LootTable.LoadAll(g.BP.Path)
+	// if err != nil {
+	// 	g.Logger.Error.Println(err)
+	// }
+	// // Recipe
+	// err = g.BP.Recipe.LoadAll(g.BP.Path)
+	// if err != nil {
+	// 	g.Logger.Error.Println(err)
+	// }
+	// // Manifest
+	// err = g.BP.Manifest.Load(filepath.Join(g.BP.Path, "manifest.json"))
+	// if err != nil {
+	// 	g.Logger.Error.Println(err)
+	// }
 }
 
 func (g *Project) Save() {
