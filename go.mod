@@ -7,3 +7,5 @@ require (
 	github.com/goccy/go-json v0.10.2
 	golang.org/x/text v0.13.0
 )
+
+require github.com/google/uuid v1.5.0 // indirect
