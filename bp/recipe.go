@@ -72,6 +72,8 @@ type IRecipeBP interface {
 	//	a := New("glowstone:chair")
 	//	b := New("glowstone:table")
 	NewSmithingTransform(string, ...struct{ Subdir string }) *bp.RecipeSmithingTransform
+
+	LoadAll(string) error
 }
 
 func (e *RecipeBP) Add(key string, value interface{}) {

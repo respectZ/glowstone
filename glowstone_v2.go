@@ -85,6 +85,16 @@ func (g *Project) Initialize() {
 	if err != nil {
 		g.Logger.Error.Println(err)
 	}
+	// Loot Table
+	err = g.BP.LootTable.LoadAll(g.BP.Path)
+	if err != nil {
+		g.Logger.Error.Println(err)
+	}
+	// Recipe
+	err = g.BP.Recipe.LoadAll(g.BP.Path)
+	if err != nil {
+		g.Logger.Error.Println(err)
+	}
 	// Manifest
 	err = g.BP.Manifest.Load(filepath.Join(g.BP.Path, "manifest.json"))
 	if err != nil {
