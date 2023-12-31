@@ -2,7 +2,6 @@ package glowstone
 
 import (
 	"fmt"
-	"path"
 	"path/filepath"
 	"strings"
 
@@ -161,7 +160,7 @@ func (e *EntityBP) LoadAll(pathToBP string) error {
 		// Strip the pathToBP from the file path
 		file = strings.TrimPrefix(file, pathToBP+string(filepath.Separator)+destDirectory.Entity+string(filepath.Separator))
 		// Get all the directories
-		subdir := path.Dir(file)
+		subdir := filepath.Dir(file)
 		// Set subdir
 		r.BP = a
 		r.Subdir = subdir
