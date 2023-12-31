@@ -268,5 +268,12 @@ func (e *Manifest) Save(pathToBP string) error {
 }
 
 func (e *Manifest) Load(src string) error {
+	if filepath.Base(src) != "manifest.json" {
+		src = filepath.Join(src, "manifest.json")
+	}
 	return g_util.LoadJSON(src, e)
+}
+
+func (e *Manifest) IsEmpty() bool {
+	return e.FormatVersion == 0 && e.Header == nil && e.Dependencies.IsEmpty() && e.Modules.IsEmpty()
 }
