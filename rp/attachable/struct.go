@@ -1,10 +1,11 @@
 package attachable
 
 import (
+	types "github.com/respectZ/glowstone/types"
 	g_util "github.com/respectZ/glowstone/util"
 )
 
-type attachable struct {
+type Attachable struct {
 	FormatVersion string               `json:"format_version"`
 	Attachable    *MinecraftAttachable `json:"minecraft:attachable"`
 }
@@ -14,37 +15,50 @@ type MinecraftAttachable struct {
 }
 
 type MinecraftAttachableDescription struct {
-	Identifier        string            `json:"identifier"`
-	Materials         map[string]string `json:"materials"`
-	Textures          map[string]string `json:"textures"`
-	Geometry          map[string]string `json:"geometry"`
-	Animations        map[string]string `json:"animations,omitempty"`
-	Item              map[string]string `json:"item,omitempty"`
-	QueryableGeometry string            `json:"queryable_geometry,omitempty"`
-	RenderControllers []string          `json:"render_controllers"`
+	Identifier        string                        `json:"identifier"`
+	Materials         types.IMapStringString        `json:"materials"`
+	Textures          types.IMapStringString        `json:"textures"`
+	Geometry          types.IMapStringString        `json:"geometry"`
+	Animations        types.IMapStringString        `json:"animations,omitempty"`
+	Item              types.IMapStringString        `json:"item,omitempty"`
+	QueryableGeometry string                        `json:"queryable_geometry,omitempty"`
+	RenderControllers types.IStringArrayConditional `json:"render_controllers"`
 }
 
 const (
 	FORMAT_VERSION string = "1.20.30"
 )
 
-func New(namespace string, identifier string) Attachable {
-	return &attachable{
+func New(identifier string) *Attachable {
+	return &Attachable{
 		FormatVersion: FORMAT_VERSION,
 		Attachable: &MinecraftAttachable{
 			Description: &MinecraftAttachableDescription{
-				Identifier:        namespace + ":" + identifier,
-				Materials:         make(map[string]string),
-				Textures:          make(map[string]string),
-				Geometry:          make(map[string]string),
-				RenderControllers: make([]string, 0),
+				Identifier:        identifier,
+				Materials:         &types.MapStringString{},
+				Textures:          &types.MapStringString{},
+				Geometry:          &types.MapStringString{},
+				Animations:        &types.MapStringString{},
+				Item:              &types.MapStringString{},
+				RenderControllers: &types.StringArrayConditional{},
 			},
 		},
 	}
 }
 
-func Load(src string) (Attachable, error) {
-	a := &attachable{}
+func Load(src string) (*Attachable, error) {
+	a := &Attachable{
+		Attachable: &MinecraftAttachable{
+			Description: &MinecraftAttachableDescription{
+				Materials:         &types.MapStringString{},
+				Textures:          &types.MapStringString{},
+				Geometry:          &types.MapStringString{},
+				Animations:        &types.MapStringString{},
+				Item:              &types.MapStringString{},
+				RenderControllers: &types.StringArrayConditional{},
+			},
+		},
+	}
 	err := g_util.LoadJSON(src, a)
 	if err != nil {
 		return nil, err
