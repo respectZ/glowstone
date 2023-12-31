@@ -1,6 +1,7 @@
 package texture
 
 import (
+	"path/filepath"
 	"strings"
 
 	g_util "github.com/respectZ/glowstone/util"
@@ -54,4 +55,16 @@ func (i *ItemTexture) AddTexture(name string, texture interface{}) {
 	i.TextureData[name] = ItemTexture_Texture{
 		Textures: texture,
 	}
+}
+
+func (i *ItemTexture) IsEmpty() bool {
+	return len(i.TextureData) == 0
+}
+
+func (i *ItemTexture) Save(pathToRP string) error {
+	data, err := i.Encode()
+	if err != nil {
+		return err
+	}
+	return g_util.Writefile(filepath.Join(pathToRP, "textures", "item_texture.json"), data)
 }

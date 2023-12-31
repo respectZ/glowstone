@@ -1,6 +1,7 @@
 package sound
 
 import (
+	"path/filepath"
 	"strings"
 
 	g_util "github.com/respectZ/glowstone/util"
@@ -113,6 +114,18 @@ func (s *SoundDefinition) AddSound(name string, path string) (*Definition, *Soun
 
 func (s *SoundDefinition) RemoveSound(name string) {
 	delete(s.SoundDefinitions, name)
+}
+
+func (s *SoundDefinition) IsEmpty() bool {
+	return len(s.SoundDefinitions) == 0
+}
+
+func (s *SoundDefinition) Save(pathToRP string) error {
+	data, err := s.Encode()
+	if err != nil {
+		return err
+	}
+	return g_util.Writefile(filepath.Join(pathToRP, "sounds", "sound_definitions.json"), data)
 }
 
 // Add a sound to the definition.
