@@ -2,6 +2,7 @@ package entity
 
 import (
 	"fmt"
+	"strings"
 
 	types "github.com/respectZ/glowstone/types"
 	g_util "github.com/respectZ/glowstone/util"
@@ -53,7 +54,11 @@ type clientEntitySpawnEgg struct {
 	TextureIndex int    `json:"texture_index,omitempty"`
 }
 
-func New(namespace string, identifier string) *Entity {
+func New(identifier string) *Entity {
+	s := strings.Split(identifier, ":")
+	namespace := s[0]
+	identifier = s[1]
+
 	e := &Entity{
 		FormatVersion: "1.12.0",
 		Entity: &ClientEntity{

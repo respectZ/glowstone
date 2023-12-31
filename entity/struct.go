@@ -31,7 +31,7 @@ func New(namespace string, identifier string, subdir ...string) *Entity {
 	}
 	entity := &Entity{
 		BP: bp.New(namespace, identifier),
-		RP: rp.New(namespace, identifier),
+		RP: rp.New(namespace + ":" + identifier),
 	}
 	entity.Subdir = s
 	return entity
