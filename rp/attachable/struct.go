@@ -20,9 +20,15 @@ type MinecraftAttachableDescription struct {
 	Textures          types.IMapStringString        `json:"textures"`
 	Geometry          types.IMapStringString        `json:"geometry"`
 	Animations        types.IMapStringString        `json:"animations,omitempty"`
+	Scripts           *MinecraftAttachableScripts   `json:"scripts,omitempty"`
 	Item              types.IMapStringString        `json:"item,omitempty"`
 	QueryableGeometry string                        `json:"queryable_geometry,omitempty"`
 	RenderControllers types.IStringArrayConditional `json:"render_controllers"`
+}
+
+type MinecraftAttachableScripts struct {
+	ParentSetup types.IStringArray `json:"parent_setup,omitempty"`
+	Animate     types.IStringArray `json:"animate,omitempty"`
 }
 
 const (
@@ -34,11 +40,15 @@ func New(identifier string) *Attachable {
 		FormatVersion: FORMAT_VERSION,
 		Attachable: &MinecraftAttachable{
 			Description: &MinecraftAttachableDescription{
-				Identifier:        identifier,
-				Materials:         &types.MapStringString{},
-				Textures:          &types.MapStringString{},
-				Geometry:          &types.MapStringString{},
-				Animations:        &types.MapStringString{},
+				Identifier: identifier,
+				Materials:  &types.MapStringString{},
+				Textures:   &types.MapStringString{},
+				Geometry:   &types.MapStringString{},
+				Animations: &types.MapStringString{},
+				Scripts: &MinecraftAttachableScripts{
+					ParentSetup: &types.StringArray{},
+					Animate:     &types.StringArray{},
+				},
 				Item:              &types.MapStringString{},
 				RenderControllers: &types.StringArrayConditional{},
 			},
@@ -47,18 +57,7 @@ func New(identifier string) *Attachable {
 }
 
 func Load(src string) (*Attachable, error) {
-	a := &Attachable{
-		Attachable: &MinecraftAttachable{
-			Description: &MinecraftAttachableDescription{
-				Materials:         &types.MapStringString{},
-				Textures:          &types.MapStringString{},
-				Geometry:          &types.MapStringString{},
-				Animations:        &types.MapStringString{},
-				Item:              &types.MapStringString{},
-				RenderControllers: &types.StringArrayConditional{},
-			},
-		},
-	}
+	a := New("")
 	err := g_util.LoadJSON(src, a)
 	if err != nil {
 		return nil, err
