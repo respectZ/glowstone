@@ -27,8 +27,8 @@ type MinecraftAttachableDescription struct {
 }
 
 type MinecraftAttachableScripts struct {
-	ParentSetup types.IStringArray `json:"parent_setup,omitempty"`
-	Animate     types.IStringArray `json:"animate,omitempty"`
+	ParentSetup types.IStringArray            `json:"parent_setup,omitempty"`
+	Animate     types.IStringArrayConditional `json:"animate,omitempty"`
 }
 
 const (
@@ -47,7 +47,7 @@ func New(identifier string) *Attachable {
 				Animations: &types.MapStringString{},
 				Scripts: &MinecraftAttachableScripts{
 					ParentSetup: &types.StringArray{},
-					Animate:     &types.StringArray{},
+					Animate:     &types.StringArrayConditional{},
 				},
 				Item:              &types.MapStringString{},
 				RenderControllers: &types.StringArrayConditional{},
