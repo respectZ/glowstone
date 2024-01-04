@@ -1,23 +1,22 @@
-package glowstone
+package bp
 
 import (
-	"fmt"
+	"os"
 	"path/filepath"
 	"strings"
 
 	bp "github.com/respectZ/glowstone/bp/recipe"
-	"github.com/respectZ/glowstone/recipe"
 	g_util "github.com/respectZ/glowstone/util"
 )
 
-type RecipeBP map[string]*recipe.GenericRecipe
+type RecipeBP map[string]*RecipeFile
 
 type IRecipeBP interface {
-	Add(string, *recipe.GenericRecipe)
-	Get(string) (*recipe.GenericRecipe, bool)
+	Add(string, bp.RecipeInterface)
+	Get(string) (bp.RecipeInterface, bool)
 	Remove(string)
 	Clear()
-	All() map[string]*recipe.GenericRecipe
+	All() map[string]*RecipeFile
 	IsEmpty() bool
 	Size() int
 	UnmarshalJSON([]byte) error
@@ -75,66 +74,52 @@ type IRecipeBP interface {
 	LoadAll(string) error
 }
 
-func (e *RecipeBP) Add(key string, value *recipe.GenericRecipe) {
-	if *e == nil {
-		*e = make(map[string]*recipe.GenericRecipe)
+func (e *RecipeBP) Add(key string, value bp.RecipeInterface) {
+	p, ok := (*e)[key]
+	if ok {
+		p.Data = value
+	} else {
+		(*e)[key] = &RecipeFile{
+			Data: value,
+		}
 	}
-	(*e)[key] = value
 }
 
-func (e *RecipeBP) Get(key string) (*recipe.GenericRecipe, bool) {
-	if *e == nil {
-		*e = make(map[string]*recipe.GenericRecipe)
-	}
+func (e *RecipeBP) Get(key string) (bp.RecipeInterface, bool) {
 	value, ok := (*e)[key]
-	return value, ok
+	if !ok {
+		return nil, false
+	}
+	return value.Data, true
 }
 
 func (e *RecipeBP) Remove(key string) {
-	if *e == nil {
-		*e = make(map[string]*recipe.GenericRecipe)
-	}
 	delete(*e, key)
 }
 
 func (e *RecipeBP) Clear() {
-	if *e == nil {
-		*e = make(map[string]*recipe.GenericRecipe)
-	}
-	*e = make(map[string]*recipe.GenericRecipe)
+	*e = make(map[string]*RecipeFile)
 }
 
-func (e *RecipeBP) All() map[string]*recipe.GenericRecipe {
-	if *e == nil {
-		*e = make(map[string]*recipe.GenericRecipe)
-	}
+func (e *RecipeBP) All() map[string]*RecipeFile {
 	return *e
 }
 
 func (e *RecipeBP) IsEmpty() bool {
-	if *e == nil {
-		*e = make(map[string]*recipe.GenericRecipe)
-	}
 	return len(*e) == 0
 }
 
 func (e *RecipeBP) Size() int {
-	if *e == nil {
-		*e = make(map[string]*recipe.GenericRecipe)
-	}
 	return len(*e)
 }
 
 func (e *RecipeBP) UnmarshalJSON(data []byte) error {
-	if *e == nil {
-		*e = make(map[string]*recipe.GenericRecipe)
-	}
 	return g_util.UnmarshalJSON(data, e)
 }
 
 func (e *RecipeBP) NewBrewingContainer(identifier string, option ...struct{ Subdir string }) *bp.RecipeBrewingContainer {
 	r := bp.NewBrewingContainer(identifier)
-	generic := &recipe.GenericRecipe{
+	generic := &RecipeFile{
 		Data: r,
 	}
 
@@ -149,7 +134,7 @@ func (e *RecipeBP) NewBrewingContainer(identifier string, option ...struct{ Subd
 
 func (e *RecipeBP) NewBrewingMix(identifier string, option ...struct{ Subdir string }) *bp.RecipeBrewingMix {
 	r := bp.NewBrewingMix(identifier)
-	generic := &recipe.GenericRecipe{
+	generic := &RecipeFile{
 		Data: r,
 	}
 
@@ -164,7 +149,7 @@ func (e *RecipeBP) NewBrewingMix(identifier string, option ...struct{ Subdir str
 
 func (e *RecipeBP) NewFurnace(identifier string, option ...struct{ Subdir string }) *bp.RecipeFurnace {
 	r := bp.NewFurnace(identifier)
-	generic := &recipe.GenericRecipe{
+	generic := &RecipeFile{
 		Data: r,
 	}
 
@@ -179,7 +164,7 @@ func (e *RecipeBP) NewFurnace(identifier string, option ...struct{ Subdir string
 
 func (e *RecipeBP) NewShaped(identifier string, option ...struct{ Subdir string }) *bp.RecipeShaped {
 	r := bp.NewShaped(identifier)
-	generic := &recipe.GenericRecipe{
+	generic := &RecipeFile{
 		Data: r,
 	}
 
@@ -194,7 +179,7 @@ func (e *RecipeBP) NewShaped(identifier string, option ...struct{ Subdir string 
 
 func (e *RecipeBP) NewShapeless(identifier string, option ...struct{ Subdir string }) *bp.RecipeShapeless {
 	r := bp.NewShapeless(identifier)
-	generic := &recipe.GenericRecipe{
+	generic := &RecipeFile{
 		Data: r,
 	}
 
@@ -209,7 +194,7 @@ func (e *RecipeBP) NewShapeless(identifier string, option ...struct{ Subdir stri
 
 func (e *RecipeBP) NewSmithingTransform(identifier string, option ...struct{ Subdir string }) *bp.RecipeSmithingTransform {
 	r := bp.NewSmithingTransform(identifier)
-	generic := &recipe.GenericRecipe{
+	generic := &RecipeFile{
 		Data: r,
 	}
 
@@ -223,15 +208,12 @@ func (e *RecipeBP) NewSmithingTransform(identifier string, option ...struct{ Sub
 }
 
 func (e *RecipeBP) Save(pathToBP string) error {
-	if *e == nil {
-		*e = make(map[string]*recipe.GenericRecipe)
-	}
 	for _, v := range *e {
 		b, err := v.Encode()
 		if err != nil {
 			return err
 		}
-		err = g_util.Writefile(filepath.Join(pathToBP, destDirectory.Recipe, v.GetSubdir(), fmt.Sprintf("%s.json", v.GetIdentifier())), b)
+		err = g_util.Writefile(filepath.Join(pathToBP, destDirectory.Recipe, v.Subdir, v.GetFilename()), b)
 		if err != nil {
 			return err
 		}
@@ -240,25 +222,25 @@ func (e *RecipeBP) Save(pathToBP string) error {
 }
 
 func (e *RecipeBP) LoadAll(pathToBP string) error {
-	if *e == nil {
-		*e = make(map[string]*recipe.GenericRecipe)
-	}
 	files, err := g_util.Walk(filepath.Join(pathToBP, destDirectory.Recipe))
-	if err != nil {
+	if err != nil && !os.IsNotExist(err) {
 		return err
 	}
 	for _, file := range files {
-		r, err := recipe.Load(file)
+		r, err := bp.Load(file)
 		if err != nil {
 			return err
 		}
+		e.Add(r.GetIdentifier(), r)
 		// Strip the pathToBP from the file path
 		file = strings.TrimPrefix(file, pathToBP+string(filepath.Separator)+destDirectory.Recipe+string(filepath.Separator))
 		// Get all the directories
 		subdir := filepath.Dir(file)
-		// Set subdir
-		r.Subdir = subdir
-		e.Add(r.Data.GetIdentifier(), r)
+		// Filename
+		filename := filepath.Base(file)
+
+		(*e)[r.GetIdentifier()].Filename = filename
+		(*e)[r.GetIdentifier()].Subdir = subdir
 	}
 	return nil
 }

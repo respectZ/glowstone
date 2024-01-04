@@ -19,6 +19,13 @@ func (e *Entity) Encode(minify ...bool) ([]byte, error) {
 		}
 	}
 
+	if e.Entity.Description.Animations.IsEmpty() {
+		e.Entity.Description.Animations = nil
+	}
+	if e.Entity.Description.SoundEffects.IsEmpty() {
+		e.Entity.Description.SoundEffects = nil
+	}
+
 	if reflect.ValueOf(e.Entity.Description.Scripts).Elem().IsZero() {
 		e.Entity.Description.Scripts = nil
 	}

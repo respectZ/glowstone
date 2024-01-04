@@ -10,17 +10,17 @@ type Animation struct {
 }
 
 type animationData struct {
-	AnimationLength float64   `json:"animation_length"`
-	Loop            bool      `json:"loop"`
-	AnimUpdateTime  string    `json:"anim_time_update,omitempty"`
-	Timeline        ITimeline `json:"timeline"`
+	AnimationLength float64     `json:"animation_length"`
+	Loop            bool        `json:"loop"`
+	AnimTimeUpdate  interface{} `json:"anim_time_update,omitempty"`
+	Timeline        ITimeline   `json:"timeline"`
 }
 
 type animationDataDummy struct {
-	AnimationLength float64  `json:"animation_length"`
-	Loop            bool     `json:"loop"`
-	AnimUpdateTime  string   `json:"anim_time_update,omitempty"`
-	Timeline        Timeline `json:"timeline"`
+	AnimationLength float64     `json:"animation_length"`
+	Loop            bool        `json:"loop"`
+	AnimTimeUpdate  interface{} `json:"anim_time_update,omitempty"`
+	Timeline        Timeline    `json:"timeline"`
 }
 
 // New returns a new animation

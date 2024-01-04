@@ -14,9 +14,9 @@ type Item struct {
 	Lang   string
 }
 
-func New(namespace string, identifier string, subdir ...string) *Item {
+func New(identifier string, subdir ...string) *Item {
 	item := &Item{
-		BP: bp.New(namespace, identifier),
+		BP: bp.New(identifier),
 	}
 	if len(subdir) > 0 {
 		item.Subdir = subdir[0]

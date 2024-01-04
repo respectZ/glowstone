@@ -2,6 +2,7 @@ package rp
 
 import (
 	"fmt"
+	"path/filepath"
 
 	g_util "github.com/respectZ/glowstone/util"
 )
@@ -137,4 +138,36 @@ func (i *Blocks) GetBlockFaces(name string) (*BlockDataTextures, error) {
 		return nil, fmt.Errorf("block %s has no face textures", name)
 	}
 	return &textures, nil
+}
+
+func (i *Blocks) IsEmpty() bool {
+	return len(*i) == 0
+}
+
+// Save the blocks.json file
+//
+// Example:
+//
+//	err := blocks.Save(filepath.Join("packs", "RP"))
+func (i *Blocks) Save(dest string) error {
+	blocksFormatVersion := [3]int{1, 1, 0}
+	// Check if dest already ends with blocks.json
+	if filepath.Base(dest) != "blocks.json" {
+		dest = filepath.Join(dest, "blocks.json")
+	}
+	var blockVer map[string][3]int
+	err := g_util.LoadJSON(dest, &blockVer)
+	if err != nil {
+		blocksFormatVersion = blockVer["format_version"]
+	}
+
+	result := map[string]interface{}{
+		"format_version": blocksFormatVersion,
+	}
+	for k, v := range *i {
+		result[k] = v
+	}
+
+	err = g_util.Writejson(dest, result)
+	return err
 }

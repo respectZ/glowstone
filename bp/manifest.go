@@ -1,4 +1,4 @@
-package glowstone
+package bp
 
 import (
 	"path/filepath"

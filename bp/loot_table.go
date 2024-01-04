@@ -1,7 +1,8 @@
-package glowstone
+package bp
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -115,7 +116,7 @@ func (l *LootTable) LoadAll(pathToBP string) error {
 		*l = make(map[string]bp.LootTable)
 	}
 	flies, err := g_util.Walk(filepath.Join(pathToBP, destDirectory.LootTable))
-	if err != nil {
+	if err != nil && !os.IsNotExist(err) {
 		return err
 	}
 	for _, file := range flies {

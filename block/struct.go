@@ -14,9 +14,9 @@ type Block struct {
 	Lang   string
 }
 
-func New(namespace string, identifier string, subdir ...string) *Block {
+func New(identifier string, subdir ...string) *Block {
 	block := &Block{
-		BP: bp.New(namespace, identifier),
+		BP: bp.New(identifier),
 	}
 	if len(subdir) > 0 {
 		block.Subdir = subdir[0]

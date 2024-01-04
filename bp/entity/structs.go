@@ -1,8 +1,6 @@
 package entity
 
 import (
-	"fmt"
-
 	"github.com/respectZ/glowstone/types"
 	g_util "github.com/respectZ/glowstone/util"
 )
@@ -36,12 +34,12 @@ type ComponentGroup struct {
 	ComponentGroups types.IStringArray `json:"component_groups,omitempty"`
 }
 
-func New(namespace string, identifier string) *Entity {
+func New(identifier string) *Entity {
 	return &Entity{
 		FormatVersion: FORMAT_VERSION,
 		Entity: MinecraftEntity{
 			Description: EntityDescription{
-				Identifier:     fmt.Sprintf("%s:%s", namespace, identifier),
+				Identifier:     identifier,
 				IsSpawnable:    true,
 				IsSummonable:   true,
 				IsExperimental: false,

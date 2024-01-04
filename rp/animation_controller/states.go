@@ -29,12 +29,39 @@ type IAnimationControllerStates interface {
 	New(string) *animationControllerState
 }
 
+type animationControllerState_parse struct {
+	BlendTransition      float64                      `json:"blend_transition,omitempty"`
+	BlendViaShortestPath *bool                        `json:"blend_via_shortest_path,omitempty"`
+	OnEntry              types.StringArray            `json:"on_entry,omitempty"`
+	OnExit               types.StringArray            `json:"on_exit,omitempty"`
+	Animations           types.StringArrayConditional `json:"animations,omitempty"`
+	Transitions          types.MapStringArray         `json:"transitions,omitempty"`
+
+	ParticleEffects ParticleEffects `json:"particle_effects,omitempty"` // TODO: fix this since it can be single object or array
+	Parameters      []interface{}   `json:"parameters,omitempty"`       // TODO: implement
+	Variables       Variables       `json:"variables,omitempty"`
+	SoundEffects    SoundEffects    `json:"sound_effects,omitempty"` // TODO: fix this since it can be single object or array
+}
+
 func (a *AnimationControllerStates) UnmarshalJSON(data []byte) error {
-	var temp map[string]*animationControllerState
+	var temp map[string]*animationControllerState_parse
 	if err := g_util.UnmarshalJSON(data, &temp); err != nil {
 		return err
 	}
-	*a = temp
+	*a = make(AnimationControllerStates)
+	for k, v := range temp {
+		(*a)[k] = &animationControllerState{
+			BlendTransition:      v.BlendTransition,
+			BlendViaShortestPath: v.BlendViaShortestPath,
+			OnEntry:              &v.OnEntry,
+			OnExit:               &v.OnExit,
+			Animations:           &v.Animations,
+			Transitions:          &v.Transitions,
+			ParticleEffects:      &v.ParticleEffects,
+			Variables:            &v.Variables,
+			SoundEffects:         &v.SoundEffects,
+		}
+	}
 	return nil
 }
 

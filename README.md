@@ -6,7 +6,7 @@
 </div>
 
 # Todo
-- Rework entity, so will be NewEvent, NewProps ...
+- Merge `glowstone/attachable -> glowstone/rp/attachable`, etc
 - BP
   - [x] Animation
   - [x] Animation Controller
@@ -33,6 +33,7 @@
   - [x] terrain_textures.json
 
 - Misc
+  - [ ] Make a field for saving filename, since it will duplicate if thee filename doesn't match with the identifier.
   - [ ] Rework project fields, ```glowstone.NewBPAnimationController -> glowstone.BP.AnimationController.New("asdf")```
   - [ ] Remove unnecessary pointer
   - [ ] Add project setting to minify JSON

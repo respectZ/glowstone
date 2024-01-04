@@ -34,18 +34,6 @@ type ClientEntityDescription struct {
 	ParticleEmitters        types.IMapStringString          `json:"particle_emitters,omitempty"`
 }
 
-type clientEntityDescriptionScripts struct {
-	ParentSetup  string                        `json:"parent_setup,omitempty"`
-	Variables    types.IMapStringString        `json:"variables,omitempty"`
-	ScaleX       string                        `json:"scalex,omitempty"`
-	ScaleY       string                        `json:"scaley,omitempty"`
-	ScaleZ       string                        `json:"scalez,omitempty"`
-	Scale        string                        `json:"scale,omitempty"`
-	Initialize   types.IStringArray            `json:"initialize,omitempty"`
-	PreAnimation types.IStringArray            `json:"pre_animation,omitempty"`
-	Animate      types.IStringArrayConditional `json:"animate,omitempty"`
-}
-
 type clientEntitySpawnEgg struct {
 	BaseColor    string `json:"base_color,omitempty"`
 	OverlayColor string `json:"overlay_color,omitempty"`
@@ -73,11 +61,15 @@ func New(identifier string) *Entity {
 				Geometry: &types.MapStringString{
 					"default": fmt.Sprintf("geometry.%s", identifier),
 				},
+				Animations: &types.MapStringString{},
 				Scripts: &clientEntityDescriptionScripts{
 					Initialize:   &types.StringArray{},
 					PreAnimation: &types.StringArray{},
 					Animate:      &types.StringArrayConditional{},
 				},
+				SoundEffects:     &types.MapStringString{},
+				ParticleEffects:  &types.MapStringString{},
+				ParticleEmitters: &types.MapStringString{},
 				RenderControllers: &types.StringArrayConditional{
 					"controller.render.default",
 				},
@@ -92,14 +84,18 @@ func Load(dir string) (*Entity, error) {
 	e := &Entity{
 		Entity: &ClientEntity{
 			Description: &ClientEntityDescription{
-				Materials: &types.MapStringString{},
-				Textures:  &types.MapStringString{},
-				Geometry:  &types.MapStringString{},
+				Materials:  &types.MapStringString{},
+				Textures:   &types.MapStringString{},
+				Geometry:   &types.MapStringString{},
+				Animations: &types.MapStringString{},
 				Scripts: &clientEntityDescriptionScripts{
 					Initialize:   &types.StringArray{},
 					PreAnimation: &types.StringArray{},
 					Animate:      &types.StringArrayConditional{},
 				},
+				SoundEffects:      &types.MapStringString{},
+				ParticleEffects:   &types.MapStringString{},
+				ParticleEmitters:  &types.MapStringString{},
 				RenderControllers: &types.StringArrayConditional{},
 				SpawnEgg:          &clientEntitySpawnEgg{},
 			},

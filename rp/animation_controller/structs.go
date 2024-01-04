@@ -6,8 +6,8 @@ import (
 )
 
 type AnimationControllerFile struct {
-	FormatVersion       string               `json:"format_version"`
-	AnimationController IAnimationController `json:"animation_controllers"`
+	FormatVersion        string               `json:"format_version"`
+	AnimationControllers IAnimationController `json:"animation_controllers"`
 }
 
 type animationController struct {
@@ -23,10 +23,10 @@ type animationControllerState struct {
 	Animations           types.IStringArrayConditional `json:"animations,omitempty"`
 	Transitions          types.IMapStringArray         `json:"transitions,omitempty"`
 
-	ParticleEffects IParticleEffects `json:"particle_effects,omitempty"`
-	Parameters      []interface{}    `json:"parameters,omitempty"` // TODO: implement
+	ParticleEffects IParticleEffects `json:"particle_effects,omitempty"` // TODO: fix this since it can be single object or array
+	Parameters      []interface{}    `json:"parameters,omitempty"`       // TODO: implement
 	Variables       IVariables       `json:"variables,omitempty"`
-	SoundEffects    ISoundEffects    `json:"sound_effects,omitempty"`
+	SoundEffects    ISoundEffects    `json:"sound_effects,omitempty"` // TODO: fix this since it can be single object or array
 }
 
 type particleEffect struct {
@@ -52,8 +52,8 @@ type soundEffect struct {
 //	a := animation_controller.New()
 func New() *AnimationControllerFile {
 	return &AnimationControllerFile{
-		FormatVersion:       "1.12.0",
-		AnimationController: IAnimationController(&AnimationController{}),
+		FormatVersion:        "1.12.0",
+		AnimationControllers: IAnimationController(&AnimationController{}),
 	}
 }
 
@@ -69,7 +69,7 @@ func Load(src string) (*AnimationControllerFile, error) {
 }
 
 func (a *AnimationControllerFile) Encode() ([]byte, error) {
-	for _, v := range a.AnimationController.All() {
+	for _, v := range a.AnimationControllers.All() {
 		for _, v := range v.States.All() {
 			if v.Animations != nil && v.Animations.IsEmpty() {
 				v.Animations = nil
@@ -102,8 +102,8 @@ func (a *AnimationControllerFile) Encode() ([]byte, error) {
 			}
 		}
 	}
-	if a.AnimationController != nil && a.AnimationController.IsEmpty() {
-		a.AnimationController = nil
+	if a.AnimationControllers != nil && a.AnimationControllers.IsEmpty() {
+		a.AnimationControllers = nil
 	}
 	return g_util.MarshalJSON(a)
 }

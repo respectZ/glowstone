@@ -12,12 +12,12 @@ const (
 	FORMAT_VERSION string = "1.20.30"
 )
 
-func New(namespace string, identifier string) Block {
+func New(identifier string) Block {
 	return &block{
 		FormatVersion: FORMAT_VERSION,
 		MinecraftBlock: &minecraftBlock{
 			Description: &blockDescription{
-				Identifier: fmt.Sprintf("%s:%s", namespace, identifier),
+				Identifier: identifier,
 			},
 			Component: make(map[string]interface{}),
 		},

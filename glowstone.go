@@ -532,18 +532,18 @@ func (g *glowstone) GetEntity(identifier string) (*entity.Entity, error) {
 	return nil, fmt.Errorf("entity %s not found", identifier)
 }
 
-func (g *glowstone) NewEntity(namespace string, identifier string) *entity.Entity {
-	e := entity.New(namespace, identifier)
-	g.Entities[fmt.Sprintf("%s:%s", namespace, identifier)] = e
+func (g *glowstone) NewEntity(identifier string) *entity.Entity {
+	e := entity.New(identifier)
+	g.Entities[identifier] = e
 	// Set lang
 	lang := g_util.TitleCase(strings.ReplaceAll(identifier, "_", " "))
 	e.Lang = lang
 
-	entityLang := fmt.Sprintf("entity.%s:%s.name", namespace, identifier)
+	entityLang := fmt.Sprintf("entity.%s.name", identifier)
 	if g.GetLang(entityLang) == "" {
 		g.AddLang(entityLang, lang)
 	}
-	spawnEggLang := fmt.Sprintf("item.spawn_egg.entity.%s:%s.name", namespace, identifier)
+	spawnEggLang := fmt.Sprintf("item.spawn_egg.entity.%s.name", identifier)
 	if g.GetLang(spawnEggLang) == "" {
 		g.AddLang(spawnEggLang, fmt.Sprintf("Spawn %s", lang))
 	}
@@ -582,12 +582,15 @@ func (g *glowstone) GetBlock(identifier string) (*block.Block, error) {
 	return nil, fmt.Errorf("block %s not found", identifier)
 }
 
-func (g *glowstone) NewBlock(namespace string, identifier string, subdir ...string) *block.Block {
-	b := block.New(namespace, identifier)
+func (g *glowstone) NewBlock(identifier string, subdir ...string) *block.Block {
+	namespace := strings.Split(identifier, ":")[0]
+	b := block.New(identifier, subdir...)
+
 	if g.Blocks == nil {
 		g.Blocks = make(map[string]*block.Block)
 	}
-	g.Blocks[fmt.Sprintf("%s:%s", namespace, identifier)] = b
+
+	g.Blocks[identifier] = b
 	// Set lang
 	lang := g_util.TitleCase(strings.ReplaceAll(identifier, "_", " "))
 	b.Lang = lang
@@ -627,14 +630,14 @@ func (g *glowstone) GetItem(identifier string) (*item.Item, error) {
 	return nil, fmt.Errorf("item %s not found", identifier)
 }
 
-func (g *glowstone) NewItem(namespace string, identifier string) *item.Item {
-	i := item.New(namespace, identifier)
-	g.Items[fmt.Sprintf("%s:%s", namespace, identifier)] = i
+func (g *glowstone) NewItem(identifier string) *item.Item {
+	i := item.New(identifier)
+	g.Items[fmt.Sprintf("%s", identifier)] = i
 	// Set lang
 	lang := g_util.TitleCase(strings.ReplaceAll(identifier, "_", " "))
 	i.Lang = lang
-	if g.GetLang(fmt.Sprintf("item.%s:%s.name", namespace, identifier)) == "" {
-		g.AddLang(fmt.Sprintf("item.%s:%s.name", namespace, identifier), i.Lang)
+	if g.GetLang(fmt.Sprintf("item.%s.name", identifier)) == "" {
+		g.AddLang(fmt.Sprintf("item.%s.name", identifier), i.Lang)
 	}
 	return i
 }

@@ -1,25 +1,24 @@
-package glowstone
+package bp
 
 // TODO: Rework this since *block.Block is a pointer to interface.
 
 import (
-	"fmt"
+	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/respectZ/glowstone/block"
 	bp "github.com/respectZ/glowstone/bp/block"
 	g_util "github.com/respectZ/glowstone/util"
 )
 
-type BlockBP map[string]*block.Block
+type BlockBP map[string]*BlockFile
 
 type IBlockBP interface {
 	Add(string, bp.Block)
 	Get(string) (bp.Block, bool)
 	Remove(string)
 	Clear()
-	All() map[string]*block.Block
+	All() map[string]*BlockFile
 	IsEmpty() bool
 	Size() int
 	UnmarshalJSON([]byte) error
@@ -41,66 +40,45 @@ type IBlockBP interface {
 }
 
 func (e *BlockBP) Add(key string, value bp.Block) {
-	if *e == nil {
-		*e = make(map[string]*block.Block)
-	}
 	p, ok := (*e)[key]
 	if ok {
-		p.BP = value
+		p.Data = value
 	} else {
-		(*e)[key] = &block.Block{
-			BP: value,
+		(*e)[key] = &BlockFile{
+			Data: value,
 		}
 	}
 }
 
 func (e *BlockBP) Get(key string) (bp.Block, bool) {
-	if *e == nil {
-		*e = make(map[string]*block.Block)
-	}
 	value, ok := (*e)[key]
-	return value.BP, ok
+	if !ok {
+		return nil, false
+	}
+	return value.Data, true
 }
 
 func (e *BlockBP) Remove(key string) {
-	if *e == nil {
-		*e = make(map[string]*block.Block)
-	}
 	delete(*e, key)
 }
 
 func (e *BlockBP) Clear() {
-	if *e == nil {
-		*e = make(map[string]*block.Block)
-	}
-	*e = make(map[string]*block.Block)
+	*e = make(map[string]*BlockFile)
 }
 
-func (e *BlockBP) All() map[string]*block.Block {
-	if *e == nil {
-		*e = make(map[string]*block.Block)
-	}
+func (e *BlockBP) All() map[string]*BlockFile {
 	return *e
 }
 
 func (e *BlockBP) IsEmpty() bool {
-	if *e == nil {
-		*e = make(map[string]*block.Block)
-	}
 	return len(*e) == 0
 }
 
 func (e *BlockBP) Size() int {
-	if *e == nil {
-		*e = make(map[string]*block.Block)
-	}
 	return len(*e)
 }
 
 func (e *BlockBP) UnmarshalJSON(data []byte) error {
-	if *e == nil {
-		*e = make(map[string]*block.Block)
-	}
 	return g_util.UnmarshalJSON(data, e)
 }
 
@@ -109,7 +87,6 @@ func (e *BlockBP) New(identifier string, option ...struct {
 	Lang   string
 },
 ) bp.Block {
-	f := strings.Split(identifier, ":")
 	var subdir string
 	var lang string
 	if len(option) > 0 {
@@ -117,21 +94,22 @@ func (e *BlockBP) New(identifier string, option ...struct {
 		lang = option[0].Lang
 	}
 
-	bl := block.New(f[0], f[1])
-	bl.Subdir = subdir
-	bl.Lang = lang
+	bl := bp.New(identifier)
+	e.Add(identifier, bl)
 
-	(*e)[identifier] = bl
+	if subdir != "" {
+		(*e)[identifier].Subdir = subdir
+	}
+	if lang != "" {
+		(*e)[identifier].Lang = lang
+	}
 
-	return bl.BP
+	return bl
 }
 
 func (e *BlockBP) Save(pathToBP string) error {
-	if *e == nil {
-		*e = make(map[string]*block.Block)
-	}
 	for _, v := range *e {
-		data := v.BP
+		data := v.Data
 		if data == nil {
 			continue
 		}
@@ -139,7 +117,8 @@ func (e *BlockBP) Save(pathToBP string) error {
 		if err != nil {
 			return err
 		}
-		err = g_util.Writefile(filepath.Join(pathToBP, destDirectory.Block, v.Subdir, fmt.Sprintf("%s.json", v.GetIdentifier())), b)
+
+		err = g_util.Writefile(filepath.Join(pathToBP, destDirectory.Block, v.Subdir, v.GetFilename()), b)
 		if err != nil {
 			return err
 		}
@@ -148,25 +127,25 @@ func (e *BlockBP) Save(pathToBP string) error {
 }
 
 func (e *BlockBP) LoadAll(pathToBP string) error {
-	if *e == nil {
-		*e = make(map[string]*block.Block)
-	}
 	files, err := g_util.Walk(filepath.Join(pathToBP, destDirectory.Block))
-	if err != nil {
+	if err != nil && !os.IsNotExist(err) {
 		return err
 	}
 	for _, file := range files {
-		a, err := block.LoadBP(file)
+		a, err := bp.Load(file)
 		if err != nil {
 			return err
 		}
+		e.Add(a.GetIdentifier(), a)
 		// Strip the pathToBP from the file path
 		file = strings.TrimPrefix(file, pathToBP+string(filepath.Separator)+destDirectory.Block+string(filepath.Separator))
 		// Get all the directories
 		subdir := filepath.Dir(file)
-		// Set subdir
-		a.Subdir = subdir
-		e.Add(a.GetNamespaceIdentifier(), a.BP)
+		// Filename
+		filename := filepath.Base(file)
+
+		(*e)[a.GetIdentifier()].Subdir = subdir
+		(*e)[a.GetIdentifier()].Filename = filename
 	}
 	return nil
 }

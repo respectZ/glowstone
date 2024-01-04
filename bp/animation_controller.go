@@ -1,7 +1,8 @@
-package glowstone
+package bp
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
 	"strings"
 
@@ -11,14 +12,14 @@ import (
 
 // We don't need options atm, so we use bp/animation_controller.go
 
-type AnimationControllerBP map[string]*bp.AnimationControllerFile
+type AnimationControllerBP map[string]*AnimationControllerFile
 
 type IAnimationControllerBP interface {
 	Add(string, *bp.AnimationControllerFile)
 	Get(string) (*bp.AnimationControllerFile, bool)
 	Remove(string)
 	Clear()
-	All() map[string]*bp.AnimationControllerFile
+	All() map[string]*AnimationControllerFile
 	IsEmpty() bool
 	Size() int
 	UnmarshalJSON([]byte) error
@@ -37,59 +38,45 @@ type IAnimationControllerBP interface {
 }
 
 func (m *AnimationControllerBP) Add(key string, value *bp.AnimationControllerFile) {
-	if *m == nil {
-		*m = make(map[string]*bp.AnimationControllerFile)
+	p, ok := (*m)[key]
+	if ok {
+		p.Data = value
+	} else {
+		(*m)[key] = &AnimationControllerFile{
+			Data: value,
+		}
 	}
-	(*m)[key] = value
 }
 
 func (m *AnimationControllerBP) Get(key string) (*bp.AnimationControllerFile, bool) {
-	if *m == nil {
-		*m = make(map[string]*bp.AnimationControllerFile)
-	}
 	value, ok := (*m)[key]
-	return value, ok
+	if !ok {
+		return nil, false
+	}
+	return value.Data, true
 }
 
 func (m *AnimationControllerBP) Remove(key string) {
-	if *m == nil {
-		*m = make(map[string]*bp.AnimationControllerFile)
-	}
 	delete(*m, key)
 }
 
 func (m *AnimationControllerBP) Clear() {
-	if *m == nil {
-		*m = make(map[string]*bp.AnimationControllerFile)
-	}
-	*m = make(map[string]*bp.AnimationControllerFile)
+	*m = make(map[string]*AnimationControllerFile)
 }
 
-func (m *AnimationControllerBP) All() map[string]*bp.AnimationControllerFile {
-	if *m == nil {
-		*m = make(map[string]*bp.AnimationControllerFile)
-	}
+func (m *AnimationControllerBP) All() map[string]*AnimationControllerFile {
 	return *m
 }
 
 func (m *AnimationControllerBP) IsEmpty() bool {
-	if *m == nil {
-		*m = make(map[string]*bp.AnimationControllerFile)
-	}
 	return len(*m) == 0
 }
 
 func (m *AnimationControllerBP) Size() int {
-	if *m == nil {
-		*m = make(map[string]*bp.AnimationControllerFile)
-	}
 	return len(*m)
 }
 
 func (m *AnimationControllerBP) UnmarshalJSON(data []byte) error {
-	if *m == nil {
-		*m = make(map[string]*bp.AnimationControllerFile)
-	}
 	return g_util.UnmarshalJSON(data, m)
 }
 
@@ -100,9 +87,6 @@ func (m *AnimationControllerBP) New(dest string) *bp.AnimationControllerFile {
 }
 
 func (m *AnimationControllerBP) Save(pathToBP string) error {
-	if *m == nil {
-		*m = make(map[string]*bp.AnimationControllerFile)
-	}
 	for dest, v := range m.All() {
 		data, err := v.Encode()
 		if err != nil {
@@ -117,11 +101,8 @@ func (m *AnimationControllerBP) Save(pathToBP string) error {
 }
 
 func (m *AnimationControllerBP) LoadAll(pathToBP string) error {
-	if *m == nil {
-		*m = make(map[string]*bp.AnimationControllerFile)
-	}
 	files, err := g_util.Walk(filepath.Join(pathToBP, destDirectory.AnimationController))
-	if err != nil {
+	if err != nil && !os.IsNotExist(err) {
 		return err
 	}
 	for _, file := range files {

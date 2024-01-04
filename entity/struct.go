@@ -24,14 +24,14 @@ type Entity struct {
 	AutoSpawnEggTexture bool
 }
 
-func New(namespace string, identifier string, subdir ...string) *Entity {
+func New(identifier string, subdir ...string) *Entity {
 	s := ""
 	if len(subdir) > 0 {
 		s = subdir[0]
 	}
 	entity := &Entity{
-		BP: bp.New(namespace, identifier),
-		RP: rp.New(namespace + ":" + identifier),
+		BP: bp.New(identifier),
+		RP: rp.New(identifier),
 	}
 	entity.Subdir = s
 	return entity

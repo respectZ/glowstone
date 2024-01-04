@@ -99,8 +99,8 @@ type Glowstone interface {
 	// NewEntity creates a new entity
 	//
 	// Example:
-	// 	entity := glowstone.NewEntity("minecraft", "zombie")
-	NewEntity(string, string) *entity.Entity
+	// 	entity := glowstone.NewEntity("glowstone:zombie", "mob")
+	NewEntity(string) *entity.Entity
 
 	// PreloadEnitties Preloads the entities, so you can use GetEntity() by identifier.
 	//
@@ -128,8 +128,8 @@ type Glowstone interface {
 	// NewBlock creates a new block
 	//
 	// Example:
-	// 	block := glowstone.NewBlock("minecraft", "stone")
-	NewBlock(string, string, ...string) *block.Block
+	// 	block := glowstone.NewBlock("glowstone:stone", "stones")
+	NewBlock(string, ...string) *block.Block
 
 	/******************* Items *******************/
 
@@ -152,7 +152,7 @@ type Glowstone interface {
 	//
 	// Example:
 	// 	item := glowstone.NewItem("minecraft", "stick")
-	NewItem(string, string) *item.Item
+	NewItem(string) *item.Item
 
 	// PreloadItems Preloads the items, so you can use GetItem() by identifier.
 	//

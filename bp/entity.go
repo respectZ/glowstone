@@ -1,16 +1,15 @@
-package glowstone
+package bp
 
 import (
-	"fmt"
+	"os"
 	"path/filepath"
 	"strings"
 
 	bp "github.com/respectZ/glowstone/bp/entity"
-	"github.com/respectZ/glowstone/entity"
 	g_util "github.com/respectZ/glowstone/util"
 )
 
-type EntityBP map[string]*entity.Entity
+type EntityBP map[string]*EntityFile
 
 type IEntityBP interface {
 	Add(string, *bp.Entity)
@@ -45,89 +44,61 @@ type IEntityBP interface {
 }
 
 func (e *EntityBP) Add(key string, value *bp.Entity) {
-	if *e == nil {
-		*e = make(map[string]*entity.Entity)
-	}
 	p, ok := (*e)[key]
 	if ok {
-		p.BP = value
+		p.Data = value
 	} else {
-		(*e)[key] = &entity.Entity{
-			BP: value,
+		(*e)[key] = &EntityFile{
+			Data: value,
 		}
 	}
 }
 
 func (e *EntityBP) Get(key string) (*bp.Entity, bool) {
-	if *e == nil {
-		*e = make(map[string]*entity.Entity)
-	}
 	value, ok := (*e)[key]
 	if !ok {
 		return nil, false
 	}
-	return value.BP, ok
+	return value.Data, ok
 }
 
 func (e *EntityBP) Remove(key string) {
-	if *e == nil {
-		*e = make(map[string]*entity.Entity)
-	}
 	delete(*e, key)
 }
 
 func (e *EntityBP) Clear() {
-	if *e == nil {
-		*e = make(map[string]*entity.Entity)
-	}
-	*e = make(map[string]*entity.Entity)
+	*e = make(map[string]*EntityFile)
 }
 
 func (e *EntityBP) All() map[string]*bp.Entity {
-	if *e == nil {
-		*e = make(map[string]*entity.Entity)
-	}
 	temp := make(map[string]*bp.Entity)
 	for k, v := range *e {
-		temp[k] = v.BP
+		temp[k] = v.Data
 	}
 	return temp
 }
 
 func (e *EntityBP) IsEmpty() bool {
-	if *e == nil {
-		*e = make(map[string]*entity.Entity)
-	}
 	return len(*e) == 0
 }
 
 func (e *EntityBP) Size() int {
-	if *e == nil {
-		*e = make(map[string]*entity.Entity)
-	}
 	return len(*e)
 }
 
 func (e *EntityBP) UnmarshalJSON(data []byte) error {
-	if *e == nil {
-		*e = make(map[string]*entity.Entity)
-	}
 	return g_util.UnmarshalJSON(data, e)
 }
 
-func (e *EntityBP) New(dest string) *bp.Entity {
-	f := strings.Split(dest, ":")
-	a := bp.New(f[0], f[1])
-	e.Add(dest, a)
+func (e *EntityBP) New(identifier string) *bp.Entity {
+	a := bp.New(identifier)
+	e.Add(identifier, a)
 	return a
 }
 
 func (e *EntityBP) Save(pathToBP string) error {
-	if *e == nil {
-		*e = make(map[string]*entity.Entity)
-	}
 	for _, v := range *e {
-		data := v.BP
+		data := v.Data
 		if data == nil {
 			continue
 		}
@@ -135,7 +106,8 @@ func (e *EntityBP) Save(pathToBP string) error {
 		if err != nil {
 			return err
 		}
-		err = g_util.Writefile(filepath.Join(pathToBP, destDirectory.Entity, v.Subdir, fmt.Sprintf("%s.json", v.GetIdentifier())), b)
+
+		err = g_util.Writefile(filepath.Join(pathToBP, destDirectory.Entity, v.Subdir, v.GetFilename()), b)
 		if err != nil {
 			return err
 		}
@@ -144,27 +116,25 @@ func (e *EntityBP) Save(pathToBP string) error {
 }
 
 func (e *EntityBP) LoadAll(pathToBP string) error {
-	if *e == nil {
-		*e = make(map[string]*entity.Entity)
-	}
 	files, err := g_util.Walk(filepath.Join(pathToBP, destDirectory.Entity))
-	if err != nil {
+	if err != nil && !os.IsNotExist(err) {
 		return err
 	}
 	for _, file := range files {
-		a, err := entity.LoadBP(file)
+		a, err := bp.Load(file)
 		if err != nil {
 			return err
 		}
-		r := entity.Entity{}
+		e.Add(a.GetIdentifier(), a)
 		// Strip the pathToBP from the file path
 		file = strings.TrimPrefix(file, pathToBP+string(filepath.Separator)+destDirectory.Entity+string(filepath.Separator))
 		// Get all the directories
 		subdir := filepath.Dir(file)
-		// Set subdir
-		r.BP = a
-		r.Subdir = subdir
-		e.Add(r.GetNamespaceIdentifier(), r.BP)
+		// Filename
+		filename := filepath.Base(file)
+
+		(*e)[a.GetIdentifier()].Filename = filename
+		(*e)[a.GetIdentifier()].Subdir = subdir
 	}
 	return nil
 }

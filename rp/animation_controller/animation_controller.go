@@ -29,12 +29,23 @@ type IAnimationController interface {
 	New(string) *animationController
 }
 
+type animationController_parse struct {
+	InitialState string                    `json:"initial_state,omitempty"`
+	States       AnimationControllerStates `json:"states,omitempty"`
+}
+
 func (a *AnimationController) UnmarshalJSON(data []byte) error {
-	var temp map[string]*animationController
+	var temp map[string]animationController_parse
 	if err := g_util.UnmarshalJSON(data, &temp); err != nil {
 		return err
 	}
-	*a = temp
+	*a = make(AnimationController)
+	for k, v := range temp {
+		(*a)[k] = &animationController{
+			InitialState: v.InitialState,
+			States:       &v.States,
+		}
+	}
 	return nil
 }
 

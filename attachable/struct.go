@@ -7,15 +7,15 @@ import (
 )
 
 type Attachable struct {
-	Data attachable.Attachable
+	Data *attachable.Attachable
 
 	// Other stuff
 	Subdir string
 }
 
-func New(namespace string, identifier string, subdir ...string) *Attachable {
+func New(identifier string, subdir ...string) *Attachable {
 	attachable := &Attachable{
-		Data: attachable.New(namespace, identifier),
+		Data: attachable.New(identifier),
 	}
 	if len(subdir) > 0 {
 		attachable.Subdir = subdir[0]
@@ -28,7 +28,7 @@ func New(namespace string, identifier string, subdir ...string) *Attachable {
 // Example:
 //
 //	attachable, err := attachable.Load("./rp/attachable/attachable.json")
-func Load(src string) (attachable.Attachable, error) {
+func Load(src string) (*attachable.Attachable, error) {
 	attachable, err := attachable.Load(src)
 	if err != nil {
 		return nil, err

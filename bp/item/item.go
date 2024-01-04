@@ -16,8 +16,8 @@ const (
 //
 // Example:
 //
-//	i := item.New("minecraft", "stick")
-func New(namespace string, identifier string, subdir ...string) Item {
+//	i := item.New("glostone:diamond_sword")
+func New(namespace string, subdir ...string) Item {
 	s := ""
 	if len(subdir) > 0 {
 		s = subdir[0]
@@ -26,7 +26,7 @@ func New(namespace string, identifier string, subdir ...string) Item {
 		FormatVersion: FORMAT_VERSION,
 		Item: minecraft_item{
 			Description: item_description{
-				Identifier: namespace + ":" + identifier,
+				Identifier: namespace,
 			},
 			Components: make(map[string]interface{}),
 		},
