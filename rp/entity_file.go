@@ -13,6 +13,16 @@ type EntityFile struct {
 	Subdir   string
 	Filename string
 	Lang     string
+
+	// Set spawn egg lang. Example: "Spawn Zombie"
+	SpawnLang string
+
+	// Set ride hint lang. Example: "Rideable"
+	//
+	// Defaults to "Tap jump to exit" if not set.
+	//
+	// Only writeable for entities that can be ridden.
+	RideHintLang string
 }
 
 // Create a new entity file

@@ -16,7 +16,7 @@ type IEntityBP interface {
 	Get(string) (*bp.Entity, bool)
 	Remove(string)
 	Clear()
-	All() map[string]*bp.Entity
+	All() map[string]*EntityFile
 	IsEmpty() bool
 	Size() int
 	UnmarshalJSON([]byte) error
@@ -70,12 +70,8 @@ func (e *EntityBP) Clear() {
 	*e = make(map[string]*EntityFile)
 }
 
-func (e *EntityBP) All() map[string]*bp.Entity {
-	temp := make(map[string]*bp.Entity)
-	for k, v := range *e {
-		temp[k] = v.Data
-	}
-	return temp
+func (e *EntityBP) All() map[string]*EntityFile {
+	return *e
 }
 
 func (e *EntityBP) IsEmpty() bool {
