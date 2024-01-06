@@ -62,6 +62,15 @@ func (i *ItemTexture) IsEmpty() bool {
 }
 
 func (i *ItemTexture) Save(pathToRP string) error {
+	// Prevent overwriting
+	d, err := LoadItemTexture(filepath.Join(pathToRP, "textures", "item_texture.json"))
+	if err == nil {
+		for k, v := range i.TextureData {
+			d.TextureData[k] = v
+		}
+		i = d
+	}
+
 	data, err := i.Encode()
 	if err != nil {
 		return err

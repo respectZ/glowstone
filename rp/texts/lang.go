@@ -22,6 +22,7 @@ type ILang interface {
 	All() map[string]string
 	IsEmpty() bool
 	Size() int
+	Has(string) bool
 
 	Save(string) error
 }
@@ -55,6 +56,11 @@ func (m *Lang) Size() int {
 	return len(*m)
 }
 
+func (m *Lang) Has(key string) bool {
+	_, ok := (*m)[key]
+	return ok
+}
+
 func (m *Lang) Load(pathToRP string) error {
 	src := filepath.Join(pathToRP, "texts", "en_US.lang")
 	if _, err := os.Stat(src); err == nil {
@@ -70,6 +76,20 @@ func (m *Lang) Load(pathToRP string) error {
 }
 
 func (m *Lang) Save(pathToRP string) error {
+	// To prevent overwriting, we will read the file first.
+	// If the file exists, we will read it and append the new data.
+
+	tempLang := &Lang{}
+	err := tempLang.Load(pathToRP)
+	if err == nil {
+		// File exists
+		// Append new data
+		for k, v := range *m {
+			(*tempLang)[k] = v
+		}
+		*m = *tempLang
+	}
+
 	var s string
 	var keys []string
 	for k := range *m {

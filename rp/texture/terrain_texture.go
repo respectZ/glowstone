@@ -63,6 +63,15 @@ func (i *TerrainTexture) IsEmpty() bool {
 }
 
 func (i *TerrainTexture) Save(pathToRp string) error {
+	// Prevent overwriting
+	d, err := LoadTerrainTexture(filepath.Join(pathToRp, "textures", "terrain_texture.json"))
+	if err == nil {
+		for k, v := range i.TextureData {
+			d.TextureData[k] = v
+		}
+		i = d
+	}
+
 	data, err := i.Encode()
 	if err != nil {
 		return err
