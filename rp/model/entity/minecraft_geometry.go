@@ -26,7 +26,7 @@ type IMinecraftGeometry interface {
 
 type minecraftGeometry_parse struct {
 	Description *Description `json:"description"`
-	Bones       Bones        `json:"bones,omitempty"`
+	Bones       *Bones       `json:"bones,omitempty"`
 	Cape        string       `json:"cape,omitempty"`
 }
 
@@ -39,7 +39,7 @@ func (m *MinecraftGeometries) UnmarshalJSON(data []byte) error {
 	for _, geometry := range temp {
 		*m = append(*m, &MinecraftGeometry{
 			Description: geometry.Description,
-			Bones:       &geometry.Bones,
+			Bones:       geometry.Bones,
 			Cape:        geometry.Cape,
 		})
 	}

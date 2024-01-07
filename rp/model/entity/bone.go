@@ -7,7 +7,7 @@ import (
 type Bone struct {
 	Name          string         `json:"name"`
 	Pivot         []float64      `json:"pivot"`
-	Cubes         ICubes         `json:"cubes"`
+	Cubes         ICubes         `json:"cubes,omitempty"`
 	Binding       string         `json:"binding,omitempty"`
 	Debug         bool           `json:"debug,omitempty"`
 	Inflate       float64        `json:"inflate,omitempty"`
@@ -23,7 +23,7 @@ type Bone struct {
 type bone_parse struct {
 	Name          string         `json:"name"`
 	Pivot         []float64      `json:"pivot"`
-	Cubes         *Cubes         `json:"cubes"`
+	Cubes         *Cubes         `json:"cubes,omitempty"`
 	Binding       string         `json:"binding,omitempty"`
 	Debug         bool           `json:"debug,omitempty"`
 	Inflate       float64        `json:"inflate,omitempty"`
@@ -97,7 +97,7 @@ func (b *Bones) UnmarshalJSON(data []byte) error {
 		return err
 	}
 	*b = make(Bones, 0)
-	for _, bone := range temp {
+	for i, bone := range temp {
 		*b = append(*b, &Bone{
 			Name:          bone.Name,
 			Pivot:         bone.Pivot,
@@ -113,6 +113,12 @@ func (b *Bones) UnmarshalJSON(data []byte) error {
 			Rotation:      bone.Rotation,
 			TextureMeshes: bone.TextureMeshes,
 		})
+		if bone.Cubes == nil {
+			(*b)[i].Cubes = nil
+		}
+		if bone.Locators == nil {
+			(*b)[i].Locators = nil
+		}
 	}
 	return nil
 }

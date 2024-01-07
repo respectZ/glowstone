@@ -33,13 +33,19 @@ type IGeometries interface {
 	// Example:
 	//
 	//	project := glowstone.NewProject()
-	// 	model/entitys := project.RP.Geometry
-	// 	model/entitys.New("glowstone:chair")
-	// 	model/entitys.New("glowstone:table")
-	// 	model/entitys.Save(path.Join("packs", "RP"))
+	// 	project.RP.Geometry.New("glowstone:chair")
+	// 	project.RP.Geometry.New("glowstone:table")
+	// 	project.RP.Geometry.Save(path.Join("packs", "RP"))
 	Save(string) error
 
 	LoadAll(string) error
+
+	// Load a single geometry file, without subdir and filename.
+	//
+	// Example:
+	//
+	//	geometry, err := project.RP.Geometry.Load(filepath.Join(project.RP.Path, "models", "entity", "zombie.geo.json"))
+	Load(string) (*rp.Geometry, error)
 }
 
 func (e *Geometries) Add(key string, value *rp.Geometry) {
@@ -126,4 +132,13 @@ func (e *Geometries) LoadAll(pathToRP string) error {
 		(*e)[a.GetIdentifier()].Filename = filename
 	}
 	return nil
+}
+
+func (e *Geometries) Load(src string) (*rp.Geometry, error) {
+	a, err := rp.Load(src)
+	if err != nil {
+		return nil, err
+	}
+	e.Add(a.GetIdentifier(), a)
+	return a, nil
 }
