@@ -61,7 +61,7 @@ func New(path string) *GlowstoneRP {
 
 		ItemTexture:     &texture.ItemTexture{},
 		TerrainTexture:  &texture.TerrainTexture{},
-		SoundDefinition: &sound.SoundDefinition{},
+		SoundDefinition: &sound.SoundDefinition{FormatVersion: sound.FORMAT_VERSION},
 		Blocks:          &Blocks{},
 		Lang:            &texts.Lang{},
 		Manifest:        &Manifest{},
