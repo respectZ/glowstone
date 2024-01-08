@@ -17,6 +17,9 @@ func (e *Entity) Encode(minify ...bool) ([]byte, error) {
 		if e.Entity.Description.Scripts.Initialize.IsEmpty() {
 			e.Entity.Description.Scripts.Initialize = nil
 		}
+		if e.Entity.Description.Scripts.Variables.IsEmpty() {
+			e.Entity.Description.Scripts.Variables = nil
+		}
 	}
 
 	if e.Entity.Description.Animations.IsEmpty() {
@@ -24,6 +27,12 @@ func (e *Entity) Encode(minify ...bool) ([]byte, error) {
 	}
 	if e.Entity.Description.SoundEffects.IsEmpty() {
 		e.Entity.Description.SoundEffects = nil
+	}
+	if e.Entity.Description.ParticleEffects.IsEmpty() {
+		e.Entity.Description.ParticleEffects = nil
+	}
+	if e.Entity.Description.ParticleEmitters.IsEmpty() {
+		e.Entity.Description.ParticleEmitters = nil
 	}
 
 	if reflect.ValueOf(e.Entity.Description.Scripts).Elem().IsZero() {
