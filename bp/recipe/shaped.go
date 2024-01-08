@@ -4,7 +4,7 @@ import (
 	g_util "github.com/respectZ/glowstone/util"
 )
 
-type recipeShaped struct {
+type RecipeShaped struct {
 	FormatVersion string            `json:"format_version"`
 	RecipeShaped  *recipeShapedData `json:"minecraft:recipe_shaped"`
 }
@@ -21,7 +21,7 @@ type recipeShapedData struct {
 	Result recipeResult `json:"result"`
 }
 
-type RecipeShaped interface {
+type IRecipeShaped interface {
 	Encode() ([]byte, error)
 
 	// Return the recipe's identifier
@@ -80,8 +80,8 @@ type RecipeShaped interface {
 	SetResult(string, ...int)
 }
 
-func NewShaped(identifier string) RecipeShaped {
-	return &recipeShaped{
+func NewShaped(identifier string) IRecipeShaped {
+	return &RecipeShaped{
 		FormatVersion: FORMAT_VERSION,
 		RecipeShaped: &recipeShapedData{
 			Description: recipeDescription{
@@ -95,47 +95,47 @@ func NewShaped(identifier string) RecipeShaped {
 	}
 }
 
-func (r *recipeShaped) Encode() ([]byte, error) {
+func (r *RecipeShaped) Encode() ([]byte, error) {
 	return g_util.MarshalJSON(r)
 }
 
-func (r *recipeShaped) GetIdentifier() string {
+func (r *RecipeShaped) GetIdentifier() string {
 	return r.RecipeShaped.Description.Identifier
 }
 
-func (r *recipeShaped) SetIdentifier(identifier string) {
+func (r *RecipeShaped) SetIdentifier(identifier string) {
 	r.RecipeShaped.Description.Identifier = identifier
 }
 
-func (r *recipeShaped) GetGroup() string {
+func (r *RecipeShaped) GetGroup() string {
 	return r.RecipeShaped.Group
 }
 
-func (r *recipeShaped) SetGroup(group string) {
+func (r *RecipeShaped) SetGroup(group string) {
 	r.RecipeShaped.Group = group
 }
 
-func (r *recipeShaped) GetTags() []string {
+func (r *RecipeShaped) GetTags() []string {
 	return r.RecipeShaped.Tags
 }
 
-func (r *recipeShaped) AddTag(tag string) {
+func (r *RecipeShaped) AddTag(tag string) {
 	r.RecipeShaped.Tags = append(r.RecipeShaped.Tags, tag)
 }
 
-func (r *recipeShaped) GetPattern() []string {
+func (r *RecipeShaped) GetPattern() []string {
 	return r.RecipeShaped.Pattern
 }
 
-func (r *recipeShaped) SetPattern(pattern []string) {
+func (r *RecipeShaped) SetPattern(pattern []string) {
 	r.RecipeShaped.Pattern = pattern
 }
 
-func (r *recipeShaped) GetKey() map[string]recipeIngredient {
+func (r *RecipeShaped) GetKey() map[string]recipeIngredient {
 	return r.RecipeShaped.Key
 }
 
-func (r *recipeShaped) AddKey(key string, item string, data ...int) {
+func (r *RecipeShaped) AddKey(key string, item string, data ...int) {
 	ingredient := recipeIngredient{
 		Item: item,
 	}
@@ -145,26 +145,26 @@ func (r *recipeShaped) AddKey(key string, item string, data ...int) {
 	r.RecipeShaped.Key[key] = ingredient
 }
 
-func (r *recipeShaped) SetKey(key map[string]recipeIngredient) {
+func (r *RecipeShaped) SetKey(key map[string]recipeIngredient) {
 	r.RecipeShaped.Key = key
 }
 
-func (r *recipeShaped) ClearKey() {
+func (r *RecipeShaped) ClearKey() {
 	r.RecipeShaped.Key = make(map[string]recipeIngredient)
 }
 
-func (r *recipeShaped) AddUnlock(unlock recipeUnlock) {
+func (r *RecipeShaped) AddUnlock(unlock recipeUnlock) {
 	if r.RecipeShaped.Unlock == nil {
 		r.RecipeShaped.Unlock = make([]recipeUnlock, 0)
 	}
 	r.RecipeShaped.Unlock = append(r.RecipeShaped.Unlock, unlock)
 }
 
-func (r *recipeShaped) GetResult() recipeResult {
+func (r *RecipeShaped) GetResult() recipeResult {
 	return r.RecipeShaped.Result
 }
 
-func (r *recipeShaped) SetResult(item string, data ...int) {
+func (r *RecipeShaped) SetResult(item string, data ...int) {
 	r.RecipeShaped.Result.Item = item
 	if len(data) > 1 {
 		r.RecipeShaped.Result.Data = data[0]

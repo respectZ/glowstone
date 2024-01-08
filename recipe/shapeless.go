@@ -8,7 +8,7 @@ import (
 )
 
 type RecipeShapeless struct {
-	Data recipe.RecipeShapeless
+	Data recipe.IRecipeShapeless
 
 	// Other stuffs
 	Subdir string

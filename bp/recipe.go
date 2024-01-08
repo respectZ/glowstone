@@ -54,7 +54,7 @@ type IRecipeBP interface {
 	//
 	//	a := New("glowstone:chair")
 	//	b := New("glowstone:table")
-	NewBrewingContainer(string, ...struct{ Subdir string }) *bp.RecipeBrewingContainer
+	NewBrewingContainer(string, ...struct{ Subdir string }) bp.IRecipeBrewingContainer
 
 	// NewBrewingMix creates a new recipe for a brewing container with a mix.
 	//
@@ -62,7 +62,7 @@ type IRecipeBP interface {
 	//
 	//	a := New("glowstone:chair")
 	//	b := New("glowstone:table")
-	NewBrewingMix(string, ...struct{ Subdir string }) *bp.RecipeBrewingMix
+	NewBrewingMix(string, ...struct{ Subdir string }) bp.IRecipeBrewingMix
 
 	// NewFurnace creates a new recipe to smelt items in a furnace.
 	//
@@ -70,7 +70,7 @@ type IRecipeBP interface {
 	//
 	//	a := New("glowstone:chair")
 	//	b := New("glowstone:table")
-	NewFurnace(string, ...struct{ Subdir string }) *bp.RecipeFurnace
+	NewFurnace(string, ...struct{ Subdir string }) bp.IRecipeFurnace
 
 	// NewShaped creates a new crafting recipe with a shape.
 	//
@@ -78,7 +78,7 @@ type IRecipeBP interface {
 	//
 	//	a := New("glowstone:chair")
 	//	b := New("glowstone:table")
-	NewShaped(string, ...struct{ Subdir string }) *bp.RecipeShaped
+	NewShaped(string, ...struct{ Subdir string }) bp.IRecipeShaped
 
 	// NewShapeless creates a new crafting recipe without a shape.
 	//
@@ -86,7 +86,7 @@ type IRecipeBP interface {
 	//
 	//	a := New("glowstone:chair")
 	//	b := New("glowstone:table")
-	NewShapeless(string, ...struct{ Subdir string }) *bp.RecipeShapeless
+	NewShapeless(string, ...struct{ Subdir string }) bp.IRecipeShapeless
 
 	// NewSmithingTransform creates a new smithing recipe.
 	//
@@ -94,7 +94,7 @@ type IRecipeBP interface {
 	//
 	//	a := New("glowstone:chair")
 	//	b := New("glowstone:table")
-	NewSmithingTransform(string, ...struct{ Subdir string }) *bp.RecipeSmithingTransform
+	NewSmithingTransform(string, ...struct{ Subdir string }) bp.IRecipeSmithingTransform
 
 	LoadAll(string) error
 
@@ -161,7 +161,7 @@ func (e *RecipeBP) UnmarshalJSON(data []byte) error {
 	return g_util.UnmarshalJSON(data, e)
 }
 
-func (e *RecipeBP) NewBrewingContainer(identifier string, option ...struct{ Subdir string }) *bp.RecipeBrewingContainer {
+func (e *RecipeBP) NewBrewingContainer(identifier string, option ...struct{ Subdir string }) bp.IRecipeBrewingContainer {
 	r := bp.NewBrewingContainer(identifier)
 	generic := &RecipeFile{
 		Data: r,
@@ -173,10 +173,10 @@ func (e *RecipeBP) NewBrewingContainer(identifier string, option ...struct{ Subd
 
 	e.Add(identifier, generic)
 
-	return &r
+	return r
 }
 
-func (e *RecipeBP) NewBrewingMix(identifier string, option ...struct{ Subdir string }) *bp.RecipeBrewingMix {
+func (e *RecipeBP) NewBrewingMix(identifier string, option ...struct{ Subdir string }) bp.IRecipeBrewingMix {
 	r := bp.NewBrewingMix(identifier)
 	generic := &RecipeFile{
 		Data: r,
@@ -188,10 +188,10 @@ func (e *RecipeBP) NewBrewingMix(identifier string, option ...struct{ Subdir str
 
 	e.Add(identifier, generic)
 
-	return &r
+	return r
 }
 
-func (e *RecipeBP) NewFurnace(identifier string, option ...struct{ Subdir string }) *bp.RecipeFurnace {
+func (e *RecipeBP) NewFurnace(identifier string, option ...struct{ Subdir string }) bp.IRecipeFurnace {
 	r := bp.NewFurnace(identifier)
 	generic := &RecipeFile{
 		Data: r,
@@ -203,10 +203,10 @@ func (e *RecipeBP) NewFurnace(identifier string, option ...struct{ Subdir string
 
 	e.Add(identifier, generic)
 
-	return &r
+	return r
 }
 
-func (e *RecipeBP) NewShaped(identifier string, option ...struct{ Subdir string }) *bp.RecipeShaped {
+func (e *RecipeBP) NewShaped(identifier string, option ...struct{ Subdir string }) bp.IRecipeShaped {
 	r := bp.NewShaped(identifier)
 	generic := &RecipeFile{
 		Data: r,
@@ -218,10 +218,10 @@ func (e *RecipeBP) NewShaped(identifier string, option ...struct{ Subdir string 
 
 	e.Add(identifier, generic)
 
-	return &r
+	return r
 }
 
-func (e *RecipeBP) NewShapeless(identifier string, option ...struct{ Subdir string }) *bp.RecipeShapeless {
+func (e *RecipeBP) NewShapeless(identifier string, option ...struct{ Subdir string }) bp.IRecipeShapeless {
 	r := bp.NewShapeless(identifier)
 	generic := &RecipeFile{
 		Data: r,
@@ -233,10 +233,10 @@ func (e *RecipeBP) NewShapeless(identifier string, option ...struct{ Subdir stri
 
 	e.Add(identifier, generic)
 
-	return &r
+	return r
 }
 
-func (e *RecipeBP) NewSmithingTransform(identifier string, option ...struct{ Subdir string }) *bp.RecipeSmithingTransform {
+func (e *RecipeBP) NewSmithingTransform(identifier string, option ...struct{ Subdir string }) bp.IRecipeSmithingTransform {
 	r := bp.NewSmithingTransform(identifier)
 	generic := &RecipeFile{
 		Data: r,
@@ -248,7 +248,7 @@ func (e *RecipeBP) NewSmithingTransform(identifier string, option ...struct{ Sub
 
 	e.Add(identifier, generic)
 
-	return &r
+	return r
 }
 
 func (e *RecipeBP) Save(pathToBP string) error {

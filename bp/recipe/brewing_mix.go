@@ -2,7 +2,7 @@ package recipe
 
 import g_util "github.com/respectZ/glowstone/util"
 
-type recipeBrewingMix struct {
+type RecipeBrewingMix struct {
 	FormatVersion    string                `json:"format_version"`
 	RecipeBrewingMix *recipeBrewingMixData `json:"minecraft:recipe_brewing_mix"`
 }
@@ -16,7 +16,7 @@ type recipeBrewingMixData struct {
 	Output      string            `json:"output"`
 }
 
-type RecipeBrewingMix interface {
+type IRecipeBrewingMix interface {
 	Encode() ([]byte, error)
 	// Return the recipe's identifier
 	GetIdentifier() string
@@ -52,8 +52,8 @@ type RecipeBrewingMix interface {
 	SetOutput(string)
 }
 
-func NewBrewingMix(identifier string) RecipeBrewingMix {
-	return &recipeBrewingMix{
+func NewBrewingMix(identifier string) IRecipeBrewingMix {
+	return &RecipeBrewingMix{
 		FormatVersion: FORMAT_VERSION,
 		RecipeBrewingMix: &recipeBrewingMixData{
 			Description: recipeDescription{
@@ -64,50 +64,50 @@ func NewBrewingMix(identifier string) RecipeBrewingMix {
 	}
 }
 
-func (r *recipeBrewingMix) Encode() ([]byte, error) {
+func (r *RecipeBrewingMix) Encode() ([]byte, error) {
 	return g_util.MarshalJSON(r)
 }
 
-func (r *recipeBrewingMix) GetIdentifier() string {
+func (r *RecipeBrewingMix) GetIdentifier() string {
 	return r.RecipeBrewingMix.Description.Identifier
 }
 
-func (r *recipeBrewingMix) SetIdentifier(identifier string) {
+func (r *RecipeBrewingMix) SetIdentifier(identifier string) {
 	r.RecipeBrewingMix.Description.Identifier = identifier
 }
 
-func (r *recipeBrewingMix) GetTags() []string {
+func (r *RecipeBrewingMix) GetTags() []string {
 	return r.RecipeBrewingMix.Tags
 }
 
-func (r *recipeBrewingMix) AddTag(tag string) {
+func (r *RecipeBrewingMix) AddTag(tag string) {
 	r.RecipeBrewingMix.Tags = append(r.RecipeBrewingMix.Tags, tag)
 }
 
-func (r *recipeBrewingMix) AddUnlock(unlock recipeUnlock) {
+func (r *RecipeBrewingMix) AddUnlock(unlock recipeUnlock) {
 	r.RecipeBrewingMix.Unlock = append(r.RecipeBrewingMix.Unlock, unlock)
 }
 
-func (r *recipeBrewingMix) GetInput() string {
+func (r *RecipeBrewingMix) GetInput() string {
 	return r.RecipeBrewingMix.Input
 }
 
-func (r *recipeBrewingMix) SetInput(input string) {
+func (r *RecipeBrewingMix) SetInput(input string) {
 	r.RecipeBrewingMix.Input = input
 }
 
-func (r *recipeBrewingMix) GetReagent() string {
+func (r *RecipeBrewingMix) GetReagent() string {
 	return r.RecipeBrewingMix.Reagent
 }
 
-func (r *recipeBrewingMix) SetReagent(reagent string) {
+func (r *RecipeBrewingMix) SetReagent(reagent string) {
 	r.RecipeBrewingMix.Reagent = reagent
 }
 
-func (r *recipeBrewingMix) GetOutput() string {
+func (r *RecipeBrewingMix) GetOutput() string {
 	return r.RecipeBrewingMix.Output
 }
 
-func (r *recipeBrewingMix) SetOutput(output string) {
+func (r *RecipeBrewingMix) SetOutput(output string) {
 	r.RecipeBrewingMix.Output = output
 }

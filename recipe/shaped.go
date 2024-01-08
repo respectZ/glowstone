@@ -8,7 +8,7 @@ import (
 )
 
 type RecipeShaped struct {
-	Data recipe.RecipeShaped
+	Data recipe.IRecipeShaped
 
 	// Other stuffs
 	Subdir string

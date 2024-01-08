@@ -2,7 +2,7 @@ package recipe
 
 import g_util "github.com/respectZ/glowstone/util"
 
-type recipeFurnace struct {
+type RecipeFurnace struct {
 	FormatVersion string             `json:"format_version"`
 	RecipeFurnace *recipeFurnaceData `json:"minecraft:recipe_furnace"`
 }
@@ -15,7 +15,7 @@ type recipeFurnaceData struct {
 	Output      string            `json:"output"`
 }
 
-type RecipeFurnace interface {
+type IRecipeFurnace interface {
 	Encode() ([]byte, error)
 	// Return the recipe's identifier
 	GetIdentifier() string
@@ -45,8 +45,8 @@ type RecipeFurnace interface {
 	SetOutput(string)
 }
 
-func NewFurnace(identifier string) RecipeFurnace {
-	return &recipeFurnace{
+func NewFurnace(identifier string) IRecipeFurnace {
+	return &RecipeFurnace{
 		FormatVersion: FORMAT_VERSION,
 		RecipeFurnace: &recipeFurnaceData{
 			Description: recipeDescription{
@@ -57,45 +57,45 @@ func NewFurnace(identifier string) RecipeFurnace {
 	}
 }
 
-func (r *recipeFurnace) Encode() ([]byte, error) {
+func (r *RecipeFurnace) Encode() ([]byte, error) {
 	return g_util.MarshalJSON(r)
 }
 
-func (r *recipeFurnace) GetIdentifier() string {
+func (r *RecipeFurnace) GetIdentifier() string {
 	return r.RecipeFurnace.Description.Identifier
 }
 
-func (r *recipeFurnace) SetIdentifier(identifier string) {
+func (r *RecipeFurnace) SetIdentifier(identifier string) {
 	r.RecipeFurnace.Description.Identifier = identifier
 }
 
-func (r *recipeFurnace) GetTags() []string {
+func (r *RecipeFurnace) GetTags() []string {
 	return r.RecipeFurnace.Tags
 }
 
-func (r *recipeFurnace) AddTag(tag string) {
+func (r *RecipeFurnace) AddTag(tag string) {
 	r.RecipeFurnace.Tags = append(r.RecipeFurnace.Tags, tag)
 }
 
-func (r *recipeFurnace) AddUnlock(unlock recipeUnlock) {
+func (r *RecipeFurnace) AddUnlock(unlock recipeUnlock) {
 	if r.RecipeFurnace.Unlock == nil {
 		r.RecipeFurnace.Unlock = make([]recipeUnlock, 0)
 	}
 	r.RecipeFurnace.Unlock = append(r.RecipeFurnace.Unlock, unlock)
 }
 
-func (r *recipeFurnace) GetInput() string {
+func (r *RecipeFurnace) GetInput() string {
 	return r.RecipeFurnace.Input
 }
 
-func (r *recipeFurnace) SetInput(input string) {
+func (r *RecipeFurnace) SetInput(input string) {
 	r.RecipeFurnace.Input = input
 }
 
-func (r *recipeFurnace) GetOutput() string {
+func (r *RecipeFurnace) GetOutput() string {
 	return r.RecipeFurnace.Output
 }
 
-func (r *recipeFurnace) SetOutput(output string) {
+func (r *RecipeFurnace) SetOutput(output string) {
 	r.RecipeFurnace.Output = output
 }

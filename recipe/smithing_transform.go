@@ -8,7 +8,7 @@ import (
 )
 
 type RecipeSmithingTransform struct {
-	Data recipe.RecipeSmithingTransform
+	Data recipe.IRecipeSmithingTransform
 
 	// Other stuffs
 	Subdir string

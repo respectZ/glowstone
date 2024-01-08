@@ -2,7 +2,7 @@ package recipe
 
 import g_util "github.com/respectZ/glowstone/util"
 
-type recipeBrewingContainer struct {
+type RecipeBrewingContainer struct {
 	FormatVersion          string                      `json:"format_version"`
 	RecipeBrewingContainer *recipeBrewingContainerData `json:"minecraft:recipe_brewing_container"`
 }
@@ -16,7 +16,7 @@ type recipeBrewingContainerData struct {
 	Output      string            `json:"output"`
 }
 
-type RecipeBrewingContainer interface {
+type IRecipeBrewingContainer interface {
 	Encode() ([]byte, error)
 	// Return the recipe's identifier
 	GetIdentifier() string
@@ -52,8 +52,8 @@ type RecipeBrewingContainer interface {
 	SetOutput(string)
 }
 
-func NewBrewingContainer(identifier string) RecipeBrewingContainer {
-	return &recipeBrewingContainer{
+func NewBrewingContainer(identifier string) IRecipeBrewingContainer {
+	return &RecipeBrewingContainer{
 		FormatVersion: FORMAT_VERSION,
 		RecipeBrewingContainer: &recipeBrewingContainerData{
 			Description: recipeDescription{
@@ -64,50 +64,50 @@ func NewBrewingContainer(identifier string) RecipeBrewingContainer {
 	}
 }
 
-func (r *recipeBrewingContainer) Encode() ([]byte, error) {
+func (r *RecipeBrewingContainer) Encode() ([]byte, error) {
 	return g_util.MarshalJSON(r)
 }
 
-func (r *recipeBrewingContainer) GetIdentifier() string {
+func (r *RecipeBrewingContainer) GetIdentifier() string {
 	return r.RecipeBrewingContainer.Description.Identifier
 }
 
-func (r *recipeBrewingContainer) SetIdentifier(identifier string) {
+func (r *RecipeBrewingContainer) SetIdentifier(identifier string) {
 	r.RecipeBrewingContainer.Description.Identifier = identifier
 }
 
-func (r *recipeBrewingContainer) GetTags() []string {
+func (r *RecipeBrewingContainer) GetTags() []string {
 	return r.RecipeBrewingContainer.Tags
 }
 
-func (r *recipeBrewingContainer) AddTag(tag string) {
+func (r *RecipeBrewingContainer) AddTag(tag string) {
 	r.RecipeBrewingContainer.Tags = append(r.RecipeBrewingContainer.Tags, tag)
 }
 
-func (r *recipeBrewingContainer) AddUnlock(unlock recipeUnlock) {
+func (r *RecipeBrewingContainer) AddUnlock(unlock recipeUnlock) {
 	r.RecipeBrewingContainer.Unlock = append(r.RecipeBrewingContainer.Unlock, unlock)
 }
 
-func (r *recipeBrewingContainer) GetInput() string {
+func (r *RecipeBrewingContainer) GetInput() string {
 	return r.RecipeBrewingContainer.Input
 }
 
-func (r *recipeBrewingContainer) SetInput(input string) {
+func (r *RecipeBrewingContainer) SetInput(input string) {
 	r.RecipeBrewingContainer.Input = input
 }
 
-func (r *recipeBrewingContainer) GetReagent() string {
+func (r *RecipeBrewingContainer) GetReagent() string {
 	return r.RecipeBrewingContainer.Reagent
 }
 
-func (r *recipeBrewingContainer) SetReagent(reagent string) {
+func (r *RecipeBrewingContainer) SetReagent(reagent string) {
 	r.RecipeBrewingContainer.Reagent = reagent
 }
 
-func (r *recipeBrewingContainer) GetOutput() string {
+func (r *RecipeBrewingContainer) GetOutput() string {
 	return r.RecipeBrewingContainer.Output
 }
 
-func (r *recipeBrewingContainer) SetOutput(output string) {
+func (r *RecipeBrewingContainer) SetOutput(output string) {
 	r.RecipeBrewingContainer.Output = output
 }

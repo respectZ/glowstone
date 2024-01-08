@@ -8,7 +8,7 @@ import (
 )
 
 type RecipeFurnace struct {
-	Data recipe.RecipeFurnace
+	Data recipe.IRecipeFurnace
 
 	// Other stuffs
 	Subdir string

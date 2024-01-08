@@ -8,7 +8,7 @@ import (
 )
 
 type RecipeBrewingMix struct {
-	Data recipe.RecipeBrewingMix
+	Data recipe.IRecipeBrewingMix
 
 	// Other stuffs
 	Subdir string

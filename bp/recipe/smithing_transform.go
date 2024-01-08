@@ -2,7 +2,7 @@ package recipe
 
 import g_util "github.com/respectZ/glowstone/util"
 
-type recipeSmithingTransform struct {
+type RecipeSmithingTransform struct {
 	FormatVersion           string                       `json:"format_version"`
 	RecipeSmithingTransform *recipeSmithingTransformData `json:"minecraft:recipe_smithing_transform"`
 }
@@ -16,7 +16,7 @@ type recipeSmithingTransformData struct {
 	Result      string            `json:"result"`
 }
 
-type RecipeSmithingTransform interface {
+type IRecipeSmithingTransform interface {
 	Encode() ([]byte, error)
 	// Return the recipe's identifier
 	GetIdentifier() string
@@ -49,8 +49,8 @@ type RecipeSmithingTransform interface {
 	SetAddition(string)
 }
 
-func NewSmithingTransform(identifier string) RecipeSmithingTransform {
-	return &recipeSmithingTransform{
+func NewSmithingTransform(identifier string) IRecipeSmithingTransform {
+	return &RecipeSmithingTransform{
 		FormatVersion: FORMAT_VERSION,
 		RecipeSmithingTransform: &recipeSmithingTransformData{
 			Description: recipeDescription{
@@ -62,46 +62,46 @@ func NewSmithingTransform(identifier string) RecipeSmithingTransform {
 	}
 }
 
-func (r *recipeSmithingTransform) Encode() ([]byte, error) {
+func (r *RecipeSmithingTransform) Encode() ([]byte, error) {
 	return g_util.MarshalJSON(r)
 }
 
-func (r *recipeSmithingTransform) GetIdentifier() string {
+func (r *RecipeSmithingTransform) GetIdentifier() string {
 	return r.RecipeSmithingTransform.Description.Identifier
 }
 
-func (r *recipeSmithingTransform) SetIdentifier(identifier string) {
+func (r *RecipeSmithingTransform) SetIdentifier(identifier string) {
 	r.RecipeSmithingTransform.Description.Identifier = identifier
 }
 
-func (r *recipeSmithingTransform) GetTags() []string {
+func (r *RecipeSmithingTransform) GetTags() []string {
 	return r.RecipeSmithingTransform.Tags
 }
 
-func (r *recipeSmithingTransform) AddTag(tag string) {
+func (r *RecipeSmithingTransform) AddTag(tag string) {
 	r.RecipeSmithingTransform.Tags = append(r.RecipeSmithingTransform.Tags, tag)
 }
 
-func (r *recipeSmithingTransform) GetTemplate() string {
+func (r *RecipeSmithingTransform) GetTemplate() string {
 	return r.RecipeSmithingTransform.Template
 }
 
-func (r *recipeSmithingTransform) SetTemplate(template string) {
+func (r *RecipeSmithingTransform) SetTemplate(template string) {
 	r.RecipeSmithingTransform.Template = template
 }
 
-func (r *recipeSmithingTransform) GetBase() string {
+func (r *RecipeSmithingTransform) GetBase() string {
 	return r.RecipeSmithingTransform.Base
 }
 
-func (r *recipeSmithingTransform) SetBase(base string) {
+func (r *RecipeSmithingTransform) SetBase(base string) {
 	r.RecipeSmithingTransform.Base = base
 }
 
-func (r *recipeSmithingTransform) GetAddition() string {
+func (r *RecipeSmithingTransform) GetAddition() string {
 	return r.RecipeSmithingTransform.Addition
 }
 
-func (r *recipeSmithingTransform) SetAddition(addition string) {
+func (r *RecipeSmithingTransform) SetAddition(addition string) {
 	r.RecipeSmithingTransform.Addition = addition
 }

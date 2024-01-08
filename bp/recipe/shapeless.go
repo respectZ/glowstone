@@ -2,7 +2,7 @@ package recipe
 
 import g_util "github.com/respectZ/glowstone/util"
 
-type recipeShapeless struct {
+type RecipeShapeless struct {
 	FormatVersion   string               `json:"format_version"`
 	RecipeShapeless *recipeShapelessData `json:"minecraft:recipe_shapeless"`
 }
@@ -18,7 +18,7 @@ type recipeShapelessData struct {
 	Result recipeResult `json:"result"`
 }
 
-type RecipeShapeless interface {
+type IRecipeShapeless interface {
 	Encode() ([]byte, error)
 	// Return the recipe's identifier
 	GetIdentifier() string
@@ -53,8 +53,8 @@ type RecipeShapeless interface {
 	SetResult(string, ...int)
 }
 
-func NewShapeless(identifier string) RecipeShapeless {
-	return &recipeShapeless{
+func NewShapeless(identifier string) IRecipeShapeless {
+	return &RecipeShapeless{
 		FormatVersion: FORMAT_VERSION,
 		RecipeShapeless: &recipeShapelessData{
 			Description: recipeDescription{
@@ -67,46 +67,46 @@ func NewShapeless(identifier string) RecipeShapeless {
 	}
 }
 
-func (r *recipeShapeless) Encode() ([]byte, error) {
+func (r *RecipeShapeless) Encode() ([]byte, error) {
 	return g_util.MarshalJSON(r)
 }
 
-func (r *recipeShapeless) GetIdentifier() string {
+func (r *RecipeShapeless) GetIdentifier() string {
 	return r.RecipeShapeless.Description.Identifier
 }
 
-func (r *recipeShapeless) SetIdentifier(identifier string) {
+func (r *RecipeShapeless) SetIdentifier(identifier string) {
 	r.RecipeShapeless.Description.Identifier = identifier
 }
 
-func (r *recipeShapeless) GetGroup() string {
+func (r *RecipeShapeless) GetGroup() string {
 	return r.RecipeShapeless.Group
 }
 
-func (r *recipeShapeless) SetGroup(group string) {
+func (r *RecipeShapeless) SetGroup(group string) {
 	r.RecipeShapeless.Group = group
 }
 
-func (r *recipeShapeless) GetTags() []string {
+func (r *RecipeShapeless) GetTags() []string {
 	return r.RecipeShapeless.Tags
 }
 
-func (r *recipeShapeless) AddTag(tag string) {
+func (r *RecipeShapeless) AddTag(tag string) {
 	r.RecipeShapeless.Tags = append(r.RecipeShapeless.Tags, tag)
 }
 
-func (r *recipeShapeless) AddUnlock(unlock recipeUnlock) {
+func (r *RecipeShapeless) AddUnlock(unlock recipeUnlock) {
 	if r.RecipeShapeless.Unlock == nil {
 		r.RecipeShapeless.Unlock = make([]recipeUnlock, 0)
 	}
 	r.RecipeShapeless.Unlock = append(r.RecipeShapeless.Unlock, unlock)
 }
 
-func (r *recipeShapeless) GetResult() recipeResult {
+func (r *RecipeShapeless) GetResult() recipeResult {
 	return r.RecipeShapeless.Result
 }
 
-func (r *recipeShapeless) SetResult(item string, data ...int) {
+func (r *RecipeShapeless) SetResult(item string, data ...int) {
 	r.RecipeShapeless.Result.Item = item
 	if len(data) > 0 {
 		r.RecipeShapeless.Result.Count = data[0]

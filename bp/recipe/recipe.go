@@ -10,12 +10,6 @@ const (
 	FORMAT_VERSION string = "1.20.0"
 )
 
-/*
-TODO: Proper naming
-RecipeBrewingContainer (interface) -> IRecipeBrewingContainer
-recipeBrewingContainer (struct) -> RecipeBrewingContainer
-*/
-
 const (
 	RecipeContextPlayerInWater      string = "PlayerInWater"
 	RecipeContextPlayerHasManyItems string = "PlayerHasManyItems"
@@ -51,12 +45,12 @@ type RecipeInterface interface {
 }
 
 func Load(src string) (RecipeInterface, error) {
-	var _brewingContainer recipeBrewingContainer
-	var _brewingMix recipeBrewingMix
-	var _smithingTransform recipeSmithingTransform
-	var _shaped recipeShaped
-	var _shapeless recipeShapeless
-	var _furnace recipeFurnace
+	var _brewingContainer RecipeBrewingContainer
+	var _brewingMix RecipeBrewingMix
+	var _smithingTransform RecipeSmithingTransform
+	var _shaped RecipeShaped
+	var _shapeless RecipeShapeless
+	var _furnace RecipeFurnace
 
 	err := g_util.LoadJSON(src, &_brewingContainer)
 	if err == nil {
