@@ -102,7 +102,7 @@ func (m *Lang) Save(pathToRP string) error {
 		s += k + "=" + (*m)[k] + "\n"
 	}
 
-	g_util.WriteFile(pathToRP, []byte(s))
+	g_util.WriteFile(filepath.Join(pathToRP, "texts", "en_US.lang"), []byte(s))
 
 	return nil
 }
