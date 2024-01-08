@@ -1,7 +1,6 @@
 package rp
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -14,9 +13,34 @@ type Entities map[string]*EntityFile
 
 type IEntities interface {
 	Add(string, *rp.Entity)
+
+	// Get returns the Entity of the given identifier.
+	//
+	// Example:
+	//
+	//  entity, ok := project.RP.Entity.Get("glowstone:chair")
 	Get(string) (*rp.Entity, bool)
+
+	// GetFile returns the EntityFile of the given identifier.
+	//
+	// Example:
+	//
+	//  entity, ok := project.RP.Entity.GetFile("glowstone:chair")
+	GetFile(string) (*EntityFile, bool)
+
+	// Remove removes the Entity of the given identifier.
+	//
+	// Example:
+	//
+	//  project.RP.Entity.Remove("glowstone:chair")
 	Remove(string)
 	Clear()
+
+	// All returns all Entitys.
+	//
+	// Example:
+	//
+	//  entitys := project.RP.Entity.All()
 	All() map[string]*EntityFile
 	IsEmpty() bool
 	Size() int
@@ -41,6 +65,17 @@ type IEntities interface {
 	Save(string) error
 
 	LoadAll(string) error
+
+	// Load a single entity file.
+	//
+	// Last parameter is whether the file should be added to the project.
+	//
+	// Default is true.
+	//
+	// Example:
+	//
+	//	entity, err := project.RP.Entity.Load(filepath.Join(project.RP.Path, "entity", "player.enitty.json"))
+	Load(string, ...bool) (*EntityFile, error)
 }
 
 func (e *Entities) Add(key string, value *rp.Entity) {
@@ -60,6 +95,14 @@ func (e *Entities) Get(key string) (*rp.Entity, bool) {
 		return nil, false
 	}
 	return value.Data, true
+}
+
+func (e *Entities) GetFile(key string) (*EntityFile, bool) {
+	value, ok := (*e)[key]
+	if !ok {
+		return nil, false
+	}
+	return value, true
 }
 
 func (e *Entities) Remove(key string) {
@@ -98,7 +141,7 @@ func (e *Entities) Save(pathToRP string) error {
 		if err != nil {
 			return err
 		}
-		err = g_util.WriteFile(filepath.Join(pathToRP, destDirectory.Entity, entity.Subdir, fmt.Sprintf("%s.entity.json", entity.GetIdentifier())), b)
+		err = g_util.WriteFile(filepath.Join(pathToRP, destDirectory.Entity, entity.Subdir, entity.GetFilename()), b)
 		if err != nil {
 			return err
 		}
@@ -127,4 +170,39 @@ func (e *Entities) LoadAll(pathToRP string) error {
 		(*e)[a.GetIdentifier()].Subdir = subdir
 	}
 	return nil
+}
+
+func (e *Entities) Load(src string, add ...bool) (*EntityFile, error) {
+	a, err := rp.Load(src)
+	if err != nil {
+		return nil, err
+	}
+
+	filename := filepath.Base(src)
+
+	// Get subdir
+	subdirs := strings.Split(filepath.Dir(src), string(filepath.Separator))
+	subdir := ""
+	// Reverse loop
+	for i := len(subdirs) - 1; i >= 0; i-- {
+		if subdirs[i] == destDirectory.Entity {
+			break
+		}
+		subdir = subdirs[i] + string(filepath.Separator) + subdir
+	}
+
+	if len(add) > 0 && add[0] || len(add) == 0 {
+		e.Add(a.GetIdentifier(), a)
+	}
+
+	data, ok := e.GetFile(a.GetIdentifier())
+	if !ok {
+		data = &EntityFile{
+			Data: a,
+		}
+	}
+	data.Filename = filename
+	data.Subdir = subdir
+
+	return data, nil
 }

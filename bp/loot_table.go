@@ -14,9 +14,21 @@ type LootTable map[string]bp.LootTable
 
 type ILootTable interface {
 	Add(string, bp.LootTable)
+
+	// Get returns the LootTable of the given path.
+	//
+	// Example:
+	//
+	//  loot_table, ok := project.BP.LootTable.Get("vanilla/player.json")
 	Get(string) (bp.LootTable, bool)
 	Remove(string)
 	Clear()
+
+	// All returns all LootTables.
+	//
+	// Example:
+	//
+	//  loot_tables := project.BP.LootTable.All()
 	All() map[string]bp.LootTable
 	IsEmpty() bool
 	Size() int
@@ -32,6 +44,17 @@ type ILootTable interface {
 	Save(string) error
 
 	LoadAll(string) error
+
+	// Load a single loot_table file.
+	//
+	// Last parameter is whether the file should be added to the project.
+	//
+	// Default is true.
+	//
+	// Example:
+	//
+	//	loot_table, err := project.BP.LootTable.Load(filepath.Join(project.BP.Path, "loot_tables", "apple.json"))
+	Load(string, ...bool) (bp.LootTable, error)
 }
 
 func (l *LootTable) Add(key string, value bp.LootTable) {
@@ -129,4 +152,27 @@ func (l *LootTable) LoadAll(pathToBP string) error {
 		l.Add(file, lootTable)
 	}
 	return nil
+}
+
+func (e *LootTable) Load(src string, add ...bool) (bp.LootTable, error) {
+	a, err := bp.Load(src)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(add) > 0 && add[0] || len(add) == 0 {
+		subdirs := strings.Split(src, string(filepath.Separator))
+		file := filepath.Base(src)
+
+		// Add subdir until "loot_tables" is reached
+		// Reverse loop
+		for i := len(subdirs) - 1; i >= 0; i-- {
+			if subdirs[i] == destDirectory.LootTable {
+				break
+			}
+			file = subdirs[i] + string(filepath.Separator) + file
+		}
+		e.Add(file, a)
+	}
+	return a, nil
 }

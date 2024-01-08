@@ -1,6 +1,7 @@
 package rp
 
 import (
+	"fmt"
 	"strings"
 
 	rp "github.com/respectZ/glowstone/rp/animation"
@@ -10,7 +11,6 @@ type AnimationFile struct {
 	Data *rp.AnimationDefinition
 
 	// Other stuff
-	Subdir string
 }
 
 func LoadAnimation(src string) (*rp.AnimationDefinition, error) {
@@ -54,4 +54,25 @@ func (e *AnimationFile) GetAnimationsAsMap() map[string]string {
 		animations[strings.TrimPrefix(k, "animation.")] = k
 	}
 	return animations
+}
+
+// Remap animations to match the animation name with the file name.
+//
+//	"animation.asdfghijkl.move" -> "animation.player.move"
+//
+// Example:
+//
+//	e.RemapAnimations("player")
+func (e *AnimationFile) RemapAnimations(filename string) {
+	for k, v := range e.Data.Animations.All() {
+		s := strings.Split(k, ".")
+		animName := strings.Join(s[2:], ".")
+		newKey := fmt.Sprintf("animation.%s.%s", filename, animName)
+		if newKey == k {
+			continue
+		}
+
+		e.Data.Animations.Add(fmt.Sprintf("animation.%s.%s", filename, animName), v)
+		e.Data.Animations.Remove(k)
+	}
 }

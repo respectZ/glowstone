@@ -1,7 +1,6 @@
 package rp
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -14,9 +13,34 @@ type Particles map[string]*ParticleFile
 
 type IParticles interface {
 	Add(string, *rp.Particle)
+
+	// Get returns the Particle of the given identifier.
+	//
+	// Example:
+	//
+	//  particle, ok := project.RP.Particle.Get("glowstone:particle_1")
 	Get(string) (*rp.Particle, bool)
+
+	// GetFile returns the ParticleFile of the given identifier.
+	//
+	// Example:
+	//
+	//  particle, ok := project.RP.Particle.GetFile("glowstone:particle_1")
+	GetFile(string) (*ParticleFile, bool)
+
+	// Remove removes the Particle of the given identifier.
+	//
+	// Example:
+	//
+	//  project.RP.Particle.Remove("glowstone:particle_1")
 	Remove(string)
 	Clear()
+
+	// All returns all Particles.
+	//
+	// Example:
+	//
+	//  particles := project.RP.Particle.All()
 	All() map[string]*ParticleFile
 	IsEmpty() bool
 	Size() int
@@ -45,6 +69,17 @@ type IParticles interface {
 	Save(string) error
 
 	LoadAll(string) error
+
+	// Load a single particle file.
+	//
+	// Last parameter is whether the file should be added to the project.
+	//
+	// Default is true.
+	//
+	// Example:
+	//
+	//	particle, err := project.RP.Particle.Load(filepath.Join(project.RP.Path, "particles", "glowstone.particle.json"))
+	Load(string, ...bool) (*ParticleFile, error)
 }
 
 func (e *Particles) Add(key string, value *rp.Particle) {
@@ -64,6 +99,14 @@ func (e *Particles) Get(key string) (*rp.Particle, bool) {
 		return nil, false
 	}
 	return value.Data, true
+}
+
+func (e *Particles) GetFile(key string) (*ParticleFile, bool) {
+	value, ok := (*e)[key]
+	if !ok {
+		return nil, false
+	}
+	return value, true
 }
 
 func (e *Particles) Remove(key string) {
@@ -106,11 +149,7 @@ func (e *Particles) Save(pathToRP string) error {
 			return err
 		}
 
-		if particle.Filename == "" {
-			particle.Filename = fmt.Sprintf("%s.particle.json", particle.GetIdentifier())
-		}
-
-		err = g_util.WriteFile(filepath.Join(pathToRP, destDirectory.Particle, particle.Subdir, particle.Filename), b)
+		err = g_util.WriteFile(filepath.Join(pathToRP, destDirectory.Particle, particle.Subdir, particle.GetFilename()), b)
 		if err != nil {
 			return err
 		}
@@ -138,4 +177,38 @@ func (e *Particles) LoadAll(pathToRP string) error {
 		(*e)[a.GetIdentifier()].Filename = filename
 	}
 	return nil
+}
+
+func (e *Particles) Load(src string, add ...bool) (*ParticleFile, error) {
+	a, err := rp.Load(src)
+	if err != nil {
+		return nil, err
+	}
+
+	filename := filepath.Base(src)
+
+	// Get subdir
+	subdirs := strings.Split(src, string(filepath.Separator))
+	subdir := ""
+	// Reverse loop
+	for i := len(subdirs) - 1; i >= 0; i-- {
+		if subdirs[i] == destDirectory.Particle {
+			break
+		}
+		subdir = subdirs[i] + string(filepath.Separator) + subdir
+	}
+
+	if len(add) > 0 && add[0] || len(add) == 0 {
+		e.Add(a.GetIdentifier(), a)
+	}
+
+	data, ok := e.GetFile(a.GetIdentifier())
+	if !ok {
+		data = &ParticleFile{
+			Data: a,
+		}
+	}
+	data.Filename = filename
+	data.Subdir = subdir
+	return data, nil
 }

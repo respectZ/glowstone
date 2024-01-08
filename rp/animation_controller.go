@@ -1,6 +1,7 @@
 package rp
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -13,7 +14,26 @@ type AnimationControllers map[string]*AnimationControllerFile
 
 type IAnimationControllers interface {
 	Add(string, *rp.AnimationControllerFile)
+
+	// Get returns the AnimationController of the given path.
+	//
+	// Example:
+	//
+	//  animation_controller, ok := project.RP.AnimationController.Get("vanilla/player.controller_animation.json")
 	Get(string) (*rp.AnimationControllerFile, bool)
+
+	// GetFile returns the AnimationControllerFile of the given path.
+	//
+	// Example:
+	//
+	//  animation_controller, ok := project.RP.AnimationController.GetFile("vanilla/player.controller_animation.json")
+	GetFile(string) (*AnimationControllerFile, bool)
+
+	// Remove removes the AnimationController of the given path.
+	//
+	// Example:
+	//
+	//  project.RP.AnimationController.Remove("vanilla/player.controller_animation.json")
 	Remove(string)
 	Clear()
 	All() map[string]*AnimationControllerFile
@@ -40,6 +60,17 @@ type IAnimationControllers interface {
 	Save(string) error
 
 	LoadAll(string) error
+
+	// Load a single animation_controller file, without subdir and filename.
+	//
+	// Last parameter is whether the file should be added to the project.
+	//
+	// Default is true.
+	//
+	// Example:
+	//
+	//	animation_controller, err := project.RP.AnimationController.Load(filepath.Join(project.BP.Path, "animation_controllers", "player.animation_controller.json"))
+	Load(string, ...bool) (*AnimationControllerFile, error)
 }
 
 func (e *AnimationControllers) Add(key string, value *rp.AnimationControllerFile) {
@@ -59,6 +90,14 @@ func (e *AnimationControllers) Get(key string) (*rp.AnimationControllerFile, boo
 		return nil, false
 	}
 	return value.Data, true
+}
+
+func (e *AnimationControllers) GetFile(key string) (*AnimationControllerFile, bool) {
+	value, ok := (*e)[key]
+	if !ok {
+		return nil, false
+	}
+	return value, true
 }
 
 func (e *AnimationControllers) Remove(key string) {
@@ -121,4 +160,31 @@ func (e *AnimationControllers) LoadAll(pathToRP string) error {
 		e.Add(file, ac)
 	}
 	return nil
+}
+
+func (m *AnimationControllers) Load(path string, add ...bool) (*AnimationControllerFile, error) {
+	a := rp.New()
+	err := g_util.LoadJSON(path, &a)
+	if err != nil {
+		return nil, err
+	}
+	if len(add) > 0 && add[0] || len(add) == 0 {
+		subdirs := strings.Split(path, string(filepath.Separator))
+		file := filepath.Base(path)
+
+		// Add subdir until "animation_controllers" is reached
+		// Reverse loop
+		for i := len(subdirs) - 1; i >= 0; i-- {
+			if subdirs[i] == destDirectory.AnimationController {
+				break
+			}
+			file = subdirs[i] + string(filepath.Separator) + file
+		}
+		m.Add(file, a)
+	}
+	data, ok := m.GetFile(path)
+	if !ok {
+		return nil, fmt.Errorf("animation_controller %s not found", path)
+	}
+	return data, nil
 }

@@ -1,7 +1,6 @@
 package rp
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -14,9 +13,28 @@ type Attachables map[string]*AttachableFile
 
 type IAttachables interface {
 	Add(string, *rp.Attachable)
+
+	// Get returns the Attachable of the given identifier.
+	//
+	// Example:
+	//
+	//  attachable, ok := project.RP.Attachable.Get("glowstone:chair")
 	Get(string) (*rp.Attachable, bool)
+
+	// GetFile returns the AttachableFile of the given identifier.
+	//
+	// Example:
+	//
+	//  attachable, ok := project.RP.Attachable.GetFile("glowstone:chair")
+	GetFile(string) (*AttachableFile, bool)
 	Remove(string)
 	Clear()
+
+	// All returns all Attachables.
+	//
+	// Example:
+	//
+	//  attachables := project.RP.Attachable.All()
 	All() map[string]*AttachableFile
 	IsEmpty() bool
 	Size() int
@@ -41,6 +59,17 @@ type IAttachables interface {
 	Save(string) error
 
 	LoadAll(string) error
+
+	// Load a single attachable file.
+	//
+	// Last parameter is whether the file should be added to the project.
+	//
+	// Default is true.
+	//
+	// Example:
+	//
+	//	attachable, err := project.RP.Attachable.Load(filepath.Join(project.RP.Path, "attachables", "glowstone.json"))
+	Load(string, ...bool) (*AttachableFile, error)
 }
 
 func (e *Attachables) Add(key string, value *rp.Attachable) {
@@ -60,6 +89,14 @@ func (e *Attachables) Get(key string) (*rp.Attachable, bool) {
 		return nil, false
 	}
 	return value.Data, true
+}
+
+func (e *Attachables) GetFile(key string) (*AttachableFile, bool) {
+	value, ok := (*e)[key]
+	if !ok {
+		return nil, false
+	}
+	return value, true
 }
 
 func (e *Attachables) Remove(key string) {
@@ -99,11 +136,7 @@ func (e *Attachables) Save(pathToRP string) error {
 			return err
 		}
 
-		if attachable.Filename == "" {
-			attachable.Filename = fmt.Sprintf("%s.attachable.json", attachable.GetIdentifier())
-		}
-
-		err = g_util.WriteFile(filepath.Join(pathToRP, destDirectory.Attachable, attachable.Subdir, attachable.Filename), b)
+		err = g_util.WriteFile(filepath.Join(pathToRP, destDirectory.Attachable, attachable.Subdir, attachable.GetFilename()), b)
 		if err != nil {
 			return err
 		}
@@ -131,4 +164,37 @@ func (e *Attachables) LoadAll(pathToRP string) error {
 		(*e)[a.GetIdentifier()].Filename = filename
 	}
 	return nil
+}
+
+func (e *Attachables) Load(src string, add ...bool) (*AttachableFile, error) {
+	a, err := rp.Load(src)
+	if err != nil {
+		return nil, err
+	}
+
+	filename := filepath.Base(src)
+
+	// Get subdir
+	subdirs := strings.Split(src, string(filepath.Separator))
+	subdir := ""
+	// Reverse loop
+	for i := len(subdirs) - 1; i >= 0; i-- {
+		if subdirs[i] == destDirectory.Attachable {
+			break
+		}
+		subdir = subdirs[i] + string(filepath.Separator) + subdir
+	}
+	if len(add) > 0 && add[0] || len(add) == 0 {
+		e.Add(a.GetIdentifier(), a)
+	}
+
+	data, ok := e.GetFile(a.GetIdentifier())
+	if !ok {
+		data = &AttachableFile{
+			Data: a,
+		}
+	}
+	data.Subdir = subdir
+	data.Filename = filename
+	return data, nil
 }

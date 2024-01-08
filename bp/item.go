@@ -13,9 +13,34 @@ type ItemBP map[string]*ItemFile
 
 type IItemBP interface {
 	Add(string, bp.Item)
+
+	// Get returns the Item of the given identifier.
+	//
+	// Example:
+	//
+	//  item, ok := project.BP.Item.Get("glowstone:chair")
 	Get(string) (bp.Item, bool)
+
+	// GetFile returns the ItemFile of the given identifier.
+	//
+	// Example:
+	//
+	//  item, ok := project.BP.Item.GetFile("glowstone:chair")
+	GetFile(string) (*ItemFile, bool)
+
+	// Remove removes the Item of the given identifier.
+	//
+	// Example:
+	//
+	//  project.BP.Item.Remove("glowstone:chair")
 	Remove(string)
 	Clear()
+
+	// All returns all Items.
+	//
+	// Example:
+	//
+	//  items := project.BP.Item.All()
 	All() map[string]*ItemFile
 	IsEmpty() bool
 	Size() int
@@ -32,6 +57,17 @@ type IItemBP interface {
 	Save(string) error
 
 	LoadAll(string) error
+
+	// Load a single item file.
+	//
+	// Last parameter is whether the file should be added to the project.
+	//
+	// Default is true.
+	//
+	// Example:
+	//
+	//	item, err := project.BP.Item.Load(filepath.Join(project.BP.Path, "items", "apple.json"))
+	Load(string, ...bool) (*ItemFile, error)
 }
 
 func (e *ItemBP) Add(key string, value bp.Item) {
@@ -53,7 +89,18 @@ func (e *ItemBP) Get(key string) (bp.Item, bool) {
 		*e = make(map[string]*ItemFile)
 	}
 	value, ok := (*e)[key]
-	return value.Data, ok
+	if !ok {
+		return nil, false
+	}
+	return value.Data, true
+}
+
+func (e *ItemBP) GetFile(key string) (*ItemFile, bool) {
+	value, ok := (*e)[key]
+	if !ok {
+		return nil, false
+	}
+	return value, true
 }
 
 func (e *ItemBP) Remove(key string) {
@@ -150,4 +197,36 @@ func (e *ItemBP) LoadAll(pathToBP string) error {
 		(*e)[a.GetIdentifier()].Subdir = subdir
 	}
 	return nil
+}
+
+func (e *ItemBP) Load(src string, add ...bool) (*ItemFile, error) {
+	a, err := bp.Load(src)
+	if err != nil {
+		return nil, err
+	}
+
+	filename := filepath.Base(src)
+
+	// Get subdir
+	subdirs := strings.Split(src, string(filepath.Separator))
+	subdir := ""
+	// Reverse loop
+	for i := len(subdirs) - 1; i >= 0; i-- {
+		if subdirs[i] == destDirectory.Item {
+			break
+		}
+		subdir = subdirs[i] + string(filepath.Separator) + subdir
+	}
+	if len(add) > 0 && add[0] || len(add) == 0 {
+		e.Add(a.GetIdentifier(), a)
+	}
+	data, ok := e.GetFile(a.GetIdentifier())
+	if !ok {
+		data = &ItemFile{
+			Data: a,
+		}
+	}
+	data.Subdir = subdir
+	data.Filename = filename
+	return data, nil
 }

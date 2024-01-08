@@ -13,9 +13,34 @@ type RecipeBP map[string]*RecipeFile
 
 type IRecipeBP interface {
 	Add(string, bp.RecipeInterface)
+
+	// Get returns the Recipe of the given identifier.
+	//
+	// Example:
+	//
+	//  recipe, ok := project.BP.Recipe.Get("glowstone:chair")
 	Get(string) (bp.RecipeInterface, bool)
+
+	// GetFile returns the RecipeFile of the given identifier.
+	//
+	// Example:
+	//
+	//  recipe, ok := project.BP.Recipe.GetFile("glowstone:chair")
+	GetFile(string) (*RecipeFile, bool)
+
+	// Remove removes the Recipe of the given identifier.
+	//
+	// Example:
+	//
+	//  project.BP.Recipe.Remove("glowstone:chair")
 	Remove(string)
 	Clear()
+
+	// All returns all Recipes.
+	//
+	// Example:
+	//
+	//  recipes := project.BP.Recipe.All()
 	All() map[string]*RecipeFile
 	IsEmpty() bool
 	Size() int
@@ -72,6 +97,17 @@ type IRecipeBP interface {
 	NewSmithingTransform(string, ...struct{ Subdir string }) *bp.RecipeSmithingTransform
 
 	LoadAll(string) error
+
+	// Load a single recipe file.
+	//
+	// Last parameter is whether the file should be added to the project.
+	//
+	// Default is true.
+	//
+	// Example:
+	//
+	//	recipe, err := project.BP.Recipe.Load(filepath.Join(project.BP.Path, "", "apple.json"))
+	Load(string, ...bool) (*RecipeFile, error)
 }
 
 func (e *RecipeBP) Add(key string, value bp.RecipeInterface) {
@@ -91,6 +127,14 @@ func (e *RecipeBP) Get(key string) (bp.RecipeInterface, bool) {
 		return nil, false
 	}
 	return value.Data, true
+}
+
+func (e *RecipeBP) GetFile(key string) (*RecipeFile, bool) {
+	value, ok := (*e)[key]
+	if !ok {
+		return nil, false
+	}
+	return value, true
 }
 
 func (e *RecipeBP) Remove(key string) {
@@ -243,4 +287,37 @@ func (e *RecipeBP) LoadAll(pathToBP string) error {
 		(*e)[r.GetIdentifier()].Subdir = subdir
 	}
 	return nil
+}
+
+func (e *RecipeBP) Load(src string, add ...bool) (*RecipeFile, error) {
+	a, err := bp.Load(src)
+	if err != nil {
+		return nil, err
+	}
+
+	filename := filepath.Base(src)
+	// Get subdir
+	subdirs := strings.Split(src, string(filepath.Separator))
+	subdir := ""
+	// Reverse loop
+	for i := len(subdirs) - 1; i >= 0; i-- {
+		if subdirs[i] == destDirectory.Recipe {
+			break
+		}
+		subdir = subdirs[i] + string(filepath.Separator) + subdir
+	}
+
+	if len(add) > 0 && add[0] || len(add) == 0 {
+		e.Add(a.GetIdentifier(), a)
+	}
+
+	data, ok := e.GetFile(a.GetIdentifier())
+	if !ok {
+		data = &RecipeFile{
+			Data: a,
+		}
+	}
+	data.Subdir = subdir
+	data.Filename = filename
+	return data, nil
 }

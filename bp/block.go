@@ -15,9 +15,34 @@ type BlockBP map[string]*BlockFile
 
 type IBlockBP interface {
 	Add(string, bp.Block)
+
+	// Get returns the Block of the given identifier.
+	//
+	// Example:
+	//
+	//  block, ok := project.BP.Block.Get("glowstone:chair")
 	Get(string) (bp.Block, bool)
+
+	// GetFile returns the BlockFile of the given identifier.
+	//
+	// Example:
+	//
+	//  block, ok := project.BP.Block.GetFile("glowstone:chair")
+	GetFile(string) (*BlockFile, bool)
+
+	// Remove removes the Block of the given identifier.
+	//
+	// Example:
+	//
+	//  project.BP.Block.Remove("glowstone:chair")
 	Remove(string)
 	Clear()
+
+	// All returns all Blocks.
+	//
+	// Example:
+	//
+	//  blocks := project.BP.Block.All()
 	All() map[string]*BlockFile
 	IsEmpty() bool
 	Size() int
@@ -37,6 +62,17 @@ type IBlockBP interface {
 	Save(string) error
 
 	LoadAll(string) error
+
+	// Load a single block file.
+	//
+	// Last parameter is whether the file should be added to the project.
+	//
+	// Default is true.
+	//
+	// Example:
+	//
+	//	block, err := project.BP.block.Load(filepath.Join(project.BP.Path, "blocks", "glowstone.json"))
+	Load(string, ...bool) (*BlockFile, error)
 }
 
 func (e *BlockBP) Add(key string, value bp.Block) {
@@ -56,6 +92,14 @@ func (e *BlockBP) Get(key string) (bp.Block, bool) {
 		return nil, false
 	}
 	return value.Data, true
+}
+
+func (e *BlockBP) GetFile(key string) (*BlockFile, bool) {
+	value, ok := (*e)[key]
+	if !ok {
+		return nil, false
+	}
+	return value, true
 }
 
 func (e *BlockBP) Remove(key string) {
@@ -148,4 +192,36 @@ func (e *BlockBP) LoadAll(pathToBP string) error {
 		(*e)[a.GetIdentifier()].Filename = filename
 	}
 	return nil
+}
+
+func (e *BlockBP) Load(src string, add ...bool) (*BlockFile, error) {
+	a, err := bp.Load(src)
+	if err != nil {
+		return nil, err
+	}
+
+	filename := filepath.Base(src)
+
+	// Get subdir
+	subdirs := strings.Split(src, string(filepath.Separator))
+	subdir := ""
+	// Reverse loop
+	for i := len(subdirs) - 1; i >= 0; i-- {
+		if subdirs[i] == destDirectory.Block {
+			break
+		}
+		subdir = subdirs[i] + string(filepath.Separator) + subdir
+	}
+	if len(add) > 0 && add[0] || len(add) == 0 {
+		e.Add(a.GetIdentifier(), a)
+	}
+	data, ok := e.GetFile(a.GetIdentifier())
+	if !ok {
+		data = &BlockFile{
+			Data: a,
+		}
+	}
+	data.Subdir = subdir
+	data.Filename = filename
+	return data, nil
 }

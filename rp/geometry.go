@@ -13,9 +13,34 @@ type Geometries map[string]*GeometryFile
 
 type IGeometries interface {
 	Add(string, *rp.Geometry)
+
+	// Get returns the Geometry of the given identifier.
+	//
+	// Example:
+	//
+	//  geometry, ok := project.RP.Geometry.Get("geometry.chair")
 	Get(string) (*rp.Geometry, bool)
+
+	// GetFile returns the GeometryFile of the given identifier.
+	//
+	// Example:
+	//
+	//  geometry, ok := project.RP.Geometry.GetFile("geometry.chair")
+	GetFile(string) (*GeometryFile, bool)
+
+	// Remove removes the Geometry of the given identifier.
+	//
+	// Example:
+	//
+	//  project.RP.Geometry.Remove("geometry.chair")
 	Remove(string)
 	Clear()
+
+	// All returns all Geometries.
+	//
+	// Example:
+	//
+	//  geometries := project.RP.Geometry.All()
 	All() map[string]*GeometryFile
 	IsEmpty() bool
 	Size() int
@@ -42,10 +67,14 @@ type IGeometries interface {
 
 	// Load a single geometry file, without subdir and filename.
 	//
+	// Last parameter is whether the file should be added to the project.
+	//
+	// Default is true.
+	//
 	// Example:
 	//
 	//	geometry, err := project.RP.Geometry.Load(filepath.Join(project.RP.Path, "models", "entity", "zombie.geo.json"))
-	Load(string) (*rp.Geometry, error)
+	Load(string, ...bool) (*GeometryFile, error)
 }
 
 func (e *Geometries) Add(key string, value *rp.Geometry) {
@@ -65,6 +94,14 @@ func (e *Geometries) Get(key string) (*rp.Geometry, bool) {
 		return nil, false
 	}
 	return value.Data, true
+}
+
+func (e *Geometries) GetFile(key string) (*GeometryFile, bool) {
+	value, ok := (*e)[key]
+	if !ok {
+		return nil, false
+	}
+	return value, true
 }
 
 func (e *Geometries) Remove(key string) {
@@ -134,11 +171,36 @@ func (e *Geometries) LoadAll(pathToRP string) error {
 	return nil
 }
 
-func (e *Geometries) Load(src string) (*rp.Geometry, error) {
+func (e *Geometries) Load(src string, add ...bool) (*GeometryFile, error) {
 	a, err := rp.Load(src)
 	if err != nil {
 		return nil, err
 	}
-	e.Add(a.GetIdentifier(), a)
-	return a, nil
+
+	filename := filepath.Base(src)
+
+	// Get subdir
+	subdirs := strings.Split(filepath.Dir(src), string(filepath.Separator))
+	subdir := ""
+	// Reverse loop
+	for i := len(subdirs) - 1; i >= 0; i-- {
+		if subdirs[i] == destDirectory.Geometry {
+			break
+		}
+		subdir = filepath.Join(subdirs[i], subdir)
+	}
+
+	if len(add) > 0 && add[0] || len(add) == 0 {
+		e.Add(a.GetIdentifier(), a)
+	}
+
+	data, ok := e.GetFile(a.GetIdentifier())
+	if !ok {
+		data = &GeometryFile{
+			Data: a,
+		}
+	}
+	data.Subdir = subdir
+	data.Filename = filename
+	return data, nil
 }
