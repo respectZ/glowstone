@@ -51,6 +51,11 @@ func entity_WriteLang(g *Project) error {
 	rp := g.RP.Entity.All()
 	bp := g.BP.Entity.All()
 	for k, v := range rp {
+		// Disable for "minecraft" namespace
+		if strings.HasPrefix(k, "minecraft:") {
+			continue
+		}
+
 		// Check to prevent overwriting
 		k1 := fmt.Sprintf("entity.%s.name", v.GetNamespaceIdentifier())
 		if v.Lang == "" {
@@ -69,6 +74,10 @@ func entity_WriteLang(g *Project) error {
 		k1 = fmt.Sprintf("action.hint.exit.%s", v.GetNamespaceIdentifier())
 		// Rideable
 		if v.RideHintLang == "" {
+			if bp[k] == nil {
+				continue
+			}
+
 			var ridebable entityBPComponent.Rideable
 			_, err := bp[k].Data.Entity.Components.Get(&ridebable)
 			if err == nil {
