@@ -10,7 +10,7 @@ type Particle struct {
 }
 
 type ParticleEffect struct {
-	Description *Description           `json:"particle_effect"`
+	Description *Description           `json:"description"`
 	Curves      *Curves                `json:"curves,omitempty"`
 	Events      interface{}            `json:"events,omitempty"`     // TODO: parse events
 	Components  map[string]interface{} `json:"components,omitempty"` // TODO: add components
