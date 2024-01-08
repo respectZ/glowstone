@@ -103,7 +103,7 @@ func (e *Attachables) Save(pathToRP string) error {
 			attachable.Filename = fmt.Sprintf("%s.attachable.json", attachable.GetIdentifier())
 		}
 
-		err = g_util.Writefile(filepath.Join(pathToRP, destDirectory.Attachable, attachable.Subdir, attachable.Filename), b)
+		err = g_util.WriteFile(filepath.Join(pathToRP, destDirectory.Attachable, attachable.Subdir, attachable.Filename), b)
 		if err != nil {
 			return err
 		}

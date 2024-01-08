@@ -31,7 +31,7 @@ func MarshalJSON(e interface{}, minify ...bool) ([]byte, error) {
 	if len(minify) > 0 && minify[0] {
 		return json.Marshal(e)
 	}
-	return json.MarshalIndent(e, "", "  ")
+	return json.MarshalIndentWithOption(e, "", "  ", json.DisableHTMLEscape())
 }
 
 func UnmarshalJSON(data []byte, e interface{}) error {
@@ -57,7 +57,7 @@ func Copyfile(source, destination string) error {
 	return nil
 }
 
-func Writefile(path string, b []byte) error {
+func WriteFile(path string, b []byte) error {
 	// Strip directory
 	dir := filepath.Dir(path)
 	// Create directory
@@ -72,7 +72,7 @@ func Writefile(path string, b []byte) error {
 	return nil
 }
 
-func Writejson(path string, data interface{}) error {
+func WriteJSON(path string, data interface{}) error {
 	// Strip directory
 	dir := filepath.Dir(path)
 	// Create directory
@@ -115,7 +115,7 @@ func Writelang(path string, data map[string]string) error {
 	for _, k := range keys {
 		s += k + "=" + data[k] + "\n"
 	}
-	return Writefile(path, []byte(s))
+	return WriteFile(path, []byte(s))
 }
 
 func Loadlang(path string) (map[string]string, error) {

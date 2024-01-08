@@ -98,7 +98,7 @@ func (e *Entities) Save(pathToRP string) error {
 		if err != nil {
 			return err
 		}
-		err = g_util.Writefile(filepath.Join(pathToRP, destDirectory.Entity, entity.Subdir, fmt.Sprintf("%s.entity.json", entity.GetIdentifier())), b)
+		err = g_util.WriteFile(filepath.Join(pathToRP, destDirectory.Entity, entity.Subdir, fmt.Sprintf("%s.entity.json", entity.GetIdentifier())), b)
 		if err != nil {
 			return err
 		}

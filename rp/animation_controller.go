@@ -98,7 +98,7 @@ func (e *AnimationControllers) Save(pathToRP string) error {
 			return err
 		}
 
-		err = g_util.Writefile(filepath.Join(pathToRP, destDirectory.AnimationController, dest), b)
+		err = g_util.WriteFile(filepath.Join(pathToRP, destDirectory.AnimationController, dest), b)
 		if err != nil {
 			return err
 		}

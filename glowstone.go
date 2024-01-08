@@ -106,7 +106,7 @@ func (g *glowstone) Initialize() error {
 	if err != nil {
 		g.Logger.Warning.Println("Failed to read lang file, creating new lang file.")
 		g.SetLang(make(map[string]string))
-		g_util.Writefile(g.RPDir+"texts/en_US.lang", []byte{})
+		g_util.WriteFile(g.RPDir+"texts/en_US.lang", []byte{})
 	} else {
 		g.SetLang(data)
 	}
@@ -152,7 +152,7 @@ func (g *glowstone) Save() {
 			}
 
 			// Encode
-			g_util.Writefile(path.Join(g.RPDir, "blocks.json"), data)
+			g_util.WriteFile(path.Join(g.RPDir, "blocks.json"), data)
 		}
 	}
 
@@ -161,14 +161,14 @@ func (g *glowstone) Save() {
 	if err != nil {
 		g.Logger.Error.Println(err)
 	} else {
-		g_util.Writefile(path.Join(g.RPDir, "textures", "item_texture.json"), data)
+		g_util.WriteFile(path.Join(g.RPDir, "textures", "item_texture.json"), data)
 	}
 
 	// TerrainTexture
 	if g.TerrainTexture != nil {
 		data, err = g.TerrainTexture.Encode()
 		if err == nil {
-			g_util.Writefile(path.Join(g.RPDir, "textures", "terrain_texture.json"), data)
+			g_util.WriteFile(path.Join(g.RPDir, "textures", "terrain_texture.json"), data)
 		}
 	}
 
@@ -178,7 +178,7 @@ func (g *glowstone) Save() {
 		if err != nil {
 			g.Logger.Error.Println(err)
 		} else {
-			g_util.Writefile(path.Join(g.RPDir, "sounds", "sound_definitions.json"), data)
+			g_util.WriteFile(path.Join(g.RPDir, "sounds", "sound_definitions.json"), data)
 		}
 	}
 	// Lang
@@ -205,7 +205,7 @@ func (g *glowstone) Save() {
 				g.Logger.Error.Println(err)
 				continue
 			}
-			g_util.Writefile(path.Join(g.BPDir, "entities", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), bp)
+			g_util.WriteFile(path.Join(g.BPDir, "entities", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), bp)
 		}
 		if e.RP != nil {
 			// AutoSpawnEggTexture
@@ -243,7 +243,7 @@ func (g *glowstone) Save() {
 				g.Logger.Error.Println(err)
 				continue
 			}
-			g_util.Writefile(path.Join(g.RPDir, "entity", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), rp)
+			g_util.WriteFile(path.Join(g.RPDir, "entity", e.Subdir, fmt.Sprintf("%s.json", e.GetIdentifier())), rp)
 		}
 	}
 
@@ -255,7 +255,7 @@ func (g *glowstone) Save() {
 				g.Logger.Error.Println(err)
 				continue
 			}
-			g_util.Writefile(path.Join(g.BPDir, "loot_tables", lootTable.Dest), data)
+			g_util.WriteFile(path.Join(g.BPDir, "loot_tables", lootTable.Dest), data)
 		}
 	}
 
@@ -275,7 +275,7 @@ func (g *glowstone) Save() {
 				g.Logger.Error.Println(err)
 				continue
 			}
-			g_util.Writefile(path.Join(g.BPDir, "blocks", b.Subdir, fmt.Sprintf("%s.json", b.GetIdentifier())), bp)
+			g_util.WriteFile(path.Join(g.BPDir, "blocks", b.Subdir, fmt.Sprintf("%s.json", b.GetIdentifier())), bp)
 		}
 	}
 
@@ -295,7 +295,7 @@ func (g *glowstone) Save() {
 			g.Logger.Error.Println(err)
 			continue
 		}
-		g_util.Writefile(path.Join(g.BPDir, "items", i.Subdir, fmt.Sprintf("%s.json", i.GetIdentifier())), bp)
+		g_util.WriteFile(path.Join(g.BPDir, "items", i.Subdir, fmt.Sprintf("%s.json", i.GetIdentifier())), bp)
 	}
 
 	// BPAnimationController
@@ -305,7 +305,7 @@ func (g *glowstone) Save() {
 			g.Logger.Error.Println(err)
 			continue
 		}
-		g_util.Writefile(path.Join(g.BPDir, "animation_controllers", a.Dest), data)
+		g_util.WriteFile(path.Join(g.BPDir, "animation_controllers", a.Dest), data)
 	}
 
 	// RPAnimationController
@@ -315,7 +315,7 @@ func (g *glowstone) Save() {
 			g.Logger.Error.Println(err)
 			continue
 		}
-		g_util.Writefile(path.Join(g.RPDir, "animation_controllers", a.Dest), data)
+		g_util.WriteFile(path.Join(g.RPDir, "animation_controllers", a.Dest), data)
 	}
 
 	// BPAnimation
@@ -325,7 +325,7 @@ func (g *glowstone) Save() {
 			g.Logger.Error.Println(err)
 			continue
 		}
-		g_util.Writefile(path.Join(g.BPDir, "animations", a.Dest), data)
+		g_util.WriteFile(path.Join(g.BPDir, "animations", a.Dest), data)
 	}
 
 	// Recipes
@@ -337,7 +337,7 @@ func (g *glowstone) Save() {
 				g.Logger.Error.Println(err)
 				continue
 			}
-			g_util.Writefile(path.Join(g.BPDir, "recipes", r.GetSubdir(), r.GetIdentifier()+".json"), data)
+			g_util.WriteFile(path.Join(g.BPDir, "recipes", r.GetSubdir(), r.GetIdentifier()+".json"), data)
 		case recipeBP.RecipeInterface:
 			data, err := r.Encode()
 			if err != nil {
@@ -345,7 +345,7 @@ func (g *glowstone) Save() {
 				continue
 			}
 			name := strings.ReplaceAll(r.GetIdentifier(), ":", "_")
-			g_util.Writefile(path.Join(g.BPDir, "recipes", name+".json"), data)
+			g_util.WriteFile(path.Join(g.BPDir, "recipes", name+".json"), data)
 		default:
 			g.Logger.Error.Printf("invalid type %T", r)
 		}
@@ -358,7 +358,7 @@ func (g *glowstone) Save() {
 			g.Logger.Error.Println(err)
 			continue
 		}
-		g_util.Writefile(path.Join(g.RPDir, "attachables", a.Subdir, fmt.Sprintf("%s.json", a.GetIdentifier())), data)
+		g_util.WriteFile(path.Join(g.RPDir, "attachables", a.Subdir, fmt.Sprintf("%s.json", a.GetIdentifier())), data)
 	}
 }
 

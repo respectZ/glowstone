@@ -168,6 +168,6 @@ func (i *Blocks) Save(dest string) error {
 		result[k] = v
 	}
 
-	err = g_util.Writejson(dest, result)
+	err = g_util.WriteJSON(dest, result)
 	return err
 }

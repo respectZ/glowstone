@@ -117,7 +117,7 @@ func (e *ItemBP) Save(pathToBP string) error {
 		if err != nil {
 			return err
 		}
-		err = g_util.Writefile(filepath.Join(pathToBP, destDirectory.Item, v.Subdir, v.GetFilename()), b)
+		err = g_util.WriteFile(filepath.Join(pathToBP, destDirectory.Item, v.Subdir, v.GetFilename()), b)
 		if err != nil {
 			return err
 		}

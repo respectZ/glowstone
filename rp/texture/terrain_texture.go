@@ -76,5 +76,5 @@ func (i *TerrainTexture) Save(pathToRp string) error {
 	if err != nil {
 		return err
 	}
-	return g_util.Writefile(filepath.Join(pathToRp, "textures", "terrain_texture.json"), data)
+	return g_util.WriteFile(filepath.Join(pathToRp, "textures", "terrain_texture.json"), data)
 }

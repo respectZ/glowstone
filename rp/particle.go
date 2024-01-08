@@ -110,7 +110,7 @@ func (e *Particles) Save(pathToRP string) error {
 			particle.Filename = fmt.Sprintf("%s.particle.json", particle.GetIdentifier())
 		}
 
-		err = g_util.Writefile(filepath.Join(pathToRP, destDirectory.Particle, particle.Subdir, particle.Filename), b)
+		err = g_util.WriteFile(filepath.Join(pathToRP, destDirectory.Particle, particle.Subdir, particle.Filename), b)
 		if err != nil {
 			return err
 		}

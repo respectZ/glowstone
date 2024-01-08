@@ -104,7 +104,7 @@ func (e *Geometries) Save(pathToRP string) error {
 			return err
 		}
 
-		err = g_util.Writefile(filepath.Join(pathToRP, destDirectory.Geometry, geo.Subdir, geo.GetFilename()), b)
+		err = g_util.WriteFile(filepath.Join(pathToRP, destDirectory.Geometry, geo.Subdir, geo.GetFilename()), b)
 		if err != nil {
 			return err
 		}

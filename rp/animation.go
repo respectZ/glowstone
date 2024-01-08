@@ -77,7 +77,7 @@ func (a *Animations) Save(pathToRP string) error {
 		if err != nil {
 			return err
 		}
-		if err := g_util.Writefile(filepath.Join(pathToRP, destDirectory.Animation, k), b); err != nil {
+		if err := g_util.WriteFile(filepath.Join(pathToRP, destDirectory.Animation, k), b); err != nil {
 			return err
 		}
 	}

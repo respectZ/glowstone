@@ -213,7 +213,7 @@ func (e *RecipeBP) Save(pathToBP string) error {
 		if err != nil {
 			return err
 		}
-		err = g_util.Writefile(filepath.Join(pathToBP, destDirectory.Recipe, v.Subdir, v.GetFilename()), b)
+		err = g_util.WriteFile(filepath.Join(pathToBP, destDirectory.Recipe, v.Subdir, v.GetFilename()), b)
 		if err != nil {
 			return err
 		}

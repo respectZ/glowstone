@@ -260,7 +260,7 @@ func (e *Manifest) Save(pathToBP string) error {
 	if err != nil {
 		return err
 	}
-	err = g_util.Writefile(filepath.Join(pathToBP, "manifest.json"), data)
+	err = g_util.WriteFile(filepath.Join(pathToBP, "manifest.json"), data)
 	if err != nil {
 		return err
 	}

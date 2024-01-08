@@ -118,7 +118,7 @@ func (e *BlockBP) Save(pathToBP string) error {
 			return err
 		}
 
-		err = g_util.Writefile(filepath.Join(pathToBP, destDirectory.Block, v.Subdir, v.GetFilename()), b)
+		err = g_util.WriteFile(filepath.Join(pathToBP, destDirectory.Block, v.Subdir, v.GetFilename()), b)
 		if err != nil {
 			return err
 		}

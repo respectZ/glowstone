@@ -133,7 +133,7 @@ func (s *SoundDefinition) Save(pathToRP string) error {
 	if err != nil {
 		return err
 	}
-	return g_util.Writefile(filepath.Join(pathToRP, "sounds", "sound_definitions.json"), data)
+	return g_util.WriteFile(filepath.Join(pathToRP, "sounds", "sound_definitions.json"), data)
 }
 
 // Add a sound to the definition.
