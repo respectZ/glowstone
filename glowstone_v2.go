@@ -10,13 +10,6 @@ import (
 	rp "github.com/respectZ/glowstone/rp"
 )
 
-/*
-TODO
-- Move to BP
-- Write lang and some other options
-- Middlewares
-*/
-
 type Project struct {
 	Logger *logger
 	BP     *bp.GlowstoneBP

@@ -120,6 +120,15 @@ func (s *SoundDefinition) IsEmpty() bool {
 	return len(s.SoundDefinitions) == 0
 }
 
+func (s *SoundDefinition) Load(pathToRP string) error {
+	d, err := Load(filepath.Join(pathToRP, "sounds", "sound_definitions.json"))
+	if err != nil {
+		return err
+	}
+	s.SoundDefinitions = d.SoundDefinitions
+	return nil
+}
+
 func (s *SoundDefinition) Save(pathToRP string) error {
 	// Prevent overwriting
 	d, err := Load(filepath.Join(pathToRP, "sounds", "sound_definitions.json"))
