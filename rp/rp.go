@@ -41,6 +41,7 @@ type GlowstoneRP struct {
 	Entity              IEntities
 	Particle            IParticles
 	Geometry            IGeometries
+	RenderController    IRenderControllers
 	ItemTexture         *texture.ItemTexture
 	TerrainTexture      *texture.TerrainTexture
 	SoundDefinition     *sound.SoundDefinition
@@ -58,6 +59,7 @@ func New(path string) *GlowstoneRP {
 		Entity:              &Entities{},
 		Particle:            &Particles{},
 		Geometry:            &Geometries{},
+		RenderController:    &RenderControllers{},
 
 		ItemTexture:     &texture.ItemTexture{},
 		TerrainTexture:  &texture.TerrainTexture{},

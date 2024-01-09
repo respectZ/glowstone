@@ -1,7 +1,6 @@
 package rp
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -184,7 +183,9 @@ func (m *AnimationControllers) Load(path string, add ...bool) (*AnimationControl
 	}
 	data, ok := m.GetFile(path)
 	if !ok {
-		return nil, fmt.Errorf("animation_controller %s not found", path)
+		return &AnimationControllerFile{
+			Data: a,
+		}, nil
 	}
 	return data, nil
 }
