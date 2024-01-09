@@ -41,16 +41,23 @@ func New(identifier string) *Attachable {
 		Attachable: &MinecraftAttachable{
 			Description: &MinecraftAttachableDescription{
 				Identifier: identifier,
-				Materials:  &types.MapStringString{},
-				Textures:   &types.MapStringString{},
+				Materials: &types.MapStringString{
+					"default":   "entity_alphatest",
+					"enchanted": "entity_alphatest_glint",
+				},
+				Textures: &types.MapStringString{
+					"enchanted": "textures/misc/enchanted_item_glint",
+				},
 				Geometry:   &types.MapStringString{},
 				Animations: &types.MapStringString{},
 				Scripts: &MinecraftAttachableScripts{
 					ParentSetup: &types.StringArray{},
 					Animate:     &types.StringArrayConditional{},
 				},
-				Item:              &types.MapStringString{},
-				RenderControllers: &types.StringArrayConditional{},
+				Item: &types.MapStringString{},
+				RenderControllers: &types.StringArrayConditional{
+					"controller.render.item_default",
+				},
 			},
 		},
 	}

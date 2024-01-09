@@ -42,6 +42,8 @@ type IAttachables interface {
 
 	// Create a new attachable.
 	//
+	// Will fill the material, texture, and render controller for the enchantment glint.
+	//
 	// Example:
 	//
 	//	a := New("glowstone:diamond_sword")
