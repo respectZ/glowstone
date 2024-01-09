@@ -22,6 +22,9 @@ func (a *Attachable) Encode(minify ...bool) ([]byte, error) {
 	if v := reflect.ValueOf(a.Attachable.Description.RenderControllers).Elem(); v.Len() == 0 {
 		a.Attachable.Description.Scripts = nil
 	}
+	if reflect.ValueOf(a.Attachable.Description.Scripts).Elem().IsZero() {
+		a.Attachable.Description.Scripts = nil
+	}
 	return g_util.MarshalJSON(a, minify...)
 }
 
