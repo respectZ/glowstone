@@ -2,6 +2,7 @@ package entity
 
 import (
 	"fmt"
+	"reflect"
 
 	g_util "github.com/respectZ/glowstone/util"
 )
@@ -59,6 +60,14 @@ func (e *Entity) Encode() ([]byte, error) {
 		if e.Entity.Events.IsEmpty() {
 			e.Entity.Events = nil
 		}
+	}
+	if e.Entity.Description.Scripts != nil {
+		if e.Entity.Description.Scripts.Animate.IsEmpty() {
+			e.Entity.Description.Scripts.Animate = nil
+		}
+	}
+	if reflect.ValueOf(e.Entity.Description.Scripts).Elem().IsZero() {
+		e.Entity.Description.Scripts = nil
 	}
 	return g_util.MarshalJSON(e)
 }
