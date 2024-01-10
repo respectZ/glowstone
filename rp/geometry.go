@@ -180,7 +180,11 @@ func (e *Geometries) Load(src string, add ...bool) (*GeometryFile, error) {
 	filename := filepath.Base(src)
 
 	// Get subdir
-	subdirs := strings.Split(filepath.Dir(src), string(filepath.Separator))
+	dirs := filepath.Dir(src)
+	// Replace destDirectory.Geometry with empty string
+	dirs = strings.Replace(dirs, destDirectory.Geometry, "", 1)
+
+	subdirs := strings.Split(dirs, string(filepath.Separator))
 	subdir := ""
 	// Reverse loop
 	for i := len(subdirs) - 1; i >= 0; i-- {
