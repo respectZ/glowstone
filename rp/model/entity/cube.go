@@ -5,8 +5,10 @@ import (
 )
 
 type Cube struct {
-	Origin      []float64   `json:"origin"`
-	Size        []float64   `json:"size"`
+	Origin      []float64   `json:"origin,omitempty"`
+	Size        []float64   `json:"size,omitempty"`
+	Pivot       []float64   `json:"pivot,omitempty"`
+	Rotation    []float64   `json:"rotation,omitempty"`
 	Uv          interface{} `json:"uv"`
 	Inflate     float64     `json:"inflate,omitempty"`
 	NeverRender *bool       `json:"never_render,omitempty"`
