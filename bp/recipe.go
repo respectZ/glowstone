@@ -297,7 +297,7 @@ func (e *RecipeBP) Load(src string, add ...bool) (*RecipeFile, error) {
 
 	filename := filepath.Base(src)
 	// Get subdir
-	subdirs := strings.Split(src, string(filepath.Separator))
+	subdirs := strings.Split(filepath.Dir(src), string(filepath.Separator))
 	subdir := ""
 	// Reverse loop
 	for i := len(subdirs) - 1; i >= 0; i-- {

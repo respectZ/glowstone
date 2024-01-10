@@ -168,8 +168,8 @@ func (m *AnimationControllers) Load(path string, add ...bool) (*AnimationControl
 		return nil, err
 	}
 	if len(add) > 0 && add[0] || len(add) == 0 {
-		subdirs := strings.Split(path, string(filepath.Separator))
 		file := filepath.Base(path)
+		subdirs := strings.Split(filepath.Dir(path), string(filepath.Separator))
 
 		// Add subdir until "animation_controllers" is reached
 		// Reverse loop

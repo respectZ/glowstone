@@ -161,8 +161,8 @@ func (e *LootTable) Load(src string, add ...bool) (bp.LootTable, error) {
 	}
 
 	if len(add) > 0 && add[0] || len(add) == 0 {
-		subdirs := strings.Split(src, string(filepath.Separator))
 		file := filepath.Base(src)
+		subdirs := strings.Split(filepath.Dir(src), string(filepath.Separator))
 
 		// Add subdir until "loot_tables" is reached
 		// Reverse loop

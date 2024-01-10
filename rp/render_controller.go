@@ -172,8 +172,8 @@ func (m *RenderControllers) Load(path string, add ...bool) (*RenderControllerFil
 		return nil, err
 	}
 	if len(add) > 0 && add[0] || len(add) == 0 {
-		subdirs := strings.Split(path, string(filepath.Separator))
 		file := filepath.Base(path)
+		subdirs := strings.Split(filepath.Dir(file), string(filepath.Separator))
 
 		// Add subdir until "render_controllers" is reached
 		// Reverse loop
