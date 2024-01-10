@@ -34,9 +34,9 @@ func (m *AnimationMap) UnmarshalJSON(data []byte) error {
 		return err
 	}
 
-	result := make(map[string]*animationData)
+	(*m) = make(map[string]*animationData)
 	for k, v := range temp {
-		result[k] = &animationData{
+		(*m)[k] = &animationData{
 			AnimationLength: v.AnimationLength,
 			Loop:            v.Loop,
 			Timeline:        &v.Timeline,
