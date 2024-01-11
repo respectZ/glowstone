@@ -63,7 +63,7 @@ func (a *Animation) All() map[string]*animation {
 
 func (a *Animation) New(identifier string) *animation {
 	animation := &animation{
-		Bones: make(map[string]*animationBone),
+		Bones: make(map[string]*AnimationBone),
 	}
 	a.Add(identifier, animation)
 	return animation

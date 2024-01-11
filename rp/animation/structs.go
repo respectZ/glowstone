@@ -11,7 +11,7 @@ type AnimationDefinition struct {
 
 type animation struct {
 	Loop                      interface{}               `json:"loop,omitempty"`
-	Bones                     map[string]*animationBone `json:"bones,omitempty"`
+	Bones                     map[string]*AnimationBone `json:"bones,omitempty"`
 	AnimTimeUpdate            string                    `json:"anim_time_update,omitempty"`
 	AnimationLength           float64                   `json:"animation_length,omitempty"`
 	BlendWeight               float64                   `json:"blend_weight,omitempty"`
@@ -29,7 +29,7 @@ type animation struct {
 
 /** Animation Bone **/
 
-type animationBone struct {
+type AnimationBone struct {
 	Position interface{} `json:"position,omitempty"`
 	Rotation interface{} `json:"rotation,omitempty"`
 	Scale    interface{} `json:"scale,omitempty"`
