@@ -37,9 +37,7 @@ type animationBone struct {
 
 /** funcs **/
 
-// TODO: expose new
-
-func new() *AnimationDefinition {
+func New() *AnimationDefinition {
 	return &AnimationDefinition{
 		FormatVersion: "1.12.0",
 		Animations:    &Animation{},
@@ -47,7 +45,7 @@ func new() *AnimationDefinition {
 }
 
 func Load(src string) (*AnimationDefinition, error) {
-	a := new()
+	a := New()
 	err := g_util.LoadJSON(src, a)
 	return a, err
 }

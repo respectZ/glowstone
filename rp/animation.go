@@ -48,6 +48,13 @@ type IAnimations interface {
 	Size() int
 	All() map[string]*AnimationFile
 
+	// Create a new animation.
+	//
+	// Example:
+	//
+	//	a := New("weapon/sword.animation.json")
+	New(string) *rp.AnimationDefinition
+
 	Save(string) error
 
 	LoadAll(string) error
@@ -118,6 +125,12 @@ func (a *Animations) Size() int {
 
 func (a *Animations) All() map[string]*AnimationFile {
 	return *a
+}
+
+func (a *Animations) New(src string) *rp.AnimationDefinition {
+	animation := rp.New()
+	a.Add(src, animation)
+	return animation
 }
 
 func (a *Animations) Save(pathToRP string) error {

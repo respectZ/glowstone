@@ -15,6 +15,13 @@ type IAnimation interface {
 	IsEmpty() bool
 	Size() int
 	All() map[string]*animation
+
+	// Create a new animation.
+	//
+	// Example:
+	//
+	//	a := New("animation.weapon.run")
+	New(string) *animation
 }
 
 func (a *Animation) UnmarshalJSON(data []byte) error {
@@ -52,4 +59,12 @@ func (a *Animation) Size() int {
 
 func (a *Animation) All() map[string]*animation {
 	return *a
+}
+
+func (a *Animation) New(identifier string) *animation {
+	animation := &animation{
+		Bones: make(map[string]*animationBone),
+	}
+	a.Add(identifier, animation)
+	return animation
 }
