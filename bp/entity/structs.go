@@ -45,6 +45,9 @@ func New(identifier string) *Entity {
 				IsExperimental: false,
 				Properties:     &EntityProperties{},
 				Animations:     &types.MapStringString{},
+				Scripts: &EntityScripts{
+					Animate: &types.StringArrayConditional{},
+				},
 			},
 			Components:      IComponent(&Component{}),
 			ComponentGroups: IComponentGroups(&ComponentGroups{}),

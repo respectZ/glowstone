@@ -63,6 +63,7 @@ func New(identifier string) *Entity {
 				},
 				Animations: &types.MapStringString{},
 				Scripts: &clientEntityDescriptionScripts{
+					Variables:    &types.MapStringString{},
 					Initialize:   &types.StringArray{},
 					PreAnimation: &types.StringArray{},
 					Animate:      &types.StringArrayConditional{},
@@ -89,6 +90,7 @@ func Load(dir string) (*Entity, error) {
 				Geometry:   &types.MapStringString{},
 				Animations: &types.MapStringString{},
 				Scripts: &clientEntityDescriptionScripts{
+					Variables:    &types.MapStringString{},
 					Initialize:   &types.StringArray{},
 					PreAnimation: &types.StringArray{},
 					Animate:      &types.StringArrayConditional{},
