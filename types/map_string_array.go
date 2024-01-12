@@ -7,12 +7,17 @@ import (
 type MapStringArray []map[string]string
 
 type IMapStringArray interface {
+	Set([]map[string]string)
 	Add(string, string)
 	All() []map[string]string
 	Clear()
 	IsEmpty() bool
 	Size() int
 	UnmarshalJSON([]byte) error
+}
+
+func (a *MapStringArray) Set(v []map[string]string) {
+	*a = v
 }
 
 func (a *MapStringArray) Add(s, c string) {

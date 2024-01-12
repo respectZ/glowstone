@@ -7,6 +7,7 @@ import (
 type MapStringString map[string]string
 
 type IMapStringString interface {
+	Set(map[string]string)
 	Add(string, string)
 	Get(string) (string, bool)
 	Remove(string)
@@ -15,6 +16,10 @@ type IMapStringString interface {
 	IsEmpty() bool
 	Size() int
 	UnmarshalJSON([]byte) error
+}
+
+func (m *MapStringString) Set(v map[string]string) {
+	*m = v
 }
 
 func (m *MapStringString) Add(key string, value string) {

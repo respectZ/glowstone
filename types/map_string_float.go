@@ -7,6 +7,7 @@ import (
 type MapStringFloat map[string]float64
 
 type IMapStringFloat interface {
+	Set(map[string]float64)
 	Add(string, float64)
 	Get(string) (float64, bool)
 	Remove(string)
@@ -15,6 +16,10 @@ type IMapStringFloat interface {
 	IsEmpty() bool
 	Size() int
 	UnmarshalJSON([]byte) error
+}
+
+func (m *MapStringFloat) Set(v map[string]float64) {
+	*m = v
 }
 
 func (m *MapStringFloat) Add(key string, value float64) {

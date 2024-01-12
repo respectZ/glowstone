@@ -7,12 +7,17 @@ import (
 type StringArray []string
 
 type IStringArray interface {
+	Set([]string)
 	Add(...string)
 	All() []string
 	Clear()
 	IsEmpty() bool
 	Size() int
 	UnmarshalJSON([]byte) error
+}
+
+func (a *StringArray) Set(v []string) {
+	*a = v
 }
 
 func (a *StringArray) Add(s ...string) {

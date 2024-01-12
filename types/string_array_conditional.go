@@ -7,6 +7,7 @@ import (
 type StringArrayConditional []interface{}
 
 type IStringArrayConditional interface {
+	Set([]interface{})
 	AddString(...string)
 	AddStringConditional(string, string)
 	All() []interface{}
@@ -14,6 +15,10 @@ type IStringArrayConditional interface {
 	IsEmpty() bool
 	Size() int
 	UnmarshalJSON([]byte) error
+}
+
+func (a *StringArrayConditional) Set(v []interface{}) {
+	*a = v
 }
 
 func (a *StringArrayConditional) AddString(s ...string) {
