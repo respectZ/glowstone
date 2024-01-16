@@ -5,7 +5,7 @@ import g_util "github.com/respectZ/glowstone/util"
 type ParticleEffects []*particleEffect
 
 type IParticleEffects interface {
-	Add(...*particleEffect)
+	Add(string) *particleEffect
 	All() []*particleEffect
 	Clear()
 	IsEmpty() bool
@@ -13,11 +13,15 @@ type IParticleEffects interface {
 	UnmarshalJSON([]byte) error
 }
 
-func (p *ParticleEffects) Add(s ...*particleEffect) {
+func (p *ParticleEffects) Add(effect string) *particleEffect {
 	if *p == nil {
 		*p = make(ParticleEffects, 0)
 	}
-	*p = append(*p, s...)
+	e := &particleEffect{
+		Effect: effect,
+	}
+	*p = append(*p, e)
+	return e
 }
 
 func (p *ParticleEffects) All() []*particleEffect {
