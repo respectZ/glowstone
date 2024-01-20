@@ -7,14 +7,31 @@ import (
 type MapStringFloat map[string]float64
 
 type IMapStringFloat interface {
+	// Set the value of the map to v.
 	Set(map[string]float64)
+
+	// Add a new element to the map.
 	Add(string, float64)
+
+	// Get the value of the specified key from map.
 	Get(string) (float64, bool)
+
+	// Remove the element of the specified key from map.
 	Remove(string)
+
+	// Clear the map.
 	Clear()
+
+	// Get all elements of the map.
 	All() map[string]float64
+
+	// Check if the map is empty.
 	IsEmpty() bool
+
+	// Get the size of the map.
 	Size() int
+
+	// UnmarshalJSON implements the interface UnmarshalJSON for json.Unmarshal.
 	UnmarshalJSON([]byte) error
 }
 
