@@ -47,7 +47,7 @@ type Sound struct {
 	Stream bool `json:"stream,omitempty"`
 
 	// When set to true, the sound will be 3D
-	Is3D bool `json:"is_3d,omitempty"`
+	Is3D *bool `json:"is3D,omitempty"`
 
 	// Path to the sound file
 	Name string `json:"name"`
