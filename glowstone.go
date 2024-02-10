@@ -35,6 +35,14 @@ type Project struct {
 	Middlewares IMiddlewares
 }
 
+type values struct {
+	Bool  bool
+	Int   int
+	Float float64
+}
+
+var ZeroValue = values{false, 0, 0.0}
+
 func newLogger() *logger {
 	return &logger{
 		Warning: log.New(os.Stdout, "\033[33m[WARNING]\033[0m ", log.Ltime),
