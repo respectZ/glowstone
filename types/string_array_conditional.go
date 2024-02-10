@@ -33,6 +33,12 @@ type IStringArrayConditional interface {
 	// Get the size of the array.
 	Size() int
 
+	// Check if the array has the specified string.
+	HasString(string) bool
+
+	// Find the element of the specified string.
+	FindByString(string) (interface{}, bool)
+
 	// UnmarshalJSON implements the interface UnmarshalJSON for json.Unmarshal.
 	UnmarshalJSON([]byte) error
 }
@@ -92,6 +98,30 @@ func (a *StringArrayConditional) Size() int {
 		*a = []interface{}{}
 	}
 	return len(*a)
+}
+
+func (a *StringArrayConditional) HasString(s string) bool {
+	if *a == nil {
+		*a = []interface{}{}
+	}
+	for _, v := range *a {
+		if v == s {
+			return true
+		}
+	}
+	return false
+}
+
+func (a *StringArrayConditional) FindByString(s string) (interface{}, bool) {
+	if *a == nil {
+		*a = []interface{}{}
+	}
+	for _, v := range *a {
+		if v == s {
+			return v, true
+		}
+	}
+	return nil, false
 }
 
 func (a *StringArrayConditional) UnmarshalJSON(data []byte) error {
