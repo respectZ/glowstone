@@ -2,7 +2,7 @@
   <img width="64" height="70" align="left" src="./glowstone.png" alt="Glowstone"/>
   <br>
   <h1>Glowstone</h1>
-  <p>Glowstone is a Golang library for writing Minecraft Bedrock Edition addon.</p>
+  <p>Glowstone is a Golang library for reading and writing Minecraft Bedrock Edition addon.</p>
 </div>
 
 # Todo
@@ -18,14 +18,14 @@
   - [ ] Spawn Rule
   - [ ] Structure
 - RP
-  - [ ] Animation Controller
-  - [ ] Animation (most likely no, just the header information)
+  - [x] Animation Controller
+  - [x] Animation
   - [x] Attachable
   - [x] Entity
   - [ ] Material
-  - [ ] Model
-  - [ ] Particle
-  - [ ] Render Controller
+  - [x] Model
+  - [x] Particle
+  - [x] Render Controller
   - [x] Item Texture
   - [ ] sounds.json
   - [x] sound_definitions.json
@@ -33,8 +33,8 @@
   - [x] terrain_textures.json
 
 - Misc
-  - [ ] Make a field for saving filename, since it will duplicate if thee filename doesn't match with the identifier.
-  - [ ] Rework project fields, ```glowstone.NewBPAnimationController -> glowstone.BP.AnimationController.New("asdf")```
+  - [x] Make a field for saving filename, since it will duplicate if thee filename doesn't match with the identifier.
+  - [x] Rework project fields, ```glowstone.NewBPAnimationController -> glowstone.BP.AnimationController.New("asdf")```
   - [ ] Remove unnecessary pointer
   - [ ] Add project setting to minify JSON
   - [ ] Add format version setting, especially for item, block, and entity
@@ -49,3 +49,33 @@
   - [ ] Entity (RP)
   - [ ] Blocks (RP)
   - [ ] Attachable (RP)
+
+  # Quick Start
+  ```go
+  package main
+
+  import (
+    "path/filepath"
+    "github.com/respectZ/glowstone"
+  )
+
+  func main() {
+    // Create a project environment.
+    project := glowstone.NewProjectV2()
+
+    // Set your RP and BP path.
+    // Below is the default value.
+    project.BP.Path = filepath.Join("packs", "BP")
+    project.RP.Path = filepath.Join("packs", "RP")
+
+    // Preload BP and RP packs from the path.
+    // Warning: this may causes some error for some compabilities.
+    // This isn't necessary if you didn't need read.
+    // Alternative option is by reading the required files only.
+    project.Preload()
+
+    // Do something here.
+
+    project.Save()
+  }
+  ```
