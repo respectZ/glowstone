@@ -39,7 +39,7 @@ type ILootTable interface {
 	// Example:
 	//
 	// 	lootTable := New("entities/pig.json")
-	New(string) LootTable
+	New(string) bp.LootTable
 
 	Save(string) error
 
