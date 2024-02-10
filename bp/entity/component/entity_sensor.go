@@ -6,8 +6,10 @@ import (
   f "github.com/respectZ/glowstone/bp/types"
 )
 
-// A component that fires an event when a set of conditions are met by other entities within the defined range.  
-type EntitySensor struct {
+// [Not a component] The list of subsensors which sense for entities and emit events when all their conditions are met.
+type EntitySensorSubsensors struct {
+  // How many seconds should elapse before the subsensor can once again sense for entities. The cooldown is applied on top of the base 1 tick (0.05 seconds) delay. Negative values will result in no cooldown being used.
+  Cooldown *float64 `json:"cooldown,omitempty"`
   // Event to fire when the conditions are met.
   Event string `json:"event,omitempty"`
   // The set of conditions that must be satisfied to fire the event.
@@ -16,10 +18,16 @@ type EntitySensor struct {
   MaximumCount *int `json:"maximum_count,omitempty"`
   // The minimum number of entities that must pass the filter conditions for the event to send.
   MinimumCount *int `json:"minimum_count,omitempty"`
-  // If true the sensor range is additive on top of the entity's size.
-  RelativeRange *bool `json:"relative_range,omitempty"`
-  // If true requires all nearby entities to pass the filter conditions for the event to send.
-  RequireAll bool `json:"require_all,omitempty"`
   // The maximum distance another entity can be from this and have the filters checked against it.
-  SensorRange *float64 `json:"sensor_range,omitempty"`
+  Range *float64 `json:"range,omitempty"`
+  // If true requires all nearby entities to pass the filter conditions for the events to send.
+  RequireAll bool `json:"require_all,omitempty"`
+}
+
+// A component that owns multiple subsensors, each one firing an event when a set of conditions are met by other entities within the defined range.  
+type EntitySensor struct {
+  // If true the subsensors' range is additive on top of the entity's size.
+  RelativeRange *bool `json:"relative_range,omitempty"`
+  // The list of subsensors which sense for entities and emit events when all their conditions are met.
+  Subsensors []EntitySensorSubsensors `json:"subsensors,omitempty"`
 }
