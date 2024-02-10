@@ -6,7 +6,6 @@
 </div>
 
 # Todo
-- Merge `glowstone/attachable -> glowstone/rp/attachable`, etc
 - BP
   - [x] Animation
   - [x] Animation Controller
@@ -61,7 +60,7 @@
 
   func main() {
     // Create a project environment.
-    project := glowstone.NewProjectV2()
+    project := glowstone.NewProject()
 
     // Set your RP and BP path.
     // Below is the default value.
@@ -69,9 +68,8 @@
     project.RP.Path = filepath.Join("packs", "RP")
 
     // Preload BP and RP packs from the path.
-    // Warning: this may causes some error for some compabilities.
-    // This isn't necessary if you didn't need read.
-    // Alternative option is by reading the required files only.
+    // Warning: this is unstable and may cause some errors for some compabilities.
+    // This isn't necessary if you didn't need any read operation.
     project.Preload()
 
     // Do something here.
