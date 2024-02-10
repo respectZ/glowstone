@@ -265,6 +265,34 @@ async function main() {
 }
 
 /******* Custom Components, either unable to do automatically or missing. */
+function movement() {
+  const field: GoField[] = [
+    {
+      name: "Value",
+      type: "float64",
+      description: "The speed of the entity.",
+    },
+  ];
+  return newGoStruct(
+    "Movement",
+    "Defines the movement speed for this entity.",
+    field
+  );
+}
+function knockbackResistance() {
+  const field: GoField[] = [
+    {
+      name: "Value",
+      type: "float64",
+      description: "The knockback resistance of the entity.",
+    },
+  ];
+  return newGoStruct(
+    "KnockbackResistance",
+    "Defines the knockback resistance for this entity.",
+    field
+  );
+}
 function health() {
   const field: GoField[] = [
     {
@@ -431,6 +459,8 @@ RESULT["minecraft:shooter"] = [
   ...RESULT["minecraft:shooter"],
   shooter_Projectile(),
 ];
+RESULT["minecraft:movement"] = [movement()];
+RESULT["minecraft:knockback_resistance"] = [knockbackResistance()];
 
 // write("./test.go", RESULT.join("\n"));
 for (const [key, value] of Object.entries(RESULT)) {
