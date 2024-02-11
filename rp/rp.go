@@ -15,6 +15,7 @@ type _destDirectory struct {
 	Animation           string
 	Attachable          string
 	Entity              string
+	Fog                 string
 	Geometry            string
 	Particle            string
 	RenderController    string
@@ -25,6 +26,7 @@ var destDirectory = _destDirectory{
 	Attachable:          "attachables",
 	Animation:           "animations",
 	Entity:              "entity",
+	Fog:                 "fogs",
 	Geometry:            filepath.Join("models", "entity"),
 	Particle:            "particles",
 	RenderController:    "render_controllers",
@@ -32,22 +34,49 @@ var destDirectory = _destDirectory{
 
 type GlowstoneRP struct {
 	// Path to the resource pack.
-	// Usually "./packs/RP/"
 	Path string
 
-	Attachable          IAttachables
+	// Contains all attachables in the project.
+	Attachable IAttachables
+
+	// Contains all animation controllers in the project.
 	AnimationController IAnimationControllers
-	Animation           IAnimations
-	Entity              IEntities
-	Particle            IParticles
-	Geometry            IGeometries
-	RenderController    IRenderControllers
-	ItemTexture         *texture.ItemTexture
-	TerrainTexture      *texture.TerrainTexture
-	SoundDefinition     *sound.SoundDefinition
-	Blocks              *Blocks
-	Lang                *texts.Lang
-	Manifest            *Manifest
+
+	// Contains all animations in the project.
+	Animation IAnimations
+
+	// Contains all entities in the project.
+	Entity IEntities
+
+	// Contains all fogs in the project.
+	Fog IFogs
+
+	// Contains all particles in the project.
+	Particle IParticles
+
+	// Contains all geometries in the project.
+	Geometry IGeometries
+
+	// Contains all render controllers in the project.
+	RenderController IRenderControllers
+
+	// Data from the 'textures/item_texture.json' file.
+	ItemTexture *texture.ItemTexture
+
+	// Data from the 'textures/terrain_texture.json' file.
+	TerrainTexture *texture.TerrainTexture
+
+	// Data from the 'sound_definitions.json' file.
+	SoundDefinition *sound.SoundDefinition
+
+	// Data from the 'blocks.json' file.
+	Blocks *Blocks
+
+	// Data from the 'texts/en_US.lang' file.
+	Lang *texts.Lang
+
+	// Manifest of the resource pack.
+	Manifest *Manifest
 }
 
 func New(path string) *GlowstoneRP {
@@ -57,6 +86,7 @@ func New(path string) *GlowstoneRP {
 		AnimationController: &AnimationControllers{},
 		Animation:           &Animations{},
 		Entity:              &Entities{},
+		Fog:                 &Fogs{},
 		Particle:            &Particles{},
 		Geometry:            &Geometries{},
 		RenderController:    &RenderControllers{},

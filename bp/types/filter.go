@@ -11,5 +11,5 @@ type Filter struct {
 	// Check other family
 	OtherWithFamilies string `json:"other_with_families,omitempty"`
 
-	Value interface{} `json:"value,omitempty"`
+	Value interface{} `json:"value"`
 }

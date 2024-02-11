@@ -26,16 +26,31 @@ var destDirectory = _destDirectory{
 }
 
 type GlowstoneBP struct {
+	// Path to the project.
 	Path string
 
+	// Contains all animation controllers in the project.
 	AnimationController IAnimationControllerBP
-	Animation           IAnimationBP
-	Block               IBlockBP
-	Entity              IEntityBP
-	Item                IItemBP
-	LootTable           ILootTable
-	Recipe              IRecipeBP
 
+	// Contains all animations in the project.
+	Animation IAnimationBP
+
+	// Contains all blocks in the project.
+	Block IBlockBP
+
+	// Contains all entities in the project.
+	Entity IEntityBP
+
+	// Contains all items in the project.
+	Item IItemBP
+
+	// Contains all loot tables in the project.
+	LootTable ILootTable
+
+	// Contains all recipes in the project.
+	Recipe IRecipeBP
+
+	// Manifest of the behavior pack.
 	Manifest *Manifest
 }
 
@@ -57,6 +72,7 @@ func (g *GlowstoneBP) Initialize() error {
 	return nil
 }
 
+// Preload loads all files from the project.
 func (g *GlowstoneBP) Preload() error {
 	val := reflect.ValueOf(g).Elem()
 
@@ -77,6 +93,7 @@ func (g *GlowstoneBP) Preload() error {
 	return nil
 }
 
+// Apply and save changes to the project.
 func (g *GlowstoneBP) Save() error {
 	val := reflect.ValueOf(g).Elem()
 

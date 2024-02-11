@@ -59,18 +59,20 @@ func entity_WriteLang(g *Project) error {
 		// Check to prevent overwriting
 		k1 := fmt.Sprintf("entity.%s.name", v.GetNamespaceIdentifier())
 		if v.Lang == "" {
-			if !g.RP.Lang.Has(k1) {
-				v.Lang = g_util.TitleCase(strings.ReplaceAll(v.GetIdentifier(), "_", " "))
-				g.RP.Lang.Add(k1, v.Lang)
-			}
+			v.Lang = g_util.TitleCase(strings.ReplaceAll(v.GetIdentifier(), "_", " "))
 		}
+		if !g.RP.Lang.Has(k1) {
+			g.RP.Lang.Add(k1, v.Lang)
+		}
+
 		k1 = fmt.Sprintf("item.spawn_egg.entity.%s.name", v.GetNamespaceIdentifier())
 		if v.SpawnLang == "" {
-			if !g.RP.Lang.Has(k1) {
-				v.SpawnLang = "Spawn " + v.Lang
-				g.RP.Lang.Add(k1, v.SpawnLang)
-			}
+			v.SpawnLang = "Spawn " + v.Lang
 		}
+		if !g.RP.Lang.Has(k1) {
+			g.RP.Lang.Add(k1, v.SpawnLang)
+		}
+
 		k1 = fmt.Sprintf("action.hint.exit.%s", v.GetNamespaceIdentifier())
 		// Rideable
 		if v.RideHintLang == "" {

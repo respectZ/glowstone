@@ -7,14 +7,31 @@ import (
 type MapStringString map[string]string
 
 type IMapStringString interface {
+	// Set the value of the map to v.
 	Set(map[string]string)
+
+	// Add a new element to the map.
 	Add(string, string)
+
+	// Get the value of the specified key from map.
 	Get(string) (string, bool)
+
+	// Remove the element of the specified key from map.
 	Remove(string)
+
+	// Clear the map.
 	Clear()
+
+	// Get all elements of the map.
 	All() map[string]string
+
+	// Check if the map is empty.
 	IsEmpty() bool
+
+	// Get the size of the map.
 	Size() int
+
+	// UnmarshalJSON implements the interface UnmarshalJSON for json.Unmarshal.
 	UnmarshalJSON([]byte) error
 }
 

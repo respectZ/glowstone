@@ -39,7 +39,7 @@ type ILootTable interface {
 	// Example:
 	//
 	// 	lootTable := New("entities/pig.json")
-	New(string) LootTable
+	New(string) bp.LootTable
 
 	Save(string) error
 
@@ -111,10 +111,10 @@ func (l *LootTable) UnmarshalJSON(data []byte) error {
 	return g_util.UnmarshalJSON(data, l)
 }
 
-func (l *LootTable) New(dest string) LootTable {
+func (l *LootTable) New(dest string) bp.LootTable {
 	a := bp.New()
 	l.Add(dest, a)
-	return *l
+	return a
 }
 
 func (l *LootTable) Save(pathToBP string) error {

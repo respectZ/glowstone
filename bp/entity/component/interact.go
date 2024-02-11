@@ -22,6 +22,8 @@ type Interact struct {
   Cooldown float64 `json:"cooldown,omitempty"`
   // Time in seconds before this entity can be interacted with after being attacked.
   CooldownAfterBeingAttacked float64 `json:"cooldown_after_being_attacked,omitempty"`
+  // The entity's equipment slot to remove and drop the item from, if any, upon successful interaction.
+  DropItemSlot *int `json:"drop_item_slot,omitempty"`
   // The entity's equipment slot to equip the item to, if any, upon successful interaction.
   EquipItemSlot *int `json:"equip_item_slot,omitempty"`
   // The amount of health this entity will recover or hurt when interacting with this item. Negative values will harm the entity.
@@ -46,6 +48,6 @@ type Interact struct {
   TransformToItem string `json:"transform_to_item,omitempty"`
   // If true, the interaction will use an item.
   UseItem bool `json:"use_item,omitempty"`
-  // Vibration to emit when the interaction occurs. Admitted values are entity_interact (used by default), shear, and none (no vibration emitted).
-  Vibration string `json:"vibration,omitempty"`
+  // Vibration to emit when the interaction occurs. Admitted values are none (no vibration emitted), shear, entity_act, entity_interact.
+  Vibration *string `json:"vibration,omitempty"`
 }
