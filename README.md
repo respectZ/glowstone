@@ -21,6 +21,7 @@
   - [x] Animation
   - [x] Attachable
   - [x] Entity
+  - [x] Fog
   - [ ] Material
   - [x] Model
   - [x] Particle

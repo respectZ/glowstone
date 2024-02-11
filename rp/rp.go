@@ -15,6 +15,7 @@ type _destDirectory struct {
 	Animation           string
 	Attachable          string
 	Entity              string
+	Fog                 string
 	Geometry            string
 	Particle            string
 	RenderController    string
@@ -25,6 +26,7 @@ var destDirectory = _destDirectory{
 	Attachable:          "attachables",
 	Animation:           "animations",
 	Entity:              "entity",
+	Fog:                 "fogs",
 	Geometry:            filepath.Join("models", "entity"),
 	Particle:            "particles",
 	RenderController:    "render_controllers",
@@ -45,6 +47,9 @@ type GlowstoneRP struct {
 
 	// Contains all entities in the project.
 	Entity IEntities
+
+	// Contains all fogs in the project.
+	Fog IFogs
 
 	// Contains all particles in the project.
 	Particle IParticles
@@ -81,6 +86,7 @@ func New(path string) *GlowstoneRP {
 		AnimationController: &AnimationControllers{},
 		Animation:           &Animations{},
 		Entity:              &Entities{},
+		Fog:                 &Fogs{},
 		Particle:            &Particles{},
 		Geometry:            &Geometries{},
 		RenderController:    &RenderControllers{},
