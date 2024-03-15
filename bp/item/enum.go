@@ -11,7 +11,7 @@ ITEMS
 NATURE
 */
 const (
-	CATEGORY_NONE         Category = ""
+	CATEGORY_NONE         Category = "none"
 	CATEGORY_COMMANDS     Category = "commands"
 	CATEGORY_CONSTRUCTION Category = "construction"
 	CATEGORY_EQUIPMENT    Category = "equipment"
