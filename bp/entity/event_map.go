@@ -1,6 +1,7 @@
 package entity
 
 import (
+	f "github.com/respectZ/glowstone/bp/types"
 	"github.com/respectZ/glowstone/types"
 	g_util "github.com/respectZ/glowstone/util"
 )
@@ -98,6 +99,8 @@ func (m *EntityEventMap) New(name string) *EntityEvent {
 		SetProperty: &SetProperty{},
 		Randomize:   &EntityEventArray{},
 		Sequence:    &EntityEventArray{},
+		Trigger:     &f.Trigger{},
+		Filters:     &f.Filter{},
 	}
 	(*m)[name] = event
 	return event

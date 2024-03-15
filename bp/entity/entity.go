@@ -37,6 +37,12 @@ func checkEvents(event *EntityEvent) {
 			}
 		}
 	}
+	if event.Filters != nil && reflect.ValueOf(event.Filters).Elem().IsZero() {
+		event.Filters = nil
+	}
+	if event.Trigger != nil && reflect.ValueOf(event.Trigger).Elem().IsZero() {
+		event.Trigger = nil
+	}
 }
 
 func (e *Entity) Encode() ([]byte, error) {

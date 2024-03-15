@@ -5,7 +5,7 @@ import (
 	g_util "github.com/respectZ/glowstone/util"
 )
 
-var FORMAT_VERSION = "1.20.60"
+var FORMAT_VERSION = "1.20.70"
 
 type Entity struct {
 	FormatVersion string          `json:"format_version"`
