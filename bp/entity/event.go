@@ -7,28 +7,30 @@ import (
 )
 
 type EntityEvent struct {
-	Add          *ComponentGroup `json:"add,omitempty"`
-	Remove       *ComponentGroup `json:"remove,omitempty"`
-	SetProperty  ISetProperty    `json:"set_property,omitempty"`
-	Trigger      *f.Trigger      `json:"trigger,omitempty"` // TODO: implement trigger
-	Randomize    IEntityEvent    `json:"randomize,omitempty"`
-	Sequence     IEntityEvent    `json:"sequence,omitempty"`
-	Filters      *f.Filter       `json:"filters,omitempty"`
-	QueueCommand string          `json:"queue_command,omitempty"`
+	Add           *ComponentGroup `json:"add,omitempty"`
+	Remove        *ComponentGroup `json:"remove,omitempty"`
+	SetProperty   ISetProperty    `json:"set_property,omitempty"`
+	Trigger       *f.Trigger      `json:"trigger,omitempty"` // TODO: implement trigger
+	Randomize     IEntityEvent    `json:"randomize,omitempty"`
+	Sequence      IEntityEvent    `json:"sequence,omitempty"`
+	Filters       *f.Filter       `json:"filters,omitempty"`
+	QueueCommand  string          `json:"queue_command,omitempty"`
+	EmitVibration string          `json:"emit_vibration,omitempty"`
 }
 
 func (e *EntityEvent) UnmarshalJSON(data []byte) error {
 	type Alias EntityEvent
 
 	aux := &struct {
-		Add          *ComponentGroup `json:"add,omitempty"`
-		Remove       *ComponentGroup `json:"remove,omitempty"`
-		SetProperty  ISetProperty    `json:"set_property,omitempty"`
-		Trigger      *f.Trigger      `json:"trigger,omitempty"`
-		Randomize    IEntityEvent    `json:"randomize,omitempty"`
-		Sequence     IEntityEvent    `json:"sequence,omitempty"`
-		Filters      *f.Filter       `json:"filters,omitempty"`
-		QueueCommand string          `json:"queue_command,omitempty"`
+		Add           *ComponentGroup `json:"add,omitempty"`
+		Remove        *ComponentGroup `json:"remove,omitempty"`
+		SetProperty   ISetProperty    `json:"set_property,omitempty"`
+		Trigger       *f.Trigger      `json:"trigger,omitempty"`
+		Randomize     IEntityEvent    `json:"randomize,omitempty"`
+		Sequence      IEntityEvent    `json:"sequence,omitempty"`
+		Filters       *f.Filter       `json:"filters,omitempty"`
+		QueueCommand  string          `json:"queue_command,omitempty"`
+		EmitVibration string          `json:"emit_vibration,omitempty"`
 	}{
 		Add:         &ComponentGroup{ComponentGroups: &types.StringArray{}},
 		Remove:      &ComponentGroup{ComponentGroups: &types.StringArray{}},
