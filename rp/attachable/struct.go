@@ -27,8 +27,11 @@ type MinecraftAttachableDescription struct {
 }
 
 type MinecraftAttachableScripts struct {
-	ParentSetup types.IStringArray            `json:"parent_setup,omitempty"`
-	Animate     types.IStringArrayConditional `json:"animate,omitempty"`
+	ParentSetup                          types.IStringArray            `json:"parent_setup,omitempty"`
+	PreAnimation                         types.IStringArray            `json:"pre_animation,omitempty"`
+	ShouldUpdateBonesAndEffectsOffscreen bool                          `json:"should_update_bones_and_effects_offscreen,omitempty"`
+	ShouldUpdateEffectsOffscreen         bool                          `json:"should_update_effects_offscreen,omitempty"`
+	Animate                              types.IStringArrayConditional `json:"animate,omitempty"`
 }
 
 const (
@@ -51,8 +54,9 @@ func New(identifier string) *Attachable {
 				Geometry:   &types.MapStringString{},
 				Animations: &types.MapStringString{},
 				Scripts: &MinecraftAttachableScripts{
-					ParentSetup: &types.StringArray{},
-					Animate:     &types.StringArrayConditional{},
+					ParentSetup:  &types.StringArray{},
+					PreAnimation: &types.StringArray{},
+					Animate:      &types.StringArrayConditional{},
 				},
 				Item: &types.MapStringString{},
 				RenderControllers: &types.StringArrayConditional{

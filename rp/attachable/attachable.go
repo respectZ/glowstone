@@ -19,6 +19,9 @@ func (a *Attachable) Encode(minify ...bool) ([]byte, error) {
 	if a.Attachable.Description.Scripts.Animate.IsEmpty() {
 		a.Attachable.Description.Scripts.Animate = nil
 	}
+	if a.Attachable.Description.Scripts.PreAnimation.IsEmpty() {
+		a.Attachable.Description.Scripts.PreAnimation = nil
+	}
 	if v := reflect.ValueOf(a.Attachable.Description.RenderControllers).Elem(); v.Len() == 0 {
 		a.Attachable.Description.RenderControllers = nil
 	}
