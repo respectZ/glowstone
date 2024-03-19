@@ -23,7 +23,7 @@ type Behavior_MoveToBlock struct {
   // Block types to move to.
   TargetBlocks []interface{} `json:"target_blocks,omitempty"`
   // [Vector3 [a,b,c]] Offset to add to the selected target position.
-  TargetOffset *[]float64 `json:"target_offset,omitempty"`
+  TargetOffset []float64 `json:"target_offset,omitempty"`
   // Kind of block to find fitting the specification. Valid values are "random" and "nearest".
   TargetSelectionMethod *string `json:"target_selection_method,omitempty"`
   // Average interval in ticks to try to run this behavior.

@@ -13,7 +13,7 @@ type Teleport struct {
   // Minimum amount of time in seconds between random teleports
   MinRandomTeleportTime float64 `json:"min_random_teleport_time,omitempty"`
   // [Vector3 [a,b,c]] Entity will teleport to a random position within the area defined by this cube
-  RandomTeleportCube *[]float64 `json:"random_teleport_cube,omitempty"`
+  RandomTeleportCube []float64 `json:"random_teleport_cube,omitempty"`
   // If true, the entity will teleport randomly
   RandomTeleports *bool `json:"random_teleports,omitempty"`
   // Maximum distance the entity will teleport when chasing a target

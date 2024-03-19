@@ -9,7 +9,7 @@ type Behavior_Play struct {
   // The distance (in blocks) that the mob tries to be in range of the friend it's following.
   FollowDistance *int `json:"follow_distance,omitempty"`
   // [Vector3 [a,b,c]] The dimensions of the AABB used to search for a potential friend to play with.
-  FriendSearchArea *[]float64 `json:"friend_search_area,omitempty"`
+  FriendSearchArea []float64 `json:"friend_search_area,omitempty"`
   // The entity type(s) to consider when searching for a potential friend to play with.
   FriendTypes []interface{} `json:"friend_types,omitempty"`
   // The max amount of seconds that the mob will play for before exiting the Goal.

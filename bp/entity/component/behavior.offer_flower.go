@@ -19,7 +19,7 @@ type Behavior_OfferFlower struct {
   // Maximum rotation (in degrees), on the X-axis, this entity can rotate while trying to look at the target.
   MaxRotationX *float64 `json:"max_rotation_x,omitempty"`
   // [Vector3 [a,b,c]] The dimensions of the AABB used to search for a potential mob to offer flower to.
-  SearchArea *[]float64 `json:"search_area,omitempty"`
+  SearchArea []float64 `json:"search_area,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
   Priority int `json:"priority,omitempty"`
 }

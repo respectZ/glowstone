@@ -21,7 +21,7 @@ type Behavior_TakeFlower struct {
   // The minimum amount of time (in seconds) for the mob to randomly wait for before taking the flower.
   MinWaitTime *float64 `json:"min_wait_time,omitempty"`
   // [Vector3 [a,b,c]] The dimensions of the AABB used to search for a potential mob to take a flower from.
-  SearchArea *[]float64 `json:"search_area,omitempty"`
+  SearchArea []float64 `json:"search_area,omitempty"`
   // Movement speed multiplier of the mob when using this AI Goal.
   SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The priority of this behavior. Lower values are higher priority.

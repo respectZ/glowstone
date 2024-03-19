@@ -11,7 +11,7 @@ type Behavior_Mingle struct {
   // The distance from its partner that this entity will mingle. If the entity type is not the same as the entity, this value needs to be identical on both entities.
   MingleDistance *float64 `json:"mingle_distance,omitempty"`
   // The entity type that this entity is allowed to mingle with
-  MinglePartnerType *[]interface{} `json:"mingle_partner_type,omitempty"`
+  MinglePartnerType []interface{} `json:"mingle_partner_type,omitempty"`
   // Movement speed multiplier of the mob when using this AI Goal
   SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // The priority of this behavior. Lower values are higher priority.

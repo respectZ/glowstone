@@ -23,9 +23,9 @@ type Behavior_LayEgg struct {
   // Movement speed multiplier of the mob when using this AI Goal
   SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // Blocks that the mob can lay its eggs on top of.
-  TargetBlocks *[]interface{} `json:"target_blocks,omitempty"`
+  TargetBlocks []interface{} `json:"target_blocks,omitempty"`
   // Types of materials that can exist above the target block. Valid types are Air, Water, and Lava.
-  TargetMaterialsAboveBlock *[]interface{} `json:"target_materials_above_block,omitempty"`
+  TargetMaterialsAboveBlock []interface{} `json:"target_materials_above_block,omitempty"`
   // Specifies if the default lay-egg animation should be played when the egg is placed or not.
   UseDefaultAnimation *bool `json:"use_default_animation,omitempty"`
   // The priority of this behavior. Lower values are higher priority.

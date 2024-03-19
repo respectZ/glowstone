@@ -11,7 +11,7 @@ type RideableSeats struct {
   // Defines the minimum number of riders that need to be riding this entity before this seat can be used
   MinRiderCount int `json:"min_rider_count,omitempty"`
   // [Vector3 [a,b,c]] Position of this seat relative to this entity's position
-  Position *[]float64 `json:"position,omitempty"`
+  Position []float64 `json:"position,omitempty"`
   // [Molang String] Offset to rotate riders by
   RotateRiderBy string `json:"rotate_rider_by,omitempty"`
 }

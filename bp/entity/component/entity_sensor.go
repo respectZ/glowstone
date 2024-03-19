@@ -18,8 +18,8 @@ type EntitySensorSubsensors struct {
   MaximumCount *int `json:"maximum_count,omitempty"`
   // The minimum number of entities that must pass the filter conditions for the event to send.
   MinimumCount *int `json:"minimum_count,omitempty"`
-  // The maximum distance another entity can be from this and have the filters checked against it.
-  Range *float64 `json:"range,omitempty"`
+  // [Vector2 [a,b]] The maximum horizontal and vertical distance another entity can be from this and have the filters checked against it.
+  Range []float64 `json:"range,omitempty"`
   // If true requires all nearby entities to pass the filter conditions for the events to send.
   RequireAll bool `json:"require_all,omitempty"`
 }

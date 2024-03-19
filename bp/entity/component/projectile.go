@@ -35,7 +35,7 @@ type Projectile struct {
   // If true, the projectile can hit multiple entities per flight
   MultipleTargets *bool `json:"multiple_targets,omitempty"`
   // [Vector3 [a,b,c]] The offset from the entity's anchor where the projectile will spawn
-  Offset *[]float64 `json:"offset,omitempty"`
+  Offset []float64 `json:"offset,omitempty"`
   // Time in seconds that the entity hit will be on fire for
   OnFireTime *float64 `json:"on_fire_time,omitempty"`
   // Particle to use upon collision

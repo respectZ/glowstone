@@ -7,5 +7,5 @@ type RavagerBlocked struct {
   // The strength with which blocking entities should be knocked back
   KnockbackStrength *float64 `json:"knockback_strength,omitempty"`
   // A list of weighted responses to the melee attack being blocked
-  ReactionChoices *[]interface{} `json:"reaction_choices,omitempty"`
+  ReactionChoices []interface{} `json:"reaction_choices,omitempty"`
 }

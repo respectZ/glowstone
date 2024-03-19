@@ -5,7 +5,7 @@ package component
 // Allows the mob to enter the panic state, which makes it run around and away from the damage source that made it enter this state.  
 type Behavior_Panic struct {
   // The list of Entity Damage Sources that will cause this mob to panic
-  DamageSources *[]interface{} `json:"damage_sources,omitempty"`
+  DamageSources []interface{} `json:"damage_sources,omitempty"`
   // If true, this mob will not stop panicking until it can't move anymore or the goal is removed from it
   Force bool `json:"force,omitempty"`
   // If true, the mob will not panic in response to damage from other mobs. This overrides the damage types in "damage_sources"

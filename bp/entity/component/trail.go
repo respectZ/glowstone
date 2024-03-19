@@ -13,5 +13,5 @@ type Trail struct {
   // One or more conditions that must be met in order to cause the chosen block type to spawn.
   SpawnFilter *f.Filter `json:"spawn_filter,omitempty"`
   // [Vector3 [a,b,c]] The distance from the entities current position to spawn the block. Capped at up to 16 blocks away. The X value is left/right(-/+), the Z value is backward/forward(-/+), the Y value is below/above(-/+).
-  SpawnOffset *[]float64 `json:"spawn_offset,omitempty"`
+  SpawnOffset []float64 `json:"spawn_offset,omitempty"`
 }

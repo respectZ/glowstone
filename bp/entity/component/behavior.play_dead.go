@@ -11,7 +11,7 @@ type Behavior_PlayDead struct {
   // Whether the mob will receive the regeneration effect while playing dead.
   ApplyRegeneration *bool `json:"apply_regeneration,omitempty"`
   // The list of Entity Damage Sources that will cause this mob to play dead.
-  DamageSources *[]interface{} `json:"damage_sources,omitempty"`
+  DamageSources []interface{} `json:"damage_sources,omitempty"`
   // The amount of time the mob will remain playing dead (in seconds).
   Duration *float64 `json:"duration,omitempty"`
   // The list of other triggers that are required for the mob to activate play dead

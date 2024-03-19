@@ -5,7 +5,7 @@ package component
 // Allows the entity to first travel to a random point on the outskirts of the village, and then explore random points within a small distance. This goal requires "minecraft:dweller" and "minecraft:navigation" to execute.  
 type Behavior_ExploreOutskirts struct {
   // [Vector3 [a,b,c]] The distance from the boundary the villager must be within in to explore the outskirts.
-  DistFromBoundary *[]float64 `json:"dist_from_boundary,omitempty"`
+  DistFromBoundary []float64 `json:"dist_from_boundary,omitempty"`
   // Total distance in blocks the the entity will explore beyond the village bounds when choosing its travel point.
   ExploreDist *float64 `json:"explore_dist,omitempty"`
   // This is the maximum amount of time an entity will attempt to reach it's travel point on the outskirts of the village before the goal exits.

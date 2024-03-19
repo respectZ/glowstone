@@ -77,7 +77,9 @@ function toGoStruct(
         // Yes, we can canZero it
         // value.type = "*" + value.type;
       } else {
-        value.type = "*" + value.type;
+        if (!value.type.startsWith("[]")) {
+          value.type = "*" + value.type;
+        }
       }
     }
 
@@ -154,6 +156,10 @@ function getFields(table: Element, parentName: string): GoField[] {
         break;
       case "Minecraft Filter":
         field.type = "*f.Filter";
+        break;
+      case "Vector [a, b]":
+        field.type = "[]float64";
+        field.description = "[Vector2 [a,b]] " + field.description;
         break;
       case "Vector [a, b, c]":
         field.type = "[]float64";

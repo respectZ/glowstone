@@ -37,9 +37,9 @@ type Behavior_DropItemFor struct {
   // Movement speed multiplier of the entity when using this Goal.
   SpeedMultiplier *float64 `json:"speed_multiplier,omitempty"`
   // [Vector3 [a,b,c]] The range in blocks within which the entity searches to find a target to drop an item for.
-  TargetRange *[]float64 `json:"target_range,omitempty"`
+  TargetRange []float64 `json:"target_range,omitempty"`
   // [Vector3 [a,b,c]] When the entity teleports, offset the teleport position by this many blocks in the X, Y, and Z coordinate.
-  TeleportOffset *[]float64 `json:"teleport_offset,omitempty"`
+  TeleportOffset []float64 `json:"teleport_offset,omitempty"`
   // The valid times of day that this goal can be used. For reference: noon is 0.0, sunset is 0.25, midnight is 0.5, and sunrise is 0.75, and back to noon for 1.0.
   TimeOfDayRange *float64 `json:"time_of_day_range,omitempty"`
   // The priority of this behavior. Lower values are higher priority.
