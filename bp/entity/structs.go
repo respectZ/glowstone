@@ -20,6 +20,7 @@ type MinecraftEntity struct {
 }
 
 type EntityDescription struct {
+	Aliases           IEntityAlias           `json:"aliases,omitempty"`
 	Identifier        string                 `json:"identifier"`
 	IsSpawnable       bool                   `json:"is_spawnable"`
 	IsSummonable      bool                   `json:"is_summonable"`
@@ -48,6 +49,7 @@ func New(identifier string) *Entity {
 				Scripts: &EntityScripts{
 					Animate: &types.StringArrayConditional{},
 				},
+				Aliases: &EntityAlias{},
 			},
 			Components:      IComponent(&Component{}),
 			ComponentGroups: IComponentGroups(&ComponentGroups{}),
@@ -63,6 +65,7 @@ func Load(src string) (*Entity, error) {
 	e.Entity.Description.Scripts = &EntityScripts{Animate: &types.StringArrayConditional{}}
 	e.Entity.Description.Animations = &types.MapStringString{}
 	e.Entity.Description.Properties = &EntityProperties{}
+	e.Entity.Description.Aliases = &EntityAlias{}
 	e.Entity.Components = &Component{}
 	e.Entity.ComponentGroups = &ComponentGroups{}
 	e.Entity.Events = &EntityEventMap{}
