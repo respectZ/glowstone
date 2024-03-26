@@ -6,6 +6,8 @@
 </div>
 
   # Setup
+  Make sure you have installed `Go` with minimum version of `1.19`.
+  
   To enable multiple workspace of go, you need to create a file `go.work` in your workspace.
 
   ```
