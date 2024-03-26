@@ -43,6 +43,9 @@ func checkEvents(event *EntityEvent) {
 	if event.Trigger != nil && reflect.ValueOf(event.Trigger).Elem().IsZero() {
 		event.Trigger = nil
 	}
+	if event.QueueCommand != nil && reflect.ValueOf(event.QueueCommand).Elem().IsZero() {
+		event.QueueCommand = nil
+	}
 }
 
 func (e *Entity) Encode() ([]byte, error) {

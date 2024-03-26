@@ -7,38 +7,57 @@ import (
 )
 
 type EntityEvent struct {
-	Add           *ComponentGroup `json:"add,omitempty"`
-	Remove        *ComponentGroup `json:"remove,omitempty"`
-	SetProperty   ISetProperty    `json:"set_property,omitempty"`
-	Trigger       *f.Trigger      `json:"trigger,omitempty"` // TODO: implement trigger
-	Randomize     IEntityEvent    `json:"randomize,omitempty"`
-	Sequence      IEntityEvent    `json:"sequence,omitempty"`
-	Filters       *f.Filter       `json:"filters,omitempty"`
-	QueueCommand  string          `json:"queue_command,omitempty"`
-	EmitVibration string          `json:"emit_vibration,omitempty"`
+	Add           *ComponentGroup          `json:"add,omitempty"`
+	Remove        *ComponentGroup          `json:"remove,omitempty"`
+	SetProperty   ISetProperty             `json:"set_property,omitempty"`
+	Trigger       *f.Trigger               `json:"trigger,omitempty"` // TODO: implement trigger
+	Randomize     IEntityEvent             `json:"randomize,omitempty"`
+	Sequence      IEntityEvent             `json:"sequence,omitempty"`
+	Filters       *f.Filter                `json:"filters,omitempty"`
+	QueueCommand  *EntityEventQueueCommand `json:"queue_command,omitempty"`
+	EmitVibration string                   `json:"emit_vibration,omitempty"`
+}
+
+type EntityEventQueueCommand struct {
+	Command string `json:"command"`
+	Target  string `json:"target,omitempty"`
+}
+
+func newEvent() *EntityEvent {
+	return &EntityEvent{
+		Add:          &ComponentGroup{ComponentGroups: &types.StringArray{}},
+		Remove:       &ComponentGroup{ComponentGroups: &types.StringArray{}},
+		SetProperty:  &SetProperty{},
+		Randomize:    &EntityEventArray{},
+		Sequence:     &EntityEventArray{},
+		Trigger:      &f.Trigger{},
+		Filters:      &f.Filter{},
+		QueueCommand: &EntityEventQueueCommand{},
+	}
 }
 
 func (e *EntityEvent) UnmarshalJSON(data []byte) error {
 	type Alias EntityEvent
 
 	aux := &struct {
-		Add           *ComponentGroup `json:"add,omitempty"`
-		Remove        *ComponentGroup `json:"remove,omitempty"`
-		SetProperty   ISetProperty    `json:"set_property,omitempty"`
-		Trigger       *f.Trigger      `json:"trigger,omitempty"`
-		Randomize     IEntityEvent    `json:"randomize,omitempty"`
-		Sequence      IEntityEvent    `json:"sequence,omitempty"`
-		Filters       *f.Filter       `json:"filters,omitempty"`
-		QueueCommand  string          `json:"queue_command,omitempty"`
-		EmitVibration string          `json:"emit_vibration,omitempty"`
+		Add           *ComponentGroup          `json:"add,omitempty"`
+		Remove        *ComponentGroup          `json:"remove,omitempty"`
+		SetProperty   ISetProperty             `json:"set_property,omitempty"`
+		Trigger       *f.Trigger               `json:"trigger,omitempty"`
+		Randomize     IEntityEvent             `json:"randomize,omitempty"`
+		Sequence      IEntityEvent             `json:"sequence,omitempty"`
+		Filters       *f.Filter                `json:"filters,omitempty"`
+		QueueCommand  *EntityEventQueueCommand `json:"queue_command,omitempty"`
+		EmitVibration string                   `json:"emit_vibration,omitempty"`
 	}{
-		Add:         &ComponentGroup{ComponentGroups: &types.StringArray{}},
-		Remove:      &ComponentGroup{ComponentGroups: &types.StringArray{}},
-		SetProperty: &SetProperty{},
-		Randomize:   &EntityEventArray{},
-		Sequence:    &EntityEventArray{},
-		Filters:     &f.Filter{},
-		Trigger:     &f.Trigger{},
+		Add:          &ComponentGroup{ComponentGroups: &types.StringArray{}},
+		Remove:       &ComponentGroup{ComponentGroups: &types.StringArray{}},
+		SetProperty:  &SetProperty{},
+		Randomize:    &EntityEventArray{},
+		Sequence:     &EntityEventArray{},
+		Filters:      &f.Filter{},
+		Trigger:      &f.Trigger{},
+		QueueCommand: &EntityEventQueueCommand{},
 	}
 
 	if err := g_util.UnmarshalJSON(data, (*Alias)(aux)); err != nil {
@@ -86,15 +105,7 @@ func (a *EntityEventArray) All() []*EntityEvent {
 }
 
 func (a *EntityEventArray) New() *EntityEvent {
-	event := &EntityEvent{
-		Add:         &ComponentGroup{ComponentGroups: &types.StringArray{}},
-		Remove:      &ComponentGroup{ComponentGroups: &types.StringArray{}},
-		SetProperty: &SetProperty{},
-		Randomize:   &EntityEventArray{},
-		Sequence:    &EntityEventArray{},
-		Trigger:     &f.Trigger{},
-		Filters:     &f.Filter{},
-	}
+	event := newEvent()
 	// Add event to array
 	a.Add(event)
 	return event

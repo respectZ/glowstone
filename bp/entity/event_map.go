@@ -101,6 +101,7 @@ func (m *EntityEventMap) New(name string) *EntityEvent {
 		Sequence:    &EntityEventArray{},
 		Trigger:     &f.Trigger{},
 		Filters:     &f.Filter{},
+		QueueCommand: &EntityEventQueueCommand{},
 	}
 	(*m)[name] = event
 	return event
