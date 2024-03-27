@@ -49,6 +49,9 @@ func checkEvents(event *EntityEvent) {
 }
 
 func (e *Entity) Encode() ([]byte, error) {
+	if e.Entity.Description.Aliases.IsEmpty() {
+		e.Entity.Description.Aliases = nil
+	}
 	if e.Entity.Description.Animations.IsEmpty() {
 		e.Entity.Description.Animations = nil
 	}
