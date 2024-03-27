@@ -2,7 +2,6 @@ package texts
 
 import (
 	"bufio"
-	"errors"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -12,7 +11,7 @@ import (
 	g_util "github.com/respectZ/glowstone/util"
 )
 
-type Lang map[string]string
+type Lang [][]string
 
 type ILang interface {
 	Add(string, string)
@@ -24,28 +23,49 @@ type ILang interface {
 	Size() int
 	Has(string) bool
 
+	// Checks if the lang file is tidy (doesn't have any empty newlines or comments).
+	IsTidy() bool
+
+	Load(string) error
 	Save(string) error
+
+	// Removes all comments and empty lines from the lang file.
+	// Also sorts the keys alphabetically.
+	Tidy()
 }
 
 func (m *Lang) Add(key string, value string) {
-	(*m)[key] = value
+	*m = append(*m, []string{key, value})
 }
 
 func (m *Lang) Get(key string) (string, bool) {
-	value, ok := (*m)[key]
-	return value, ok
+	for _, kv := range *m {
+		if kv[0] == key {
+			return kv[1], true
+		}
+	}
+	return "", false
 }
 
 func (m *Lang) Remove(key string) {
-	delete(*m, key)
+	for i, kv := range *m {
+		if kv[0] == key {
+			*m = append((*m)[:i], (*m)[i+1:]...)
+			return
+		}
+	}
 }
 
 func (m *Lang) Clear() {
-	*m = make(map[string]string)
+	*m = [][]string{}
 }
 
 func (m *Lang) All() map[string]string {
-	return *m
+	mm := make(map[string]string)
+	for _, kv := range *m {
+		mm[kv[0]] = kv[1]
+	}
+	return mm
 }
 
 func (m *Lang) IsEmpty() bool {
@@ -57,99 +77,117 @@ func (m *Lang) Size() int {
 }
 
 func (m *Lang) Has(key string) bool {
-	_, ok := (*m)[key]
-	return ok
+	for _, kv := range *m {
+		if kv[0] == key {
+			return true
+		}
+	}
+	return false
+}
+
+func (m *Lang) IsTidy() bool {
+	// Check if it doesn't have empty keys
+	for _, kv := range *m {
+		if kv[0] == "" {
+			return false
+		}
+	}
+	return true
 }
 
 func (m *Lang) Load(pathToRP string) error {
 	src := filepath.Join(pathToRP, "texts", "en_US.lang")
-	if _, err := os.Stat(src); err == nil {
-		// File exists
-		lang, err := g_util.Loadlang(src)
-		if err != nil {
-			return err
-		}
-		*m = lang
-		return nil
-	}
-	return fmt.Errorf("file does not exist: %s", src)
-}
-
-func (m *Lang) Save(pathToRP string) error {
-	// To prevent overwriting, we will read the file first.
-	// If the file exists, we will read it and append the new data.
-
-	tempLang := &Lang{}
-	err := tempLang.Load(pathToRP)
-	if err == nil {
-		// File exists
-		// Append new data
-		for k, v := range *m {
-			(*tempLang)[k] = v
-		}
-		*m = *tempLang
-	}
-
-	var s string
-	var keys []string
-	for k := range *m {
-		keys = append(keys, k)
-	}
-	// Sort keys
-	sort.Strings(keys)
-
-	for _, k := range keys {
-		s += k + "=" + (*m)[k] + "\n"
-	}
-
-	g_util.WriteFile(filepath.Join(pathToRP, "texts", "en_US.lang"), []byte(s))
-
-	return nil
-}
-
-func Create(LangPath string) error {
-	// Check if file exists
-	if _, err := os.Stat(LangPath); err == nil {
-		// File exists
-		return errors.New("file already exists")
-	} else if os.IsNotExist(err) {
+	if _, err := os.Stat(src); err != nil {
 		// File does not exist
-		// Create file
-		file, err := os.Create(LangPath)
-		if err != nil {
-			return err
-		}
-		defer file.Close()
-	} else {
-		// File may or may not exist
 		return err
 	}
-	return nil
-}
 
-func Read(LangPath string) (map[string]string, error) {
-	if _, err := os.Stat(LangPath); err == nil {
-		// File exists
-		return nil, errors.New("file already exists")
-	}
-	// Read file
-	file, err := os.Open(LangPath)
+	file, err := os.Open(src)
 	if err != nil {
-		return nil, err
+		return err
 	}
+
 	defer file.Close()
 
-	data := make(map[string]string)
+	data := make([][]string, 0)
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
 		line := scanner.Text()
 		if strings.Contains(line, "=") {
 			split := strings.Split(line, "=")
 			key := split[0]
-			value := split[1]
-			data[key] = value
+			value := strings.Join(split[1:], "=")
+			data = append(data, []string{key, value})
+		} else {
+			// Add to data with empty key
+			data = append(data, []string{"", line})
 		}
 	}
 
-	return data, nil
+	*m = data
+
+	return nil
+}
+
+func (m *Lang) Save(pathToRP string) error {
+	// To prevent overwriting, we will read the file first.
+	// If the file exists, we will read it and append the new data.
+
+	dst := filepath.Join(pathToRP, "texts", "en_US.lang")
+
+	tempLang := &Lang{}
+	if _, err := os.Stat(dst); err == nil {
+		// File exists
+		if err := tempLang.Load(pathToRP); err != nil {
+			return err
+		}
+	}
+
+	// Append new data
+	for _, kv := range *m {
+		if tempLang.Has(kv[0]) {
+			continue
+		}
+		tempLang.Add(kv[0], kv[1])
+	}
+
+	// Check for tidyness
+	if tempLang.IsTidy() && m.IsTidy() {
+		tempLang.Tidy()
+	}
+
+	// Write to file
+	s := ""
+
+	for _, kv := range *tempLang {
+		if kv[0] == "" {
+			s += kv[1] + "\n"
+		} else {
+			s += kv[0] + "=" + kv[1] + "\n"
+		}
+	}
+	// Trim the last newline
+	s = strings.TrimSuffix(s, "\n")
+
+	g_util.WriteFile(dst, []byte(s))
+	if !tempLang.IsTidy() {
+		return fmt.Errorf("Lang file contains empty newline and/or comments. Lang will not be sorted.")
+	}
+
+	return nil
+}
+
+func (m *Lang) Tidy() {
+	data := make([][]string, 0)
+	for _, kv := range *m {
+		if kv[0] != "" {
+			data = append(data, kv)
+		}
+	}
+	// Sort
+	sort.Slice(data, func(i, j int) bool {
+		return data[i][0] < data[j][0]
+	})
+
+	*m = data
 }
